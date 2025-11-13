@@ -521,12 +521,10 @@ if __name__ == '__main__':
     
     # 🔥 SOLUCIÓN RENDER: SSL solo en local, no en Render
     import os
+    port = int(os.environ.get('PORT', 5000))
     if 'RENDER' in os.environ:
-        # En Render - sin SSL (Render ya maneja SSL)
-        app.run(debug=False, host='0.0.0.0', port=5000)
-        print("✅ Servidor iniciado en RENDER (sin SSL)")
+        app.run(debug=False, host='0.0.0.0', port=port)
     else:
-        # Local - con SSL para desarrollo
-        app.run(debug=True, host='0.0.0.0', port=5000, ssl_context='adhoc')
-        print("✅ Servidor iniciado LOCAL (con SSL)")
+        app.run(debug=True, host='0.0.0.0', port=port, ssl_context='adhoc')
+
 # 🔥 HASTA AQUÍ 🔥
