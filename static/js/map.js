@@ -74,7 +74,7 @@ function inicializarMapaAdmin() {
 }
 
 function inicializarMapaTrabajadores() {
-    console.log('🗺️ Inicializando mapa trabajadores...');
+    console.log('🗺️ Inicializando mapa trabajadores en pantalla completa...');
     
     const mapContainer = document.getElementById('map-trabajadores');
     if (!mapContainer) {
@@ -82,25 +82,39 @@ function inicializarMapaTrabajadores() {
         return;
     }
 
+    // Limpiar mapa existente
     if (mapTrabajadores) {
         mapTrabajadores.remove();
     }
 
+    // 🔥 INICIALIZAR MAPA CON CONFIGURACIÓN PANTALLA COMPLETA
     mapTrabajadores = L.map('map-trabajadores', {
         center: [-12.0464, -77.0428],
         zoom: 12,
-        zoomControl: true
+        zoomControl: true,
+        // 🔥 CONFIGURACIONES PARA MEJOR EXPERIENCIA EN PANTALLA COMPLETA
+        preferCanvas: true, // Mejor rendimiento
+        fadeAnimation: true,
+        markerZoomAnimation: true
     });
 
+    // 🔥 CAPA DE TILES CON MEJOR VISIBILIDAD
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
-        maxZoom: 18
+        maxZoom: 18,
+        // 🔥 MEJORAS PARA PANTALLA COMPLETA
+        detectRetina: true // Mejor calidad en pantallas retina
     }).addTo(mapTrabajadores);
 
+    // 🔥 CONTROLES MEJORADOS PARA PANTALLA COMPLETA
     L.control.scale({ imperial: false }).addTo(mapTrabajadores);
+    
+    // 🔥 POSICIONAR CONTROLES DE ZOOM MEJOR
+    mapTrabajadores.zoomControl.setPosition('bottomright');
+    
     capaClientes.addTo(mapTrabajadores);
     
-    console.log('✅ Mapa trabajadores inicializado correctamente');
+    console.log('✅ Mapa trabajadores inicializado en pantalla completa');
     
     // 🔥 SOLUCIÓN DEFINITIVA: CREAR MARCADOR INMEDIATAMENTE Y LUEGO GPS
     console.log('🎯 CREANDO MARCADOR INMEDIATO...');
@@ -108,19 +122,43 @@ function inicializarMapaTrabajadores() {
     // Forzar creación del marcador AHORA MISMO
     actualizarMarcadorUsuario(-12.0464, -77.0428, 5); // 🔥 PRECISIÓN MÁXIMA
     
-    // Iniciar GPS después de 1 segundo
+    // 🔥 INICIAR GPS DESPUÉS DE QUE EL MAPA ESTÉ LISTO
     setTimeout(() => {
-        console.log('📍 INICIANDO GPS...');
+        console.log('📍 INICIANDO GPS EN PANTALLA COMPLETA...');
+        
+        // 🔥 FORZAR REDIMENSIONAMIENTO DEL MAPA
+        setTimeout(() => {
+            if (mapTrabajadores) {
+                mapTrabajadores.invalidateSize(true);
+                console.log('🔄 Mapa redimensionado para pantalla completa');
+            }
+        }, 100);
+        
         iniciarSistemaGeolocalizacion();
-    }, 1000);
+    }, 500);
     
-    // Backup: Verificar después de 3 segundos
+    // 🔥 BACKUP: Verificar después de 3 segundos
     setTimeout(() => {
         if (!marcadorUsuario || !marcadorUsuario.marker) {
             console.log('🚨 BACKUP: Forzando marcador de nuevo...');
-            actualizarMarcadorUsuario(-12.0464, -77.0428, 5); // 🔥 PRECISIÓN MÁXIMA
+            actualizarMarcadorUsuario(-12.0464, -77.0428, 5);
+        }
+        
+        // 🔥 FORZAR REDIMENSIONAMIENTO FINAL
+        if (mapTrabajadores) {
+            mapTrabajadores.invalidateSize(true);
         }
     }, 3000);
+    
+    // 🔥 ESCUCHAR CAMBIOS DE TAMAÑO PARA PANTALLA COMPLETA
+    window.addEventListener('resize', function() {
+        if (mapTrabajadores) {
+            setTimeout(() => {
+                mapTrabajadores.invalidateSize(true);
+                console.log('📱 Mapa ajustado al cambio de tamaño');
+            }, 300);
+        }
+    });
 }
 
 // ==============================================
@@ -363,29 +401,70 @@ function actualizarEstadoUbicacion(estado, detalle) {
 }
 
 function actualizarMarcadorUsuario(lat, lng, precision) {
-    console.log('🎯 CREANDO MARCADOR SIMPLE en:', lat, lng);
+    console.log('🎯 ACTUALIZANDO MARCADOR USUARIO en:', lat, lng);
     
     const mapaActual = mapAdmin || mapTrabajadores;
-    if (!mapaActual) return;
+    if (!mapaActual) {
+        console.error('❌ No hay mapa disponible para actualizar marcador');
+        return;
+    }
 
     // 🔥 ELIMINAR TODO LO ANTERIOR
     if (marcadorUsuario && marcadorUsuario.marker) {
         mapaActual.removeLayer(marcadorUsuario.marker);
     }
+    if (marcadorUsuario && marcadorUsuario.circle) {
+        mapaActual.removeLayer(marcadorUsuario.circle);
+    }
 
-    // 🔥 CREAR MARCADOR BÁSICO DE LEAFLET (NO personalizado)
-    const marker = L.marker([lat, lng])
-        .addTo(mapaActual)
-        .bindPopup(`📍 Tu ubicación: ${lat}, ${lng}`);
+    // 🔥 CREAR MARCADOR MEJORADO PARA PANTALLA COMPLETA
+    const marker = L.marker([lat, lng], {
+        // 🔥 CONFIGURACIÓN MEJORADA
+        title: 'Tu ubicación actual',
+        alt: 'Ubicación del usuario',
+        riseOnHover: true
+    })
+    .addTo(mapaActual)
+    .bindPopup(`
+        <div class="text-center">
+            <strong>📍 Tu ubicación</strong><br>
+            <small>Lat: ${lat.toFixed(6)}</small><br>
+            <small>Lng: ${lng.toFixed(6)}</small><br>
+            <small>Precisión: ${Math.round(precision)}m</small>
+        </div>
+    `);
+
+    // 🔥 CREAR CÍRCULO DE PRECISIÓN (SOLO SI LA PRECISIÓN ES RAZONABLE)
+    let circle = null;
+    if (precision && precision < 1000) { // Solo si la precisión es menor a 1km
+        circle = L.circle([lat, lng], {
+            radius: precision,
+            color: '#3b82f6',
+            fillColor: '#3b82f6',
+            fillOpacity: 0.1,
+            weight: 1
+        }).addTo(mapaActual);
+    }
 
     if (!marcadorUsuario) marcadorUsuario = {};
     marcadorUsuario.marker = marker;
+    marcadorUsuario.circle = circle;
 
-        console.log('✅ Marcador Leaflet básico creado');
+    console.log('✅ Marcador usuario actualizado en pantalla completa');
     
     // 🔥 SOLUCIÓN DEFINITIVA: NUNCA CENTRAR AUTOMÁTICAMENTE AL ACTUALIZAR MARCADOR
     console.log('📍 Marcador actualizado - SIN centrado automático');
     // ELIMINADO COMPLETAMENTE EL setTimeout CON setView
+    
+    // 🔥 GUARDAR ÚLTIMA UBICACIÓN PARA BOTÓN "VOLVER A MI UBICACIÓN"
+    window.ultimaUbicacion = {
+        coords: {
+            latitude: lat,
+            longitude: lng,
+            accuracy: precision
+        }
+    };
+    window.ubicacionActual = { lat: lat, lng: lng };
 }
 
 // ==============================================
@@ -833,6 +912,57 @@ function abrirGoogleMaps(lat, lng, nombreCliente) {
     }
 }
 
+// 🔥 NUEVA FUNCIÓN: Forzar redimensionamiento completo del mapa
+function forzarRedimensionCompleto() {
+    console.log('🔄 FORZANDO REDIMENSIONAMIENTO COMPLETO DEL MAPA...');
+    
+    const mapa = mapAdmin || mapTrabajadores;
+    if (mapa) {
+        // Forzar recálculo completo del tamaño
+        mapa.invalidateSize(true);
+        
+        // Forzar actualización de todos los controles
+        mapa._onResize();
+        
+        // Si tenemos ubicación actual, recentrar suavemente
+        if (window.ubicacionActual && !window.clienteSeleccionado) {
+            setTimeout(() => {
+                const currentZoom = mapa.getZoom();
+                mapa.setView([window.ubicacionActual.lat, window.ubicacionActual.lng], currentZoom, {
+                    animate: true,
+                    duration: 0.5
+                });
+            }, 200);
+        }
+        
+        console.log('✅ Redimensionamiento completo forzado');
+    } else {
+        console.error('❌ No hay mapa disponible para redimensionar');
+    }
+}
+
+// 🔥 EJECUTAR REDIMENSIONAMIENTO AL CARGAR Y CAMBIAR TAMAÑO
+document.addEventListener('DOMContentLoaded', function() {
+    // Redimensionar después de que todo esté cargado
+    setTimeout(forzarRedimensionCompleto, 1000);
+    
+    // Redimensionar en cambios de orientación (móviles)
+    window.addEventListener('orientationchange', function() {
+        setTimeout(forzarRedimensionCompleto, 500);
+    });
+});
+
+// 🔥 FUNCIÓN PARA CENTRAR EN UBICACIÓN ACTUAL (MEJORADA)
+function centrarEnUbicacionActual() {
+    if (window.ubicacionActual && mapTrabajadores) {
+        mapTrabajadores.setView([window.ubicacionActual.lat, window.ubicacionActual.lng], 16, {
+            animate: true,
+            duration: 1.0
+        });
+        console.log('🎯 Centrado en ubicación actual');
+    }
+}
+
 // Exportar funciones globales
 window.inicializarMapaAdmin = inicializarMapaAdmin;
 window.inicializarMapaTrabajadores = inicializarMapaTrabajadores;
@@ -846,3 +976,5 @@ window.desactivarSeguimientoUbicacion = desactivarSeguimientoUbicacion;
 window.forzarCentradoEnUbicacion = forzarCentradoEnUbicacion;
 window.debugEstadoGPS = debugEstadoGPS;
 window.verificarMarcadorMovil = verificarMarcadorMovil;
+window.forzarRedimensionCompleto = forzarRedimensionCompleto; // 🔥 NUEVA
+window.centrarEnUbicacionActual = centrarEnUbicacionActual;   // 🔥 NUEVA

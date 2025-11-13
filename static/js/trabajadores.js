@@ -40,12 +40,9 @@ function inicializarSistemaTrabajadores() {
 }
 
 function configurarEventListenersTrabajadores() {
-    console.log('🔧 [Trabajadores] Configurando event listeners...');
+    console.log('🔧 [Trabajadores] Configurando event listeners para interfaz flotante...');
     
-    // AGREGAR BOTÓN "VOLVER A MI UBICACIÓN"
-    agregarBotonVolverUbicacion();
-    
-    // BUSCADOR CON SUGERENCIAS PARA TRABAJADORES
+    // BUSCADOR FLOTANTE CON SUGERENCIAS
     const buscador = document.getElementById('buscador-clientes');
     const sugerenciasContainer = document.getElementById('sugerencias-container-trabajadores');
     
@@ -60,7 +57,10 @@ function configurarEventListenersTrabajadores() {
             clearTimeout(buscadorTimeout);
             
             // Ocultar panel de resultados si está visible
-            document.getElementById('panel-resultados').style.display = 'none';
+            const panelResultados = document.getElementById('panel-resultados');
+            if (panelResultados) {
+                panelResultados.style.display = 'none';
+            }
             
             if (termino.length === 0) {
                 console.log('❌ [Trabajadores] Término vacío, ocultando sugerencias');
@@ -134,7 +134,7 @@ function configurarEventListenersTrabajadores() {
     if (btnActualizar) {
         btnActualizar.addEventListener('click', function() {
             console.log('🔄 Actualizando ubicación manualmente...');
-            actualizarUbicacionManual(); // Usar la nueva función
+            actualizarUbicacionManual();
         });
     }
     
@@ -142,15 +142,20 @@ function configurarEventListenersTrabajadores() {
     const btnCerrarResultados = document.getElementById('btn-cerrar-resultados');
     if (btnCerrarResultados) {
         btnCerrarResultados.addEventListener('click', function() {
-            document.getElementById('panel-resultados').style.display = 'none';
+            const panelResultados = document.getElementById('panel-resultados');
+            if (panelResultados) {
+                panelResultados.style.display = 'none';
+            }
         });
     }
 
-    // 🔥 NUEVO: Configurar el botón "Volver a mi ubicación" que ahora está en el HTML
+    // 🔥 NUEVO: Configurar el botón "Volver a mi ubicación" flotante
     const btnVolver = document.getElementById('btn-volver-ubicacion');
     if (btnVolver) {
         btnVolver.addEventListener('click', volverAMiUbicacion);
     }
+    
+    console.log('✅ [Trabajadores] Event listeners configurados para interfaz flotante');
 }
 
 // Cargar clientes para trabajadores
@@ -167,7 +172,7 @@ async function cargarClientesTrabajadores() {
     }
 }
 
-// Buscar clientes (super inteligente) - VERSIÓN ACTUALIZADA
+// Buscar clientes (super inteligente) - VERSIÓN ACTUALIZADA PARA INTERFAZ FLOTANTE
 function buscarClientesTrabajadores(termino) {
     console.log('🔍 [Trabajadores] Búsqueda ejecutada:', termino);
     
@@ -175,7 +180,9 @@ function buscarClientesTrabajadores(termino) {
     const listaResultados = document.getElementById('lista-resultados');
     
     if (!termino.trim()) {
-        panelResultados.style.display = 'none';
+        if (panelResultados) {
+            panelResultados.style.display = 'none';
+        }
         cargarClientesEnMapa(clientes);
         return;
     }
@@ -186,17 +193,18 @@ function buscarClientesTrabajadores(termino) {
         return nombreNormalizado.includes(terminoNormalizado);
     });
     
-    // Mostrar resultados en el panel
-    if (resultados.length > 0) {
+    // Mostrar resultados en el panel flotante
+    if (resultados.length > 0 && panelResultados && listaResultados) {
         listaResultados.innerHTML = '';
         
         resultados.forEach(cliente => {
             const elemento = document.createElement('div');
-            elemento.className = 'resultado-cliente p-3 border';
+            elemento.className = 'resultado-cliente p-3 border-bottom';
+            elemento.style.borderColor = '#475569 !important';
             elemento.innerHTML = `
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="flex-grow-1">
-                        <h6 class="mb-1">${cliente.nombre}</h6>
+                        <h6 class="mb-1 text-light">${cliente.nombre}</h6>
                         <p class="mb-1 text-muted small">📞 ${cliente.telefono || 'No disponible'}</p>
                         <p class="mb-1 text-muted small">📍 ${cliente.direccion || 'No disponible'}</p>
                         <span class="badge bg-secondary">${cliente.categoria}</span>
@@ -216,7 +224,7 @@ function buscarClientesTrabajadores(termino) {
         // Mostrar solo los clientes encontrados en el mapa
         cargarClientesEnMapa(resultados);
         
-    } else {
+    } else if (panelResultados && listaResultados) {
         listaResultados.innerHTML = `
             <div class="text-center p-3 text-muted">
                 ❌ No se encontraron clientes que coincidan con "${termino}"
@@ -488,24 +496,33 @@ function navegarSugerenciasTrabajadores(sugerencias, direccion) {
 // NUEVAS FUNCIONES PARA CONTROL DE UBICACIÓN
 // ==============================================
 
-// Función para activar/desactivar seguimiento de ubicación
+// Función para activar/desactivar seguimiento de ubicación - VERSIÓN FLOTANTE
 function setModoSeguimientoUbicacion(activar) {
     modoSeguimientoUbicacion = activar;
-    const estadoElement = document.getElementById('estado-ubicacion');
+    const estadoElement = document.getElementById('estado-ubicacion-floating');
+    const btnVolver = document.getElementById('btn-volver-ubicacion');
     
     if (activar) {
-        estadoElement.innerHTML = '📍 Siguiendo tu ubicación...';
-        estadoElement.className = 'd-block d-md-inline text-success';
-        toggleBotonVolverUbicacion(false);
+        if (estadoElement) {
+            estadoElement.innerHTML = '<small>📍 Siguiendo tu ubicación...</small>';
+            estadoElement.className = 'floating-status text-success';
+        }
+        if (btnVolver) {
+            btnVolver.classList.add('d-none');
+        }
         
         // Centrar en la ubicación actual si está disponible
         if (window.ubicacionActual) {
             centrarEnUbicacion(window.ubicacionActual.lat, window.ubicacionActual.lng);
         }
     } else {
-        estadoElement.innerHTML = '📍 Cliente seleccionado';
-        estadoElement.className = 'd-block d-md-inline text-warning';
-        toggleBotonVolverUbicacion(true);
+        if (estadoElement) {
+            estadoElement.innerHTML = '<small>📍 Cliente seleccionado</small>';
+            estadoElement.className = 'floating-status text-warning';
+        }
+        if (btnVolver) {
+            btnVolver.classList.remove('d-none');
+        }
     }
 }
 
@@ -566,5 +583,44 @@ function actualizarUbicacionManual() {
     }, 500);
     
     console.log('✅ GPS REACTIVADO MANUALMENTE');
+}
+
+// 🔥 NUEVA FUNCIÓN: Actualizar estado GPS en interfaz flotante
+function actualizarEstadoGPS(estado, detalle) {
+    const estadoElement = document.getElementById('estado-ubicacion-floating');
+    if (estadoElement) {
+        estadoElement.innerHTML = `<small>${estado}<br>${detalle}</small>`;
+        
+        // Actualizar colores según el estado
+        if (estado.includes('ACTIVA') || estado.includes('ACTIVADO') || estado.includes('UBICACIÓN')) {
+            estadoElement.className = 'floating-status text-success';
+        } else if (estado.includes('ERROR') || estado.includes('BLOQUEADOS') || estado.includes('NO DISPONIBLE')) {
+            estadoElement.className = 'floating-status text-danger';
+        } else if (estado.includes('INICIANDO') || estado.includes('TARDANDO') || estado.includes('OBTENIENDO')) {
+            estadoElement.className = 'floating-status text-warning';
+        } else {
+            estadoElement.className = 'floating-status text-muted';
+        }
+    }
+    
+    // 🔥 ACTUALIZAR TAMBIÉN EL ESTADO EN EL BUSCADOR SI EXISTE
+    const estadoOriginal = document.getElementById('estado-ubicacion');
+    if (estadoOriginal) {
+        estadoOriginal.innerHTML = `${estado}<br><small>${detalle}</small>`;
+    }
+}
+
+// 🔥 SOBREESCRIBIR LA FUNCIÓN GLOBAL DE ACTUALIZACIÓN DE ESTADO
+if (typeof actualizarEstadoUbicacion === 'function') {
+    // Guardar referencia original
+    const originalActualizarEstado = actualizarEstadoUbicacion;
+    
+    // Reemplazar con nuestra versión mejorada
+    window.actualizarEstadoUbicacion = function(estado, detalle) {
+        actualizarEstadoGPS(estado, detalle);
+        originalActualizarEstado(estado, detalle);
+    };
+} else {
+    window.actualizarEstadoUbicacion = actualizarEstadoGPS;
 }
 

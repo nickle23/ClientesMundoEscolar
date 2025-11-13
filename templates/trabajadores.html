@@ -3,75 +3,61 @@
 {% block title %}Panel Trabajadores - Sistema de Clientes{% endblock %}
 
 {% block content %}
-<div class="container-main">
-    <!-- Header centrado y profesional -->
-    <div class="panel-header">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <!-- Columna izquierda: Título y estado -->
-                <div class="col-12 col-md-6 text-center text-md-start mb-2 mb-md-0">
-                    <h5 class="mb-1">🌎 Panel de Trabajadores</h5>
-                    <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-2">
-                        <small id="estado-ubicacion" class="text-light">📍 Iniciando GPS...</small>
-                        <!-- Botón volver a ubicación (inicialmente oculto) -->
-                        <button class="btn btn-sm btn-success d-none" id="btn-volver-ubicacion">
-                            📍 Mi Ubicación
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Columna derecha: Buscador y controles -->
-                <div class="col-12 col-md-6">
-                    <div class="d-flex flex-column flex-md-row gap-2 align-items-center">
-                        <!-- BUSCADOR MEJORADO -->
-                        <div class="flex-grow-1 position-relative" style="max-width: 400px;">
-                            <div class="input-group">
-                                <input type="text" 
-                                    class="form-control form-control-sm" 
-                                    id="buscador-clientes" 
-                                    placeholder="🔍 Buscar cliente..."
-                                    autocomplete="off">
-                                <button class="btn btn-warning btn-sm" id="btn-actualizar-ubicacion"
-                                        title="Actualizar GPS">
-                                    🚀 GPS
-                                </button>
-                            </div>
-                            
-                            <!-- CONTENEDOR DE SUGERENCIAS MEJORADO -->
-                            <div class="sugerencias-dropdown" id="sugerencias-container-trabajadores">
-                                <div id="lista-sugerencias-trabajadores">
-                                    <!-- Las sugerencias se cargarán aquí -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<!-- 🔥 NUEVA INTERFAZ GOOGLE MAPS STYLE - PANTALLA COMPLETA -->
+<div class="trabajadores-fullscreen">
+
+    <!-- 🔥 BUSCADOR FLOTANTE SUPERIOR - ESTILO GOOGLE MAPS -->
+    <div class="floating-search-container">
+        <div class="floating-search-box">
+            <div class="input-group">
+                <input type="text" 
+                    class="form-control form-control-lg" 
+                    id="buscador-clientes" 
+                    placeholder="🔍 Buscar cliente..."
+                    autocomplete="off">
+                <button class="btn btn-warning btn-lg" id="btn-actualizar-ubicacion"
+                        title="Actualizar GPS">
+                    🚀 GPS
+                </button>
+            </div>
+            
+            <!-- CONTENEDOR DE SUGERENCIAS FLOTANTE -->
+            <div class="sugerencias-dropdown floating-sugerencias" id="sugerencias-container-trabajadores">
+                <div id="lista-sugerencias-trabajadores">
+                    <!-- Las sugerencias se cargarán aquí -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Mapa principal CENTRADO -->
-    <div class="map-container-centered">
-        <div class="card border-0 bg-transparent">
-            <div id="map-trabajadores" style="height: 75vh; width: 100%;"></div>
-        </div>
-    </div>
+    <!-- 🔥 BOTÓN VOLVER A MI UBICACIÓN FLOTANTE -->
+    <button class="btn btn-success btn-floating-location d-none" id="btn-volver-ubicacion">
+        📍 Mi Ubicación
+    </button>
 
-    <!-- Panel de resultados CENTRADO -->
-    <div class="card mt-3" id="panel-resultados" style="display: none;">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h6 class="card-title mb-0">📋 Resultados de Búsqueda</h6>
+    <!-- 🔥 MAPA 100% PANTALLA COMPLETA -->
+    <div id="map-trabajadores" class="fullscreen-map"></div>
+
+    <!-- 🔥 PANEL DE RESULTADOS FLOTANTE -->
+    <div class="floating-results-card" id="panel-resultados" style="display: none;">
+        <div class="floating-results-header">
+            <h6 class="mb-0">📋 Resultados de Búsqueda</h6>
             <button type="button" class="btn-close btn-close-white" id="btn-cerrar-resultados"></button>
         </div>
-        <div class="card-body">
+        <div class="floating-results-body">
             <div id="lista-resultados">
                 <!-- Los resultados se cargarán aquí -->
             </div>
         </div>
     </div>
+
+    <!-- 🔥 ESTADO GPS FLOTANTE PEQUEÑO -->
+    <div class="floating-status" id="estado-ubicacion-floating">
+        <small>📍 Iniciando GPS...</small>
+    </div>
 </div>
 
-<!-- Modal de información del cliente - COMPLETAMENTE RESPONSIVE -->
+<!-- 🔥 MODAL DE INFORMACIÓN DEL CLIENTE (SE MANTIENE IGUAL) -->
 <div class="modal fade" id="infoClienteModal" tabindex="-1" aria-labelledby="modal-cliente-nombre" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -80,7 +66,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
-                <!-- Información del cliente MEJORADA -->
                 <div class="cliente-info">
                     <div class="d-flex align-items-center mb-3">
                         <div class="flex-shrink-0">
@@ -105,7 +90,6 @@
                     </div>
                 </div>
                 
-                <!-- Botón Google Maps MEJORADO -->
                 <div class="modal-footer bg-transparent border-0 pt-3">
                     <button class="btn btn-primary btn-lg w-100 py-2" id="btn-abrir-maps">
                         🗺️ Abrir en Google Maps

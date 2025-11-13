@@ -1076,3 +1076,934 @@ body {
     max-height: 70vh;
     overflow-y: auto;
 }
+
+/* ========== 🔥 INTERFAZ GOOGLE MAPS STYLE - PANTALLA COMPLETA ========== */
+
+/* CONTENEDOR PRINCIPAL - 100% PANTALLA */
+.trabajadores-fullscreen {
+    position: fixed;
+    top: 56px; /* 🔥 CORRECCIÓN: Respeta altura del navbar */
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 56px); /* 🔥 CORRECCIÓN: Resta altura del navbar */
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #1e293b;
+    z-index: 1; /* 🔥 CORRECCIÓN: Detrás del navbar */
+}
+
+/* MAPA 100% PANTALLA COMPLETA - DETRÁS DEL HEADER */
+.fullscreen-map {
+    width: 100vw !important;
+    height: calc(100vh - 56px) !important; /* 🔥 CORRECCIÓN: Respeta navbar */
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 1; /* 🔥 CORRECCIÓN: Detrás de elementos flotantes */
+}
+
+/* ========== 🔥 BUSCADOR ULTRA DELGADO - VERSIÓN COMPLETA ========== */
+
+/* CONTENEDOR PRINCIPAL MÁS ANGOSTO */
+.floating-search-container {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75% !important; /* 🔥 MÁS ANGOSTO */
+    max-width: 400px !important; /* 🔥 MÁS DELGADO */
+    z-index: 1002;
+    pointer-events: none;
+}
+
+/* CAJA DEL BUSCADOR ULTRA DELGADA */
+.floating-search-box {
+    background: rgba(30, 41, 59, 0.9) !important;
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(59, 130, 246, 0.25) !important; /* 🔥 BORDES MÁS FINOS */
+    border-radius: 18px !important; /* 🔥 FORMA MÁS CERRADA */
+    padding: 2px !important; /* 🔥 PADDING MÍNIMO */
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.2), /* 🔥 SOMBRA MÁS LIGERA */
+        0 1px 3px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    pointer-events: auto;
+    transition: all 0.2s ease;
+}
+
+.floating-search-box .input-group {
+    margin: 0;
+    align-items: center;
+}
+
+/* INPUT ULTRA DELGADO */
+.floating-search-box .form-control {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 16px 0 0 16px !important;
+    color: #ffffff !important;
+    font-size: 13px !important; /* 🔥 TEXTO MÁS PEQUEÑO */
+    font-weight: 400 !important;
+    padding: 4px 12px !important; /* 🔥 PADDING MÍNIMO */
+    height: 32px !important; /* 🔥 ALTURA REDUCIDA */
+    box-shadow: none !important;
+    line-height: 1.2 !important;
+}
+
+.floating-search-box .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-weight: 400;
+    font-size: 13px !important;
+}
+
+.floating-search-box .form-control:focus {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+/* BOTÓN ULTRA DELGADO */
+.floating-search-box .btn {
+    border-radius: 0 16px 16px 0 !important;
+    border: none !important;
+    padding: 4px 14px !important; /* 🔥 BOTÓN COMPACTO */
+    font-weight: 500 !important;
+    font-size: 12px !important; /* 🔥 TEXTO MÁS PEQUEÑO */
+    background: rgba(59, 130, 246, 0.5) !important; /* 🔥 MÁS TRANSPARENTE */
+    color: #ffffff !important;
+    height: 32px !important; /* 🔥 MISMA ALTURA QUE INPUT */
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.floating-search-box .btn:hover {
+    background: rgba(59, 130, 246, 0.7) !important;
+    transform: none;
+}
+
+/* EFECTO FOCUS ULTRA SUTIL */
+.floating-search-box:focus-within {
+    transform: scale(1.002); /* 🔥 ZOOM CASI IMPERCEPTIBLE */
+    border-color: rgba(59, 130, 246, 0.4) !important;
+    box-shadow: 
+        0 6px 25px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(59, 130, 246, 0.08) !important;
+}
+
+/* ========== 🔥 RESPONSIVE PARA LA VERSIÓN ULTRA DELGADA ========== */
+
+/* TABLETS */
+@media (max-width: 1024px) {
+    .floating-search-container {
+        width: 80% !important;
+        max-width: 380px !important;
+        top: 15px;
+    }
+}
+
+/* MÓVILES GRANDES */
+@media (max-width: 768px) {
+    .floating-search-container {
+        width: 85% !important;
+        max-width: 350px !important;
+        top: 10px;
+    }
+    
+    .floating-search-box .form-control {
+        height: 30px !important;
+        font-size: 12px !important;
+        padding: 3px 10px !important;
+    }
+    
+    .floating-search-box .btn {
+        height: 30px !important;
+        font-size: 11px !important;
+        padding: 3px 12px !important;
+    }
+}
+
+/* MÓVILES PEQUEÑOS */
+@media (max-width: 480px) {
+    .floating-search-container {
+        width: 90% !important;
+        max-width: 320px !important;
+        top: 8px;
+    }
+    
+    .floating-search-box {
+        border-radius: 16px !important;
+        padding: 1px !important;
+    }
+    
+    .floating-search-box .form-control {
+        height: 28px !important;
+        font-size: 12px !important;
+        padding: 2px 8px !important;
+        border-radius: 14px 0 0 14px !important;
+    }
+    
+    .floating-search-box .btn {
+        height: 28px !important;
+        font-size: 10px !important;
+        padding: 2px 10px !important;
+        border-radius: 0 14px 14px 0 !important;
+    }
+}
+
+/* MÓVILES MUY PEQUEÑOS (iPhone SE) */
+@media (max-width: 375px) {
+    .floating-search-container {
+        width: 92% !important;
+        max-width: 300px !important;
+    }
+    
+    .floating-search-box .form-control {
+        height: 26px !important;
+        padding: 2px 6px !important;
+    }
+    
+    .floating-search-box .btn {
+        height: 26px !important;
+        padding: 2px 8px !important;
+    }
+}
+
+/* ORIENTACIÓN HORIZONTAL */
+@media (max-height: 500px) and (orientation: landscape) {
+    .floating-search-container {
+        width: 60% !important;
+        max-width: 350px !important;
+        top: 5px;
+    }
+    
+    .floating-search-box .form-control,
+    .floating-search-box .btn {
+        height: 28px !important;
+    }
+}
+
+/* ========== 🔥 SUGERENCIAS PARA VERSIÓN DELGADA ========== */
+
+.floating-sugerencias {
+    margin-top: 8px !important; /* 🔥 MENOS ESPACIO */
+    border-radius: 16px !important; /* 🔥 COINCIDE CON EL BUSCADOR */
+    max-height: 50vh !important;
+}
+
+.sugerencia-item {
+    padding: 8px 12px !important; /* 🔥 ITEMS MÁS DELGADOS */
+    font-size: 13px !important;
+}
+
+.sugerencia-nombre {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+
+.sugerencia-detalles {
+    font-size: 11px !important;
+}
+
+/* BOTÓN VOLVER A UBICACIÓN FLOTANTE - POSICIÓN CORREGIDA */
+.btn-floating-location {
+    position: absolute;
+    bottom: 120px; /* 🔥 CORRECCIÓN: Más arriba para que no se esconda */
+    right: 20px;
+    z-index: 1001; /* 🔥 CORRECCIÓN: Encima del mapa */
+    border-radius: 50px !important;
+    padding: 12px 20px;
+    font-weight: 700 !important; /* 🔥 CORRECCIÓN: Texto más grueso */
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    border: 2px solid #10b981 !important; /* 🔥 CORRECCIÓN: Borde verde visible */
+    background: rgba(16, 185, 129, 0.95) !important; /* 🔥 CORRECCIÓN: Menos transparente */
+    backdrop-filter: blur(15px);
+    color: #000000 !important; /* 🔥 CORRECCIÓN: Texto negro para contraste */
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.btn-floating-location:hover {
+    background: rgba(16, 185, 129, 1) !important;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 15px 40px rgba(16, 185, 129, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.2) !important;
+}
+
+/* PANEL DE RESULTADOS FLOTANTE - CONTRASTE MEJORADO */
+.floating-results-card {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    max-height: 60vh;
+    z-index: 1003; /* 🔥 CORRECCIÓN: Encima de todo */
+    background: rgba(30, 41, 59, 0.98) !important; /* 🔥 CORRECCIÓN: Menos transparente */
+    backdrop-filter: blur(25px);
+    border: 2px solid #3b82f6 !important; /* 🔥 CORRECCIÓN: Borde azul visible */
+    border-radius: 20px !important;
+    box-shadow: 
+        0 25px 70px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    overflow: hidden;
+}
+
+.floating-results-header {
+    background: linear-gradient(135deg, #334155 0%, #475569 100%) !important;
+    border-bottom: 2px solid #3b82f6 !important; /* 🔥 CORRECCIÓN: Borde azul */
+    padding: 1rem 1.25rem;
+    color: #ffffff !important; /* 🔥 CORRECCIÓN: Blanco puro */
+    font-weight: 700 !important; /* 🔥 CORRECCIÓN: Texto más grueso */
+}
+
+.floating-results-body {
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 1rem;
+    background: transparent !important;
+}
+
+/* ESTADO GPS FLOTANTE - CONTRASTE MEJORADO */
+.floating-status {
+    position: absolute;
+    bottom: 30px; /* 🔥 CORRECCIÓN: Más arriba */
+    left: 20px;
+    z-index: 1001; /* 🔥 CORRECCIÓN: Encima del mapa */
+    background: rgba(30, 41, 59, 0.95) !important; /* 🔥 CORRECCIÓN: Menos transparente */
+    backdrop-filter: blur(15px);
+    border: 1px solid #3b82f6 !important; /* 🔥 CORRECCIÓN: Borde azul */
+    border-radius: 20px;
+    padding: 10px 16px;
+    color: #ffffff !important; /* 🔥 CORRECCIÓN: Blanco puro */
+    font-size: 12px;
+    font-weight: 700 !important; /* 🔥 CORRECCIÓN: Texto más grueso */
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* SUGERENCIAS FLOTANTES MEJORADAS */
+.floating-sugerencias {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin-top: 10px !important;
+    border-radius: 20px !important;
+    max-height: 60vh !important;
+    overflow-y: auto;
+    background: rgba(30, 41, 59, 0.98) !important; /* 🔥 CORRECCIÓN: Menos transparente */
+    border: 2px solid #3b82f6 !important; /* 🔥 CORRECCIÓN: Borde azul */
+    backdrop-filter: blur(25px);
+}
+
+/* ITEMS DE SUGERENCIA MEJORADOS */
+.sugerencia-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #334155;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent !important;
+}
+
+.sugerencia-item:hover {
+    background: rgba(59, 130, 246, 0.3) !important;
+    border-left: 4px solid #3b82f6;
+}
+
+.sugerencia-nombre {
+    font-weight: 700 !important; /* 🔥 CORRECCIÓN: Texto más grueso */
+    color: #ffffff !important; /* 🔥 CORRECCIÓN: Blanco puro */
+    margin-bottom: 4px;
+    font-size: 14px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.sugerencia-detalles {
+    color: #e2e8f0 !important; /* 🔥 CORRECCIÓN: Más claro */
+    font-size: 0.85em;
+    font-weight: 500 !important; /* 🔥 CORRECCIÓN: Texto más grueso */
+}
+
+/* RESULTADOS DE BÚSQUEDA MEJORADOS */
+.resultado-cliente {
+    border-bottom: 1px solid #334155 !important;
+    padding: 12px 0 !important;
+}
+
+.resultado-cliente:last-child {
+    border-bottom: none !important;
+}
+
+.resultado-cliente h6 {
+    color: #ffffff !important; /* 🔥 CORRECCIÓN: Blanco puro */
+    font-weight: 700 !important; /* 🔥 CORRECCIÓN: Texto más grueso */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* ========== 🔥 RESPONSIVE EXTREMO - CORREGIDO ========== */
+
+/* TABLETS */
+@media (max-width: 1024px) {
+    .floating-search-container {
+        width: 95%;
+        top: 15px;
+    }
+    
+    .btn-floating-location {
+        bottom: 110px; /* 🔥 CORRECCIÓN: Mantener posición */
+        right: 15px;
+    }
+    
+    .floating-status {
+        bottom: 25px;
+    }
+}
+
+/* MÓVILES GRANDES */
+@media (max-width: 768px) {
+    .trabajadores-fullscreen {
+        top: 56px;
+        height: calc(100vh - 56px);
+    }
+    
+    .fullscreen-map {
+        height: calc(100vh - 56px) !important;
+    }
+    
+    .floating-search-container {
+        width: 95%;
+        top: 10px;
+    }
+    
+    .btn-floating-location {
+        bottom: 100px; /* 🔥 CORRECCIÓN: Mantener posición en móviles */
+        right: 10px;
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+    
+    .floating-status {
+        bottom: 180px;
+        left: 15px;
+        font-size: 11px;
+    }
+}
+
+/* MÓVILES PEQUEÑOS */
+@media (max-width: 480px) {
+    .btn-floating-location {
+        bottom: 90px; /* 🔥 CORRECCIÓN: Mantener posición visible */
+        right: 8px;
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+    
+    .floating-status {
+        bottom: 160px;
+        left: 10px;
+        padding: 8px 12px;
+        font-size: 10px;
+    }
+}
+
+/* ORIENTACIÓN HORIZONTAL EN MÓVILES */
+@media (max-height: 500px) and (orientation: landscape) {
+    .btn-floating-location {
+        bottom: 80px; /* 🔥 CORRECCIÓN: Mantener posición en horizontal */
+        right: 8px;
+    }
+    
+    .floating-status {
+        bottom: 10px;
+    }
+}
+
+/* 🔥 CORRECCIÓN PARA HEADER FIJO */
+.navbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1030 !important; /* 🔥 CORRECCIÓN: Encima de todo */
+}
+
+/* 🔥 CORRECCIÓN PARA CONTENIDO PRINCIPAL */
+.container-main {
+    margin-top: 56px !important; /* 🔥 CORRECCIÓN: Respeta navbar fijo */
+}
+
+/* 🔥 ASEGURAR QUE LOS BOTONES SEAN TOCABLES */
+.btn-floating-location,
+.floating-search-box .btn {
+    min-height: 48px !important; /* 🔥 CORRECCIÓN: Más grande para dedos */
+    min-width: 48px !important;
+}
+
+/* 🔥 MEJORAR SCROLLBAR EN ELEMENTOS FLOTANTES */
+.floating-results-body::-webkit-scrollbar,
+.floating-sugerencias::-webkit-scrollbar {
+    width: 6px;
+}
+
+.floating-results-body::-webkit-scrollbar-thumb,
+.floating-sugerencias::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 3px;
+}
+
+/* ========== 🔥 SOLUCIÓN DEFINITIVA PARA MÓVIL ========== */
+
+/* RESET COMPLETO PARA MÓVIL */
+@media (max-width: 768px) {
+    /* 🔥 CORRECCIÓN RADICAL: HEADER FIJO CON ESPACIO RESERVADO */
+    .navbar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 56px !important;
+        z-index: 9999 !important; /* 🔥 MÁXIMA PRIORIDAD */
+    }
+    
+    /* 🔥 CORRECCIÓN: CONTENEDOR PRINCIPAL CON MARGEN SUPERIOR */
+    .trabajadores-fullscreen {
+        position: fixed;
+        top: 56px !important; /* 🔥 EXACTAMENTE debajo del header */
+        left: 0;
+        width: 100vw;
+        height: calc(100vh - 56px) !important; /* 🔥 CALCULO EXACTO */
+        margin: 0;
+        padding: 0;
+        z-index: 1;
+    }
+    
+    /* 🔥 CORRECCIÓN: MAPA CON ALTURA EXACTA */
+    .fullscreen-map {
+        width: 100vw !important;
+        height: calc(100vh - 56px) !important; /* 🔥 SIN SOBREPONER */
+        top: 0 !important;
+        left: 0 !important;
+        z-index: 1;
+    }
+    
+    /* 🔥 CORRECCIÓN: BUSCADOR BIEN POSICIONADO */
+    .floating-search-container {
+        position: absolute;
+        top: 15px !important; /* 🔥 JUSTO DEBAJO DEL HEADER */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 92% !important;
+        z-index: 9998; /* 🔥 ALTO PERO DEBAJO DEL HEADER */
+    }
+    
+    /* 🔥 CORRECCIÓN: ESTADO GPS EN POSICIÓN VISIBLE */
+    .floating-status {
+        position: absolute;
+        bottom: 100px !important; /* 🔥 MUCHO MÁS ARRIBA */
+        left: 15px !important;
+        z-index: 9998;
+        background: rgba(30, 41, 59, 0.98) !important;
+        border: 2px solid #10b981 !important;
+        border-radius: 15px;
+        padding: 10px 15px;
+        color: #ffffff !important;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+    }
+    
+    /* 🔥 CORRECCIÓN: BOTÓN UBICACIÓN POSICIÓN OPTIMA */
+    .btn-floating-location {
+        position: absolute;
+        bottom: 150px !important; /* 🔥 POR ENCIMA DEL ESTADO */
+        right: 15px !important;
+        z-index: 9998;
+        padding: 12px 18px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+    
+    /* 🔥 CORRECCIÓN: PANEL RESULTADOS POSICIÓN SEGURA */
+    .floating-results-card {
+        position: absolute;
+        top: 140px !important; /* 🔥 DEBAJO DEL BUSCADOR */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 92% !important;
+        z-index: 9999; /* 🔥 MÁXIMA PRIORIDAD */
+    }
+}
+
+/* MÓVILES PEQUEÑOS - AJUSTES EXTREMOS */
+@media (max-width: 480px) {
+    .trabajadores-fullscreen {
+        top: 56px !important;
+        height: calc(100vh - 56px) !important;
+    }
+    
+    .fullscreen-map {
+        height: calc(100vh - 56px) !important;
+    }
+    
+    .floating-search-container {
+        top: 10px !important;
+        width: 94% !important;
+    }
+    
+    .floating-search-box {
+        border-radius: 20px;
+        padding: 5px;
+    }
+    
+    .floating-search-box .form-control {
+        padding: 10px 14px;
+        font-size: 16px;
+        border-radius: 20px 0 0 20px !important;
+    }
+    
+    .floating-search-box .btn {
+        padding: 10px 14px;
+        font-size: 14px;
+        border-radius: 0 20px 20px 0 !important;
+    }
+    
+    .btn-floating-location {
+        bottom: 140px !important;
+        right: 10px !important;
+        padding: 10px 15px;
+        font-size: 12px;
+    }
+    
+    .floating-status {
+        bottom: 120px !important; /* 🔥 VISIBLE EN PANTALLAS PEQUEÑAS */
+        left: 10px !important;
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+    
+    .floating-results-card {
+        top: 120px !important;
+        width: 94% !important;
+    }
+}
+
+/* MÓVILES MUY PEQUEÑOS (iPhone SE) */
+@media (max-width: 375px) {
+    .floating-search-container {
+        top: 8px !important;
+        width: 96% !important;
+    }
+    
+    .btn-floating-location {
+        bottom: 130px !important;
+        right: 8px !important;
+        padding: 9px 14px;
+        font-size: 11px;
+    }
+    
+    .floating-status {
+        bottom: 140px !important;
+        left: 8px !important;
+        padding: 7px 11px;
+        font-size: 10px;
+    }
+    
+    .floating-results-card {
+        top: 110px !important;
+        width: 96% !important;
+    }
+}
+
+/* ORIENTACIÓN HORIZONTAL - CORRECCIÓN EXTREMA */
+@media (max-height: 500px) and (orientation: landscape) {
+    .trabajadores-fullscreen {
+        top: 56px !important;
+        height: calc(100vh - 56px) !important;
+    }
+    
+    .fullscreen-map {
+        height: calc(100vh - 56px) !important;
+    }
+    
+    .floating-search-container {
+        top: 5px !important;
+        width: 70% !important; /* 🔥 MÁS ANGOSTO EN HORIZONTAL */
+    }
+    
+    .btn-floating-location {
+        bottom: 120px !important;
+        right: 10px !important;
+        padding: 8px 12px;
+    }
+    
+    .floating-status {
+        bottom: 70px !important;
+        left: 10px !important;
+        padding: 6px 10px;
+        font-size: 10px;
+    }
+    
+    .floating-results-card {
+        top: 80px !important;
+        width: 80% !important;
+        max-height: 65vh;
+    }
+}
+
+/* 🔥 CORRECCIÓN GLOBAL PARA BODY */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+/* 🔥 GARANTIZAR QUE EL HEADER NUNCA SE TAPE */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 🔥 PREVENIR SCROLL NO DESEADO */
+.trabajadores-fullscreen {
+    overflow: hidden !important;
+}
+
+/* 🔥 ASEGURAR QUE LOS ELEMENTOS FLOTANTES SEAN TOCABLES */
+.floating-search-container,
+.btn-floating-location,
+.floating-status {
+    pointer-events: auto !important;
+}
+
+/* 🔥 CORRECCIÓN PARA EVITAR ZOOM EN MÓVILES AL TOCAR INPUT */
+.floating-search-box .form-control {
+    font-size: 16px !important; /* 🔥 EVITA ZOOM AUTOMÁTICO EN iOS */
+    transform: scale(1); /* 🔥 MANTIENE TAMAÑO CONSISTENTE */
+}
+
+/* 🔥 MEJORA ACCESIBILIDAD TÁCTIL */
+.btn-floating-location,
+.floating-search-box .btn {
+    min-height: 44px; /* 🔥 TAMAÑO MÍNIMO PARA DEDOS */
+    min-width: 44px;
+}
+
+/* 🔥 SCROLL SUAVE EN RESULTADOS */
+.floating-results-body {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* 🔥 SCROLL SUAVE iOS */
+}
+
+/* 🔥 ANIMACIONES SUTILES */
+.floating-search-box,
+.btn-floating-location,
+.floating-results-card {
+    transition: all 0.3s ease;
+}
+
+.floating-search-box:focus-within {
+    transform: scale(1.02);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+}
+
+/* ========== 🔥 HEADER COMPACTO - SOLUCIÓN DEFINITIVA ========== */
+
+/* HEADER SUPER COMPACTO PARA MÓVIL */
+@media (max-width: 768px) {
+    .navbar {
+        height: 48px !important; /* 🔥 REDUCIDO: 48px en lugar de 56px */
+        min-height: 48px !important;
+        padding: 0.25rem 0.5rem !important;
+    }
+    
+    .navbar-brand {
+        font-size: 14px !important; /* 🔥 MÁS PEQUEÑO */
+        font-weight: 600 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 60% !important;
+    }
+    
+    .navbar-text {
+        font-size: 12px !important; /* 🔥 MÁS PEQUEÑO */
+        white-space: nowrap !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .navbar .btn {
+        padding: 4px 8px !important;
+        font-size: 11px !important;
+        margin-left: 8px !important;
+    }
+    
+    /* 🔥 CORRECCIÓN: CONTENEDOR CON HEADER COMPACTO */
+    .trabajadores-fullscreen {
+        top: 48px !important; /* 🔥 8px MENOS que antes */
+        height: calc(100vh - 48px) !important;
+    }
+    
+    .fullscreen-map {
+        height: calc(100vh - 48px) !important;
+    }
+    
+    /* 🔥 CORRECCIÓN: ELEMENTOS FLOTANTES CON NUEVA ALTURA */
+    .floating-search-container {
+        top: 10px !important;
+    }
+    
+    .btn-floating-location {
+        bottom: 140px !important;
+    }
+    
+    .floating-status {
+        bottom: 90px !important;
+    }
+    
+    .floating-results-card {
+        top: 120px !important;
+    }
+}
+
+/* MÓVILES MUY PEQUEÑOS - HEADER ULTRA COMPACTO */
+@media (max-width: 480px) {
+    .navbar {
+        height: 44px !important; /* 🔥 AÚN MÁS COMPACTO */
+        min-height: 44px !important;
+        padding: 0.2rem 0.4rem !important;
+    }
+    
+    .navbar-brand {
+        font-size: 13px !important;
+        max-width: 55% !important;
+    }
+    
+    .navbar-text {
+        font-size: 11px !important;
+    }
+    
+    .navbar .btn {
+        padding: 3px 6px !important;
+        font-size: 10px !important;
+        margin-left: 6px !important;
+    }
+    
+    /* 🔥 CORRECCIÓN: CONTENEDOR CON HEADER ULTRA COMPACTO */
+    .trabajadores-fullscreen {
+        top: 44px !important; /* 🔥 12px MENOS que el original */
+        height: calc(100vh - 44px) !important;
+    }
+    
+    .fullscreen-map {
+        height: calc(100vh - 44px) !important;
+    }
+    
+    /* 🔥 REAJUSTE FINO DE ELEMENTOS FLOTANTES */
+    .floating-search-container {
+        top: 8px !important;
+    }
+    
+    .btn-floating-location {
+        bottom: 130px !important;
+    }
+    
+    .floating-status {
+        bottom: 120px !important;
+    }
+    
+    .floating-results-card {
+        top: 110px !important;
+    }
+}
+
+/* HEADER COMPACTO PARA ESCRITORIO TAMBIÉN */
+@media (min-width: 769px) {
+    .navbar {
+        height: 52px !important; /* 🔥 COMPACTO EN TODOS LADOS */
+        min-height: 52px !important;
+        padding: 0.4rem 1rem !important;
+    }
+    
+    .navbar-brand {
+        font-size: 16px !important;
+        font-weight: 600 !important;
+    }
+    
+    .navbar-text {
+        font-size: 14px !important;
+    }
+    
+    .navbar .btn {
+        padding: 5px 10px !important;
+        font-size: 13px !important;
+    }
+    
+    /* 🔥 CORRECCIÓN: CONTENEDOR CON HEADER COMPACTO EN ESCRITORIO */
+    .trabajadores-fullscreen {
+        top: 52px !important;
+        height: calc(100vh - 52px) !important;
+    }
+    
+    .fullscreen-map {
+        height: calc(100vh - 52px) !important;
+    }
+}
+
+/* 🔥 GARANTIZAR QUE TODO QUEPA EN UNA LÍNEA */
+.navbar .container-fluid {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+}
+
+.navbar-brand {
+    flex-shrink: 1 !important;
+    min-width: 0 !important;
+}
+
+.navbar-text {
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* 🔥 ELIMINAR CUALQUIER SUPERPOSICIÓN RESIDUAL */
+.navbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+    border-bottom: 2px solid #3b82f6 !important;
+}
+
+/* 🔥 ASEGURAR QUE EL BOTÓN "CERRAR SESIÓN" SIEMPRE SEA VISIBLE */
+.navbar .btn-outline-light {
+    border: 1px solid #e2e8f0 !important;
+    color: #e2e8f0 !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+}
+
+.navbar .btn-outline-light:hover {
+    background: #e2e8f0 !important;
+    color: #1e293b !important;
+}
+
