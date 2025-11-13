@@ -1,0 +1,502 @@
+{% extends "base.html" %}
+
+{% block title %}Panel Administrador - Sistema de Clientes{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Main content -->
+       <div class="col-12 main-content mx-auto" style="max-width: 1400px;">
+            <!-- Header Principal con Hamburguesa -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div class="d-flex align-items-center">
+                    <!-- Botón Hamburguesa -->
+                    <button class="btn btn-outline-primary btn-sm me-3" type="button" id="adminMenuBtn" data-bs-toggle="offcanvas" data-bs-target="#adminOffcanvas" 
+                            style="border-radius: 8px; padding: 8px 12px;">
+                        ☰ <span class="d-none d-sm-inline">Menú</span>
+                    </button>
+                    <h1 class="h4 h-md-2 mb-0">🌎 Admin - Mundo Escolar</h1>
+                </div>
+                
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <!-- Estado GPS -->
+                    <div class="me-3 d-none d-md-block">
+                        <small id="estado-ubicacion-admin" class="text-muted">
+                            📍 GPS: No activado
+                        </small>
+                    </div>
+                    
+                    <!-- Buscador -->
+                    <div class="me-2 position-relative" id="buscador-container-admin">
+                        <input type="text" 
+                            class="form-control" 
+                            id="buscador-clientes" 
+                            placeholder="🔍 Buscar cliente..."
+                            style="width: 200px;"
+                            autocomplete="off">
+                            
+                        <!-- Panel de sugerencias -->
+                        <div class="dropdown-menu position-absolute" id="sugerencias-container-admin" 
+                            style="display: none; max-height: 300px; overflow-y: auto; width: 100%; z-index: 1050; top: 100%; left: 0;">
+                            <div id="lista-sugerencias-admin">
+                                <!-- Las sugerencias se cargarán aquí -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Botón GPS -->
+                    <button class="btn btn-warning btn-sm me-2" type="button" id="btn-actualizar-ubicacion-admin"
+                            title="Activar GPS en panel admin">
+                        🚀 GPS
+                    </button>
+                    
+                    <!-- Contador -->
+                    <div class="btn-group">
+                        <span class="btn btn-sm btn-outline-secondary" id="contador-clientes">
+                            Cargando...
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estado GPS para móvil -->
+            <div class="d-md-none mb-3">
+                <small id="estado-ubicacion-admin-mobile" class="text-muted">
+                    📍 GPS: No activado
+                </small>
+            </div>
+
+            <!-- Mapa -->
+            <div class="card mx-auto" style="max-width: 1400px;">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">🗺️ Mapa de Clientes</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div id="map-admin" style="height: 600px; width: 100%; border-radius: 0 0 8px 8px;"></div>
+                </div>
+            </div>
+
+            <!-- Lista de Clientes -->
+            <div class="card mt-4 mx-auto" style="max-width: 1400px;"></div>
+                <div class="card-header">
+                    <h5 class="card-title mb-0">📋 Lista de Clientes</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="tabla-clientes">
+                            <thead>
+                                <tr>
+                                    <th class="d-none d-md-table-cell">Nombre</th>
+                                    <th class="d-none d-lg-table-cell">Dirección</th>
+                                    <th class="d-none d-sm-table-cell">Teléfono</th>
+                                    <th class="d-none d-sm-table-cell">Categoría</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cuerpo-tabla-clientes">
+                                <!-- Los clientes se cargarán aquí con JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 🔥 NUEVO: Menú Hamburguesa Profesional -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="adminOffcanvas" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+    <div class="offcanvas-header border-bottom" style="background: white;">
+        <h5 class="offcanvas-title fw-bold">📊 Panel de Control</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active py-3 border-bottom" href="#" id="btn-ver-clientes" data-bs-dismiss="offcanvas" 
+                   style="transition: all 0.3s ease; border-left: 4px solid #0d6efd;">
+                    👥 <strong>Ver Todos los Clientes</strong>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link py-3 border-bottom" href="#" data-bs-toggle="modal" data-bs-target="#agregarClienteModal" data-bs-dismiss="offcanvas"
+                   style="transition: all 0.3s ease;">
+                    ➕ <strong>Agregar Nuevo Cliente</strong>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link py-3 border-bottom" href="#" data-bs-toggle="modal" data-bs-target="#gestionUsuariosModal" data-bs-dismiss="offcanvas"
+                   style="transition: all 0.3s ease;">
+                    👥 <strong>Gestión de Usuarios</strong>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Modal para Agregar Cliente (mantener igual) -->
+<div class="modal fade" id="agregarClienteModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">➕ Agregar Nuevo Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-agregar-cliente">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre del Cliente *</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="telefono" name="telefono">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Dirección *</label>
+                        <input type="text" class="form-control" id="direccion" name="direccion" required>
+                        <small class="form-text text-muted">Puedes pegar un link de Google Maps o escribir la dirección</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="latitud" class="form-label">Latitud *</label>
+                                <input type="number" step="any" class="form-control" id="latitud" name="latitud" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="longitud" class="form-label">Longitud *</label>
+                                <input type="number" step="any" class="form-control" id="longitud" name="longitud" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="categoria" class="form-label">Categoría</label>
+                        <select class="form-select" id="categoria" name="categoria">
+                            <option value="Librería">📚 Librería</option>
+                            <option value="Papelería">📄 Papelería</option>
+                            <option value="Tienda Escolar">🎒 Tienda Escolar</option>
+                            <option value="Colegio">🏫 Colegio</option>
+                            <option value="Universidad">🎓 Universidad</option>
+                            <option value="Oficina">🏢 Oficina</option>
+                            <option value="Distribuidor">🚚 Distribuidor</option>
+                            <option value="Bodega">🏭 Bodega</option>
+                            <option value="Casa">🏠 Casa</option>
+                            <option value="Otro">📦 Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <small>💡 <strong>Consejo:</strong> Para obtener coordenadas, ve a <a href="https://maps.google.com" target="_blank">Google Maps</a>, haz clic derecho en cualquier ubicación y selecciona "¿Qué hay aquí?"</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-guardar-cliente">Guardar Cliente</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 🔥 NUEVO MODAL PARA EDITAR CLIENTE -->
+<div class="modal fade" id="editarClienteModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">✏️ Editar Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-editar-cliente">
+                    <input type="hidden" id="editar-cliente-id" name="id">
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editar-nombre" class="form-label">Nombre del Cliente *</label>
+                                <input type="text" class="form-control" id="editar-nombre" name="nombre" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editar-telefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="editar-telefono" name="telefono">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="editar-direccion" class="form-label">Dirección *</label>
+                        <input type="text" class="form-control" id="editar-direccion" name="direccion" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editar-latitud" class="form-label">Latitud *</label>
+                                <input type="number" step="any" class="form-control" id="editar-latitud" name="latitud" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editar-longitud" class="form-label">Longitud *</label>
+                                <input type="number" step="any" class="form-control" id="editar-longitud" name="longitud" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editar-categoria" class="form-label">Categoría</label>
+                        <select class="form-select" id="editar-categoria" name="categoria">
+                            <option value="Librería">📚 Librería</option>
+                            <option value="Papelería">📄 Papelería</option>
+                            <option value="Tienda Escolar">🎒 Tienda Escolar</option>
+                            <option value="Colegio">🏫 Colegio</option>
+                            <option value="Universidad">🎓 Universidad</option>
+                            <option value="Oficina">🏢 Oficina</option>
+                            <option value="Distribuidor">🚚 Distribuidor</option>
+                            <option value="Bodega">🏭 Bodega</option>
+                            <option value="Casa">🏠 Casa</option>
+                            <option value="Otro">📦 Otro</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-actualizar-cliente">💾 Actualizar Cliente</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 🔥 MEJORADO: Modal para Gestión de Usuarios COMPLETA -->
+<div class="modal fade" id="gestionUsuariosModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">👥 Gestión de Usuarios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Alertas -->
+                <div id="alert-usuarios" class="alert" style="display: none;"></div>
+
+                <div class="row">
+                    <!-- Formulario para crear usuario -->
+                    <div class="col-md-5">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">➕ Crear Nuevo Usuario</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="form-crear-usuario">
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Usuario *</label>
+                                        <input type="text" class="form-control" id="username" name="username" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Contraseña *</label>
+                                        <input type="password" class="form-control" id="password" name="password" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="role" class="form-label">Tipo de Usuario *</label>
+                                        <select class="form-select" id="role" name="role" required>
+                                            <option value="trabajador">🚗 Trabajador</option>
+                                            <option value="admin">👑 Administrador</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-success w-100" id="btn-crear-usuario">
+                                        Crear Usuario
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lista de usuarios existentes -->
+                    <div class="col-md-7">
+                        <div class="card">
+                            <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">📋 Usuarios del Sistema</h5>
+                                <span class="badge bg-light text-dark" id="contador-usuarios">0 usuarios</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Usuario</th>
+                                                <th>Tipo</th>
+                                                <th>Estado</th>
+                                                <th>Último Acceso</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabla-usuarios-body">
+                                            <!-- Los usuarios se cargarán con JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Editar Usuario -->
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">✏️ Editar Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-editar-usuario">
+                    <input type="hidden" id="editar-usuario-id">
+                    
+                    <div class="mb-3">
+                        <label for="editar-username" class="form-label">Usuario *</label>
+                        <input type="text" class="form-control" id="editar-username" name="username" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="editar-role" class="form-label">Tipo de Usuario *</label>
+                        <select class="form-select" id="editar-role" name="role" required>
+                            <option value="trabajador">🚗 Trabajador</option>
+                            <option value="admin">👑 Administrador</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="editar-password" class="form-label">Nueva Contraseña (dejar vacío para no cambiar)</label>
+                        <input type="password" class="form-control" id="editar-password" name="password">
+                        <div class="form-text">Si no quieres cambiar la contraseña, deja este campo vacío</div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="editar-activo" name="activo">
+                        <label class="form-check-label" for="editar-activo">Usuario activo</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-guardar-usuario">💾 Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación para eliminar usuario -->
+<div class="modal fade" id="modalConfirmarEliminar" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">⚠️ Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que quieres eliminar al usuario <strong id="usuario-eliminar-nombre"></strong>?</p>
+                <p class="text-danger"><small>Esta acción no se puede deshacer.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="btn-confirmar-eliminar">🗑️ Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Reiniciar Contraseña -->
+<div class="modal fade" id="modalResetPassword" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">🔑 Reiniciar Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Reiniciar contraseña para: <strong id="usuario-reset-nombre"></strong></p>
+                <div class="mb-3">
+                    <label for="nueva-password" class="form-label">Nueva Contraseña</label>
+                    <input type="password" class="form-control" id="nueva-password" value="123456">
+                    <div class="form-text">Contraseña por defecto: 123456</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-warning" id="btn-confirmar-reset">🔑 Reiniciar Contraseña</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación para eliminar usuario -->
+<div class="modal fade" id="modalConfirmarEliminar" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Eliminar usuario <strong id="usuario-eliminar-nombre"></strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="btn-confirmar-eliminar">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}
+
+{% block styles %}
+<style>
+    /* 🔥 SEGURIDAD RESPONSIVE EXTRA */
+    @media (max-width: 576px) {
+        .main-content {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        #buscador-clientes {
+            width: 150px !important;
+        }
+    }
+    
+    @media (min-width: 1400px) {
+        .main-content {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug GPS</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map { height: 80vh; width: 100%; }
+        .info { padding: 10px; background: #f8f9fa; }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h3>🐛 Debug GPS Móvil</h3>
+        <div id="status">Cargando...</div>
+        <button onclick="iniciarGPS()">📍 Iniciar GPS</button>
+        <button onclick="crearMarcador()">🎯 Crear Marcador</button>
+    </div>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        let map = L.map('map').setView([-12.0464, -77.0428], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        
+        let marcador = null;
+
+        function actualizarEstado(mensaje) {
+            document.getElementById('status').innerHTML = mensaje;
+            console.log(mensaje);
+        }
+
+        function crearMarcador() {
+            if (!marcador) {
+                marcador = L.marker([-12.0464, -77.0428], {
+                    icon: L.divIcon({
+                        html: '<div style="background: blue; width: 50px; height: 50px; border-radius: 50%;">🌎</div>',
+                        className: 'icono-usuario',
+                        iconSize: [50, 50],
+                        iconAnchor: [25, 25]
+                    })
+                }).addTo(map);
+                actualizarEstado('✅ Marcador creado en Lima');
+            } else {
+                actualizarEstado('⚠️ Marcador ya existe');
+            }
+        }
+
+        function iniciarGPS() {
+            actualizarEstado('📍 Solicitando GPS...');
+            
+            if (!navigator.geolocation) {
+                actualizarEstado('❌ GPS no soportado');
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    actualizarEstado(`✅ GPS: ${lat}, ${lng}`);
+                    
+                    // Mover marcador a ubicación real
+                    if (marcador) {
+                        marcador.setLatLng([lat, lng]);
+                    } else {
+                        crearMarcador();
+                        marcador.setLatLng([lat, lng]);
+                    }
+                    
+                    map.setView([lat, lng], 15);
+                },
+                function(error) {
+                    actualizarEstado(`❌ Error GPS: ${error.message}`);
+                }
+            );
+        }
+
+        // Crear marcador automáticamente al cargar
+        setTimeout(crearMarcador, 1000);
+    </script>
+</body>
+</html>

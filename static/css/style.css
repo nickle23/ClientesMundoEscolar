@@ -1,0 +1,1078 @@
+/* Estilos generales - SISTEMA RESPONSIVE */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --sidebar-width: 250px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+
+/* ========== TEMA OSCURO COMPLETO - SISTEMA 100% OSCURO ========== */
+[data-theme="dark"] {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #e2e8f0;
+    min-height: 100vh;
+}
+
+/* Navbar oscuro */
+.navbar {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+    border-bottom: 1px solid #334155;
+}
+
+.navbar-brand, .navbar-text {
+    color: #e2e8f0 !important;
+}
+
+/* Sidebar oscuro */
+.sidebar {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-right: 1px solid #334155;
+}
+
+.sidebar .nav-link {
+    color: #cbd5e1;
+    border-left: 3px solid transparent;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-left-color: #3b82f6;
+}
+
+.sidebar .nav-link.active {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: #ffffff;
+}
+
+/* Tarjetas oscuras */
+.card {
+    background: rgba(30, 41, 59, 0.8) !important;
+    border: 1px solid #334155 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    color: #e2e8f0 !important;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #334155 0%, #475569 100%) !important;
+    border-bottom: 1px solid #475569 !important;
+    color: #ffffff !important;
+}
+
+/* Tablas oscuras */
+.table {
+    background: rgba(30, 41, 59, 0.8) !important;
+    color: #e2e8f0 !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+}
+
+.table th {
+    background: linear-gradient(135deg, #475569 0%, #64748b 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.table td {
+    border-color: #334155 !important;
+    color: #e2e8f0 !important;
+    background: transparent !important;
+}
+
+/* Botones oscuros */
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+    border: none !important;
+    color: white !important;
+}
+
+.btn-secondary {
+    background: #475569 !important;
+    border: 1px solid #64748b !important;
+    color: #e2e8f0 !important;
+}
+
+.btn-outline-primary {
+    border: 2px solid #3b82f6 !important;
+    color: #3b82f6 !important;
+    background: transparent !important;
+}
+
+.btn-outline-primary:hover {
+    background: #3b82f6 !important;
+    color: white !important;
+}
+
+/* Formularios oscuros */
+.form-control, .form-select {
+    background: #1e293b !important;
+    border: 1px solid #475569 !important;
+    color: #e2e8f0 !important;
+}
+
+.form-control:focus, .form-select:focus {
+    background: #1e293b !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+    color: #e2e8f0 !important;
+}
+
+.form-control::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Modales oscuros */
+.modal-content {
+    background: #1e293b !important;
+    border: 1px solid #475569 !important;
+    color: #e2e8f0 !important;
+}
+
+.modal-header {
+    border-bottom: 1px solid #475569 !important;
+}
+
+.modal-footer {
+    border-top: 1px solid #475569 !important;
+}
+
+/* Mapas oscuros */
+#map-admin, #map-trabajadores {
+    border: 1px solid #475569 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Badges oscuros */
+.badge {
+    font-weight: 600;
+}
+
+.bg-primary { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important; }
+.bg-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; }
+.bg-warning { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important; }
+.bg-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important; }
+.bg-secondary { background: #475569 !important; }
+
+/* ========== LOGIN OSCURO ELEGANTE ========== */
+.login-container {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    min-height: 100vh !important;
+    padding: 40px 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    width: 100% !important;
+}
+
+.login-container .card {
+    background: rgba(30, 41, 59, 0.95) !important;
+    backdrop-filter: blur(30px) !important;
+    border: 1px solid #475569 !important;
+    border-radius: 24px !important;
+    box-shadow: 
+        0 35px 70px rgba(0, 0, 0, 0.6),
+        0 15px 35px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    margin: 0 auto !important;
+    transform: translateY(-20px) scale(1.02) !important;
+    position: relative !important;
+    z-index: 100 !important;
+    overflow: hidden !important;
+}
+
+/* Efecto de borde luminoso sutil */
+.login-container .card::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: linear-gradient(135deg, 
+        rgba(59, 130, 246, 0.3) 0%, 
+        rgba(255, 255, 255, 0.1) 50%, 
+        rgba(59, 130, 246, 0.3) 100%);
+    border-radius: 25px;
+    z-index: -1;
+    animation: borderGlow 4s ease-in-out infinite;
+}
+
+@keyframes borderGlow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+}
+
+.login-container .card-body {
+    padding: 3rem 2.5rem !important;
+    color: #e2e8f0 !important;
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+.login-container .card-body {
+    padding: 2.5rem !important;
+    color: #e2e8f0 !important;
+}
+
+.login-container h4 {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    margin-bottom: 2rem !important;
+}
+
+.login-container .form-label {
+    color: #e2e8f0 !important;
+    font-weight: 600 !important;
+}
+
+.login-container .form-control {
+    background: #1e293b !important;
+    border: 1px solid #475569 !important;
+    border-radius: 10px !important;
+    color: #e2e8f0 !important;
+    padding: 12px 16px !important;
+}
+
+.login-container .form-control:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+}
+
+.login-container .btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    color: white !important;
+    padding: 12px !important;
+    font-weight: 600 !important;
+    width: 100% !important;
+    margin-top: 1rem !important;
+}
+
+.login-container .bg-light {
+    background: #334155 !important;
+    color: #e2e8f0 !important;
+    border-radius: 10px !important;
+    border: 1px solid #475569 !important;
+    padding: 1rem !important;
+    margin-top: 1.5rem !important;
+    text-align: center !important;
+}
+
+.login-container code {
+    color: #fbbf24 !important;
+    background: #475569 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+}
+
+/* Scrollbar oscuro */
+::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+    }
+    
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .login-container {
+        padding: 15px !important;
+    }
+    
+    .login-container .card-body {
+        padding: 2rem !important;
+    }
+}
+/* 🔥 SOLUCIÓN DEFINITIVA PARA EL LOGIN - FIX LAYOUT */
+.login-container .row.justify-content-center.align-items-center.min-vh-100 {
+    width: 100% !important;
+    max-width: 400px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: auto !important;
+}
+
+.login-container .col-11.col-sm-8.col-md-6.col-lg-4 {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+}
+
+/* Forzar el centrado perfecto */
+.login-container {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    min-height: 100vh !important;
+    padding: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    width: 100% !important;
+}
+
+/* Asegurar que la tarjeta tenga tamaño fijo */
+.login-container .card {
+    width: 100% !important;
+    max-width: 400px !important;
+    min-height: auto !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    display: block !important;
+}
+
+/* Reset de todos los estilos conflictivos */
+.login-container .container-fluid {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
+/* Responsive mejorado */
+@media (max-width: 576px) {
+    .login-container {
+        padding: 15px !important;
+    }
+    
+    .login-container .card {
+        max-width: 95% !important;
+    }
+    
+    .login-container .card-body {
+        padding: 2rem !important;
+    }
+}
+
+/* 🔥 ASEGURAR QUE EL NAVBAR SEA VISIBLE EN LOGIN */
+.login-container .navbar {
+    display: flex !important;
+    position: relative !important;
+    z-index: 10000 !important;
+}
+
+/* 🔥 CORREGIR MENÚ LATERAL - TEMA OSCURO COMPLETO */
+
+/* Menú lateral oscuro */
+.offcanvas {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    color: #e2e8f0 !important;
+}
+
+.offcanvas-header {
+    background: #1e293b !important;
+    border-bottom: 1px solid #334155 !important;
+    color: #ffffff !important;
+}
+
+.offcanvas-title {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+.offcanvas-body {
+    background: transparent !important;
+}
+
+/* Enlaces del menú lateral */
+.offcanvas .nav-link {
+    color: #cbd5e1 !important;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.offcanvas .nav-link:hover {
+    background: rgba(59, 130, 246, 0.2) !important;
+    color: #ffffff !important;
+    border-left-color: #3b82f6;
+}
+
+.offcanvas .nav-link.active {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+    color: #ffffff !important;
+    border-left-color: #ffffff;
+}
+
+/* Botón cerrar visible */
+.offcanvas .btn-close {
+    filter: invert(1) !important;
+    opacity: 0.8 !important;
+}
+
+.offcanvas .btn-close:hover {
+    filter: invert(1) brightness(1.5) !important;
+    opacity: 1 !important;
+}
+
+/* 🔥 ASEGURAR CONTRASTE EN TODO EL SISTEMA */
+
+/* Texto siempre visible */
+[data-theme="dark"] {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .card {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .card-body {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .modal-content {
+    color: #e2e8f0 !important;
+}
+
+/* Headers siempre visibles */
+[data-theme="dark"] .card-header {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .modal-header {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] h1,
+[data-theme="dark"] h2, 
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+    color: #ffffff !important;
+}
+
+/* Texto en botones */
+[data-theme="dark"] .btn {
+    color: inherit !important;
+}
+
+/* Labels de formularios */
+[data-theme="dark"] .form-label {
+    color: #e2e8f0 !important;
+    font-weight: 500 !important;
+}
+
+/* Texto en alerts */
+[data-theme="dark"] .alert {
+    color: #000000 !important;
+    font-weight: 500 !important;
+}
+
+/* Texto en badges */
+[data-theme="dark"] .badge {
+    color: #ffffff !important;
+}
+
+/* 🔥 RESET COMPLETO - CONTRASTE PERFECTO EN TODO EL SISTEMA */
+
+/* Forzar tema oscuro en TODOS los elementos */
+[data-theme="dark"],
+[data-theme="dark"] * {
+    background-color: transparent !important;
+    color: #e2e8f0 !important;
+}
+
+/* Excepciones específicas para fondos oscuros */
+[data-theme="dark"] .card,
+[data-theme="dark"] .modal-content,
+[data-theme="dark"] .offcanvas,
+[data-theme="dark"] .table,
+[data-theme="dark"] .dropdown-menu {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+/* Headers con fondo oscuro y texto blanco */
+[data-theme="dark"] .card-header,
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .table th,
+[data-theme="dark"] .navbar {
+    background: linear-gradient(135deg, #334155 0%, #475569 100%) !important;
+    color: #ffffff !important;
+}
+
+/* Botones con buen contraste */
+[data-theme="dark"] .btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .btn-secondary {
+    background: #475569 !important;
+    color: #ffffff !important;
+}
+
+/* Formularios visibles */
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background: #1e293b !important;
+    border: 1px solid #475569 !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Texto SIEMPRE visible */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3, 
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .form-label {
+    color: #e2e8f0 !important;
+    font-weight: 600 !important;
+}
+
+/* Alertas visibles */
+[data-theme="dark"] .alert {
+    color: #000000 !important;
+    font-weight: 500 !important;
+}
+
+.alert-danger { background: #f8d7da !important; color: #721c24 !important; }
+.alert-success { background: #d1edff !important; color: #004085 !important; }
+.alert-warning { background: #fff3cd !important; color: #856404 !important; }
+
+/* Badges visibles */
+[data-theme="dark"] .badge {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* Login que destaca */
+[data-theme="dark"] .login-container .card {
+    background: rgba(30, 41, 59, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid #475569 !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5) !important;
+    transform: translateY(-10px) !important;
+}
+
+/* Scrollbar oscuro */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: #1e293b !important;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: #475569 !important;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: #64748b !important;
+}
+
+/* ========== CENTRADO PROFESIONAL - SISTEMA COMPLETO ========== */
+
+/* Contenedor principal centrado */
+.container-main {
+    width: 100%;
+    max-width: 1400px; /* 🔥 Límite máximo para pantallas grandes */
+    margin: 0 auto; /* 🔥 Centrado automático */
+    padding: 0 15px; /* 🔥 Espaciado lateral */
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 76px); /* 🔥 Altura menos navbar */
+}
+
+/* Header del panel de trabajadores - CENTRADO */
+.panel-header {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+    color: white;
+    padding: 1rem 0;
+    margin-bottom: 0;
+}
+
+.panel-header .container-fluid {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Mapa completamente centrado */
+.map-container-centered {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+#map-trabajadores {
+    border-radius: 12px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid #475569 !important;
+    margin: 0 auto; /* 🔥 Centrado horizontal */
+}
+
+/* Panel de resultados centrado */
+#panel-resultados {
+    max-width: 800px;
+    margin: 20px auto !important; /* 🔥 Centrado con margen */
+    width: 95%;
+}
+
+/* Buscador centrado */
+#buscador-container-trabajadores {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Estado de ubicación mejorado */
+#estado-ubicacion {
+    font-weight: 600;
+    text-align: center;
+    display: block !important;
+    margin-top: 5px;
+}
+
+/* Botones centrados */
+.btn-group-centered {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+/* Responsive para el centrado */
+@media (max-width: 768px) {
+    .container-main {
+        padding: 0 10px;
+    }
+    
+    .map-container-centered {
+        padding: 0 10px;
+    }
+    
+    #map-trabajadores {
+        border-radius: 8px !important;
+    }
+    
+    .panel-header .container-fluid {
+        padding: 0 15px;
+    }
+}
+
+/* ========== SISTEMA DE SUGERENCIAS MEJORADO ========== */
+
+/* Contenedor de sugerencias */
+.sugerencias-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #334155 !important;  /* 🔥 CAMBIADO: MÁS CLARO */
+    border: 2px solid #3b82f6 !important;  /* 🔥 CAMBIADO: BORDE AZUL */
+    border-radius: 8px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6) !important; /* 🔥 MÁS SOMBRA */
+    z-index: 9999;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    margin-top: 5px;
+}
+
+/* Items de sugerencia */
+.sugerencia-item {
+    padding: 12px 15px;  /* 🔥 MÁS ESPACIADO */
+    border-bottom: 1px solid #475569;
+    cursor: pointer;
+    transition: background 0.2s;
+    background: #334155 !important;  /* 🔥 AGREGADO: FONDO FIJO */
+}
+
+.sugerencia-item:hover {
+    background: #3b82f6 !important;  /* 🔥 CAMBIADO: AZUL AL HACER HOVER */
+}
+
+.sugerencia-item:last-child {
+    border-bottom: none;
+}
+
+.sugerencia-nombre {
+    font-weight: 600;
+    color: #ffffff !important;  /* 🔥 CAMBIADO: BLANCO PURO */
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.sugerencia-detalles {
+    color: #e2e8f0 !important;  /* 🔥 CAMBIADO: MÁS CLARO */
+    font-size: 0.85em;
+}
+
+.sugerencia-item.active {
+    background: #1d4ed8 !important;  /* 🔥 CAMBIADO: AZUL OSCURO */
+    border-left: 4px solid #60a5fa;
+}
+
+/* Estado cuando no hay resultados */
+.sugerencias-dropdown .text-muted {
+    padding: 20px;
+    text-align: center;
+    color: #94a3b8 !important;
+    background: #334155 !important;
+    font-weight: 500;
+}
+
+/* Items de sugerencia */
+.sugerencia-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #334155;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.sugerencia-item:hover {
+    background: rgba(59, 130, 246, 0.2);
+}
+
+.sugerencia-item:last-child {
+    border-bottom: none;
+}
+
+.sugerencia-nombre {
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 3px;
+}
+
+.sugerencia-detalles {
+    color: #94a3b8;
+    font-size: 0.85em;
+}
+
+.sugerencia-item.active {
+    background: rgba(59, 130, 246, 0.3);
+    border-left: 3px solid #3b82f6;
+}
+
+/* Estado cuando no hay resultados */
+.sugerencias-dropdown .text-muted {
+    padding: 15px;
+    text-align: center;
+    color: #94a3b8 !important;
+}
+
+/* ========== MODAL CENTRADO PERFECTO ========== */
+
+/* Modal siempre centrado */
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+}
+
+/* Contenido del modal con mejor espaciado */
+.cliente-info p {
+    margin-bottom: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #334155;
+}
+
+.cliente-info p:last-child {
+    border-bottom: none;
+}
+
+/* Botón de Google Maps más prominente */
+#btn-abrir-maps {
+    font-weight: 600;
+    padding: 10px;
+}
+
+/* Asegurar que el modal sea responsive */
+@media (max-width: 576px) {
+    .modal-dialog {
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem);
+    }
+    
+    .modal-content {
+        border-radius: 12px;
+    }
+}
+
+/* 🔥 RESPONSIVE COMPLETO - TODOS LOS DISPOSITIVOS */
+@media (max-width: 768px) {
+    [data-theme="dark"] .card-body {
+        padding: 1rem !important;
+    }
+    
+    [data-theme="dark"] .table {
+        font-size: 12px !important;
+    }
+    
+    [data-theme="dark"] .btn {
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    [data-theme="dark"] .container-fluid {
+        padding: 0 10px !important;
+    }
+    
+    [data-theme="dark"] .card {
+        margin-bottom: 15px !important;
+    }
+    
+    [data-theme="dark"] .modal-body {
+        padding: 1rem !important;
+    }
+}
+
+/* 🔥 SOLUCIÓN POPUPS MAPA - MÁXIMA VISIBILIDAD */
+
+/* Popups del mapa completamente visibles */
+.leaflet-popup-content-wrapper {
+    background: #1e293b !important;
+    border: 2px solid #475569 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    color: #e2e8f0 !important;
+    backdrop-filter: none !important;
+}
+
+.leaflet-popup-content {
+    background: transparent !important;
+    color: #e2e8f0 !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-size: 14px !important;
+    margin: 15px !important;
+    padding: 0 !important;
+}
+
+.leaflet-popup-tip {
+    background: #1e293b !important;
+    border: 2px solid #475569 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Texto dentro de los popups bien visible */
+.leaflet-popup-content strong {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+.leaflet-popup-content p {
+    color: #e2e8f0 !important;
+    margin-bottom: 8px !important;
+    line-height: 1.4 !important;
+}
+
+.leaflet-popup-content .btn {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    margin-top: 10px !important;
+}
+
+/* Asegurar que los controles del mapa sean visibles */
+.leaflet-control-zoom a {
+    background: #1e293b !important;
+    border: 1px solid #475569 !important;
+    color: #e2e8f0 !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background: #334155 !important;
+    color: #ffffff !important;
+}
+
+/* Marcadores del mapa visibles */
+.leaflet-marker-icon {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)) !important;
+}
+
+/* ========== MODALES COMPLETAMENTE RESPONSIVE ========== */
+
+/* Modal adaptable a todos los dispositivos */
+.modal-dialog {
+    max-width: 95%;
+    margin: 1rem auto;
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 500px;
+    }
+}
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        max-width: 600px;
+    }
+}
+
+@media (min-width: 992px) {
+    .modal-dialog {
+        max-width: 700px;
+    }
+}
+
+/* Contenido del modal mejorado */
+.modal-content {
+    border-radius: 16px;
+    border: 1px solid #475569;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    border-bottom: 1px solid #475569;
+    padding: 1.25rem 1.5rem;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+}
+
+/* Información del cliente responsive */
+.cliente-info {
+    width: 100%;
+}
+
+.modal-cliente-nombre {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #ffffff;
+    word-break: break-word;
+}
+
+.cliente-detalles {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #334155;
+}
+
+.detalle-item {
+    border-bottom: 1px solid #334155;
+    padding-bottom: 0.75rem;
+}
+
+.detalle-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.detalle-item small {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.detalle-item .fw-medium {
+    font-size: 0.95rem;
+    color: #e2e8f0;
+    line-height: 1.4;
+}
+
+/* Botones responsive */
+#btn-abrir-maps {
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+#btn-abrir-maps:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* Responsive para móviles pequeños */
+@media (max-width: 480px) {
+    .modal-dialog {
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem);
+    }
+    
+    .modal-header {
+        padding: 1rem 1.25rem;
+    }
+    
+    .modal-body {
+        padding: 1.25rem;
+    }
+    
+    .modal-cliente-nombre {
+        font-size: 1.1rem;
+    }
+    
+    .cliente-detalles {
+        padding: 1rem;
+    }
+    
+    #btn-abrir-maps {
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* Asegurar que el texto largo se ajuste */
+.text-break {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Scroll suave para contenido largo */
+.modal-dialog-scrollable .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}

@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Panel Trabajadores - Sistema de Clientes{% endblock %}
+
+{% block content %}
+<div class="container-main">
+    <!-- Header centrado y profesional -->
+    <div class="panel-header">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <!-- Columna izquierda: Título y estado -->
+                <div class="col-12 col-md-6 text-center text-md-start mb-2 mb-md-0">
+                    <h5 class="mb-1">🌎 Panel de Trabajadores</h5>
+                    <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-2">
+                        <small id="estado-ubicacion" class="text-light">📍 Iniciando GPS...</small>
+                        <!-- Botón volver a ubicación (inicialmente oculto) -->
+                        <button class="btn btn-sm btn-success d-none" id="btn-volver-ubicacion">
+                            📍 Mi Ubicación
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Columna derecha: Buscador y controles -->
+                <div class="col-12 col-md-6">
+                    <div class="d-flex flex-column flex-md-row gap-2 align-items-center">
+                        <!-- BUSCADOR MEJORADO -->
+                        <div class="flex-grow-1 position-relative" style="max-width: 400px;">
+                            <div class="input-group">
+                                <input type="text" 
+                                    class="form-control form-control-sm" 
+                                    id="buscador-clientes" 
+                                    placeholder="🔍 Buscar cliente..."
+                                    autocomplete="off">
+                                <button class="btn btn-warning btn-sm" id="btn-actualizar-ubicacion"
+                                        title="Actualizar GPS">
+                                    🚀 GPS
+                                </button>
+                            </div>
+                            
+                            <!-- CONTENEDOR DE SUGERENCIAS MEJORADO -->
+                            <div class="sugerencias-dropdown" id="sugerencias-container-trabajadores">
+                                <div id="lista-sugerencias-trabajadores">
+                                    <!-- Las sugerencias se cargarán aquí -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mapa principal CENTRADO -->
+    <div class="map-container-centered">
+        <div class="card border-0 bg-transparent">
+            <div id="map-trabajadores" style="height: 75vh; width: 100%;"></div>
+        </div>
+    </div>
+
+    <!-- Panel de resultados CENTRADO -->
+    <div class="card mt-3" id="panel-resultados" style="display: none;">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="card-title mb-0">📋 Resultados de Búsqueda</h6>
+            <button type="button" class="btn-close btn-close-white" id="btn-cerrar-resultados"></button>
+        </div>
+        <div class="card-body">
+            <div id="lista-resultados">
+                <!-- Los resultados se cargarán aquí -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de información del cliente - COMPLETAMENTE RESPONSIVE -->
+<div class="modal fade" id="infoClienteModal" tabindex="-1" aria-labelledby="modal-cliente-nombre" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-cliente-nombre">Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Información del cliente MEJORADA -->
+                <div class="cliente-info">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="flex-shrink-0">
+                            <span class="fs-4">👨‍💼</span>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="modal-cliente-nombre mb-1" id="modal-cliente-nombre">Cliente</h5>
+                            <span class="badge bg-primary" id="modal-cliente-categoria">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="cliente-detalles">
+                        <div class="detalle-item mb-2">
+                            <small class="text-muted">📞 Teléfono</small>
+                            <div class="fw-medium" id="modal-cliente-telefono">No disponible</div>
+                        </div>
+                        
+                        <div class="detalle-item mb-3">
+                            <small class="text-muted">📍 Dirección</small>
+                            <div class="fw-medium text-break" id="modal-cliente-direccion">No disponible</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Botón Google Maps MEJORADO -->
+                <div class="modal-footer bg-transparent border-0 pt-3">
+                    <button class="btn btn-primary btn-lg w-100 py-2" id="btn-abrir-maps">
+                        🗺️ Abrir en Google Maps
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+<script src="{{ url_for('static', filename='js/trabajadores.js') }}"></script>
+{% endblock %}
