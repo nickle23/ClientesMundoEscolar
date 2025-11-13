@@ -27,6 +27,20 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+# 🔥 SOLUCIÓN: Ruta raíz para evitar redirección infinita
+@app.route('/')
+def index():
+    """Página de inicio que redirige correctamente"""
+    if current_user.is_authenticated:
+        # Usuario ya logueado - redirigir según rol
+        if current_user.role == 'admin':
+            return redirect(url_for('admin_panel'))
+        else:
+            return redirect(url_for('trabajadores_panel'))
+    else:
+        # Usuario no logueado - ir al login
+        return redirect(url_for('login'))
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
