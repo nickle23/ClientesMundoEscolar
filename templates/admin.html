@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="row">
         <!-- Main content -->
-       <div class="col-12 main-content mx-auto" style="max-width: 1400px;">
+        <div class="col-12 main-content mx-auto" style="max-width: 1400px; height: 100vh; overflow-y: auto;">
             <!-- Header Principal con Hamburguesa -->
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <div class="d-flex align-items-center">
@@ -77,7 +77,7 @@
             </div>
 
             <!-- Lista de Clientes -->
-            <div class="card mt-4 mx-auto" style="max-width: 1400px;"></div>
+            <div class="card mt-4 mx-auto" style="max-width: 1400px;">
                 <div class="card-header">
                     <h5 class="card-title mb-0">📋 Lista de Clientes</h5>
                 </div>
@@ -134,13 +134,13 @@
     </div>
 </div>
 
-<!-- Modal para Agregar Cliente (mantener igual) -->
-<div class="modal fade" id="agregarClienteModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+<!-- Modal para Agregar Cliente - MEJORADO -->
+<div class="modal fade" id="agregarClienteModal" tabindex="-1" aria-labelledby="agregarClienteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">➕ Agregar Nuevo Cliente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="agregarClienteModalLabel">➕ Agregar Nuevo Cliente</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="form-agregar-cliente">
@@ -209,13 +209,13 @@
     </div>
 </div>
 
-<!-- 🔥 NUEVO MODAL PARA EDITAR CLIENTE -->
-<div class="modal fade" id="editarClienteModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+<!-- Modal para Editar Cliente - MEJORADO -->
+<div class="modal fade" id="editarClienteModal" tabindex="-1" aria-labelledby="editarClienteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">✏️ Editar Cliente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="editarClienteModalLabel">✏️ Editar Cliente</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="form-editar-cliente">
@@ -281,13 +281,13 @@
     </div>
 </div>
 
-<!-- 🔥 MEJORADO: Modal para Gestión de Usuarios COMPLETA -->
-<div class="modal fade" id="gestionUsuariosModal" tabindex="-1">
-    <div class="modal-dialog modal-xl">
+<!-- Modal para Gestión de Usuarios - MEJORADO -->
+<div class="modal fade" id="gestionUsuariosModal" tabindex="-1" aria-labelledby="gestionUsuariosModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">👥 Gestión de Usuarios</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="gestionUsuariosModalLabel">👥 Gestión de Usuarios</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- Alertas -->
@@ -296,7 +296,7 @@
                 <div class="row">
                     <!-- Formulario para crear usuario -->
                     <div class="col-md-5">
-                        <div class="card">
+                        <div class="card h-100">
                             <div class="card-header bg-primary text-white">
                                 <h5 class="card-title mb-0">➕ Crear Nuevo Usuario</h5>
                             </div>
@@ -330,13 +330,13 @@
 
                     <!-- Lista de usuarios existentes -->
                     <div class="col-md-7">
-                        <div class="card">
+                        <div class="card h-100">
                             <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">📋 Usuarios del Sistema</h5>
                                 <span class="badge bg-light text-dark" id="contador-usuarios">0 usuarios</span>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
+                                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                     <table class="table table-striped table-sm">
                                         <thead>
                                             <tr>
@@ -364,13 +364,13 @@
     </div>
 </div>
 
-<!-- Modal para Editar Usuario -->
-<div class="modal fade" id="modalEditarUsuario" tabindex="-1">
-    <div class="modal-dialog">
+<!-- Modal para Editar Usuario - MEJORADO -->
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">✏️ Editar Usuario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="modalEditarUsuarioLabel">✏️ Editar Usuario</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="form-editar-usuario">
@@ -409,13 +409,13 @@
     </div>
 </div>
 
-<!-- Modal de confirmación para eliminar usuario -->
-<div class="modal fade" id="modalConfirmarEliminar" tabindex="-1">
-    <div class="modal-dialog">
+<!-- Modal de confirmación para eliminar usuario - MEJORADO -->
+<div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" aria-labelledby="modalConfirmarEliminarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">⚠️ Confirmar Eliminación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title" id="modalConfirmarEliminarLabel">⚠️ Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>¿Estás seguro de que quieres eliminar al usuario <strong id="usuario-eliminar-nombre"></strong>?</p>
@@ -429,13 +429,13 @@
     </div>
 </div>
 
-<!-- Modal para Reiniciar Contraseña -->
-<div class="modal fade" id="modalResetPassword" tabindex="-1">
-    <div class="modal-dialog">
+<!-- Modal para Reiniciar Contraseña - MEJORADO -->
+<div class="modal fade" id="modalResetPassword" tabindex="-1" aria-labelledby="modalResetPasswordLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">🔑 Reiniciar Contraseña</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title" id="modalResetPasswordLabel">🔑 Reiniciar Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>Reiniciar contraseña para: <strong id="usuario-reset-nombre"></strong></p>
@@ -452,26 +452,6 @@
         </div>
     </div>
 </div>
-
-<!-- Modal de confirmación para eliminar usuario -->
-<div class="modal fade" id="modalConfirmarEliminar" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirmar Eliminación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p>¿Eliminar usuario <strong id="usuario-eliminar-nombre"></strong>?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="btn-confirmar-eliminar">Eliminar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 {% endblock %}
 
 {% block scripts %}
@@ -481,7 +461,56 @@
 
 {% block styles %}
 <style>
-    /* 🔥 SEGURIDAD RESPONSIVE EXTRA */
+    /* 🔥 SCROLL INVISIBLE DEFINITIVO */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    
+    .container-fluid {
+        height: 100vh;
+    }
+    
+    .row {
+        height: 100%;
+    }
+    
+    .main-content {
+        height: 100%;
+        overflow-y: auto;
+        padding-bottom: 20px;
+    }
+    
+    /* Scroll invisible */
+    .main-content::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .main-content {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    /* 🔥 MODALES PROFESIONALES */
+    .modal-content {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    
+    .modal-header {
+        border-radius: 12px 12px 0 0;
+        border-bottom: 2px solid rgba(255,255,255,0.2);
+    }
+    
+    .modal-footer {
+        border-radius: 0 0 12px 12px;
+        border-top: 1px solid #dee2e6;
+    }
+
+    /* Responsive */
     @media (max-width: 576px) {
         .main-content {
             padding-left: 10px;
@@ -490,12 +519,16 @@
         #buscador-clientes {
             width: 150px !important;
         }
+        
+        .modal-dialog {
+            margin: 10px;
+        }
     }
     
-    @media (min-width: 1400px) {
-        .main-content {
-            padding-left: 20px;
-            padding-right: 20px;
+    @media (max-width: 768px) {
+        .modal-xl {
+            max-width: 95%;
+            margin: 10px auto;
         }
     }
 </style>
