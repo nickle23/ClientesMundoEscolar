@@ -505,6 +505,14 @@ if __name__ == '__main__':
     print("   3. La geolocalización funcionará perfectamente")
     print("=" * 60)
     
-    # Ejecutar con SSL para desarrollo
-    app.run(debug=True, host='0.0.0.0', port=5000, ssl_context='adhoc')
+    # 🔥 SOLUCIÓN RENDER: SSL solo en local, no en Render
+    import os
+    if 'RENDER' in os.environ:
+        # En Render - sin SSL (Render ya maneja SSL)
+        app.run(debug=False, host='0.0.0.0', port=5000)
+        print("✅ Servidor iniciado en RENDER (sin SSL)")
+    else:
+        # Local - con SSL para desarrollo
+        app.run(debug=True, host='0.0.0.0', port=5000, ssl_context='adhoc')
+        print("✅ Servidor iniciado LOCAL (con SSL)")
 # 🔥 HASTA AQUÍ 🔥
