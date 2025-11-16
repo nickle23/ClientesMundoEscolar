@@ -577,6 +577,93 @@ def estado_base_datos():
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+# 🔥 NUEVO: Sistema de Restauración Automática - VERSIÓN PROFESIONAL
+@app.route('/admin/restore', methods=['GET', 'POST'])
+@login_required
+def restaurar_clientes():
+    """Restaurar clientes desde archivo JSON de backup - INTERFAZ PROFESIONAL"""
+    if current_user.role != 'admin':
+        return redirect(url_for('login'))
+    
+    if request.method == 'GET':
+        # Renderizar template profesional para restauración
+        return render_template('restore.html')
+    
+    elif request.method == 'POST':
+        # Procesar archivo de backup
+        try:
+            if 'archivo_backup' not in request.files:
+                return jsonify({'success': False, 'error': 'No se seleccionó ningún archivo'}), 400
+            
+            archivo = request.files['archivo_backup']
+            if archivo.filename == '':
+                return jsonify({'success': False, 'error': 'No se seleccionó ningún archivo'}), 400
+            
+            if archivo and archivo.filename.endswith('.json'):
+                # Leer y procesar el archivo JSON
+                datos_backup = json.load(archivo)
+                
+                if 'clientes' not in datos_backup:
+                    return jsonify({'success': False, 'error': 'El archivo no contiene datos de clientes válidos'}), 400
+                
+                clientes_restaurados = 0
+                clientes_omitidos = 0
+                errores = []
+                
+                for i, cliente_data in enumerate(datos_backup['clientes']):
+                    try:
+                        # Verificar datos requeridos
+                        if not cliente_data.get('nombre') or not cliente_data.get('latitud') or not cliente_data.get('longitud'):
+                            errores.append(f"Cliente {i+1}: Faltan datos requeridos")
+                            continue
+                        
+                        # Verificar si el cliente ya existe (por nombre normalizado)
+                        nombre_normalizado = normalizar_texto(cliente_data['nombre'])
+                        cliente_existente = Cliente.query.filter_by(
+                            nombre_normalizado=nombre_normalizado
+                        ).first()
+                        
+                        if not cliente_existente:
+                            # Crear nuevo cliente
+                            nuevo_cliente = Cliente(
+                                nombre=cliente_data['nombre'],
+                                nombre_normalizado=nombre_normalizado,
+                                direccion=cliente_data.get('direccion', ''),
+                                telefono=cliente_data.get('telefono', ''),
+                                latitud=float(cliente_data['latitud']),
+                                longitud=float(cliente_data['longitud']),
+                                categoria=cliente_data.get('categoria', 'Otro'),
+                                activo=True
+                            )
+                            db.session.add(nuevo_cliente)
+                            clientes_restaurados += 1
+                        else:
+                            clientes_omitidos += 1
+                            
+                    except Exception as e:
+                        errores.append(f"Cliente {i+1}: {str(e)}")
+                        continue
+                
+                db.session.commit()
+                
+                return jsonify({
+                    'success': True,
+                    'message': '✅ Restauración completada exitosamente',
+                    'clientes_restaurados': clientes_restaurados,
+                    'clientes_omitidos': clientes_omitidos,
+                    'total_procesados': len(datos_backup['clientes']),
+                    'errores': errores[:10]  # Mostrar solo primeros 10 errores
+                })
+            else:
+                return jsonify({'success': False, 'error': 'El archivo debe ser un JSON válido (.json)'}), 400
+                
+        except json.JSONDecodeError:
+            return jsonify({'success': False, 'error': 'El archivo no es un JSON válido'}), 400
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'success': False, 'error': f'Error en la restauración: {str(e)}'}), 500
+        
 
 if __name__ == '__main__':
     print("=" * 60)
