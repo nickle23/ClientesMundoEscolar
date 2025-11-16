@@ -81,10 +81,13 @@
                 </div>
             </div>
 
-            <!-- Resultados -->
+            <!-- Resultados - SIN SCROLL AUTOMÁTICO -->
             <div class="card mt-4 shadow-sm border-0" id="resultados-card" style="display: none;">
-                <div class="card-header bg-success text-white py-3">
+                <div class="card-header bg-success text-white py-3 d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">✅ Resultados de la Restauración</h5>
+                    <button type="button" class="btn btn-sm btn-light" onclick="scrollToResults()">
+                        📍 Ir a resultados
+                    </button>
                 </div>
                 <div class="card-body p-4">
                     <div id="resultados-contenido">
@@ -99,6 +102,14 @@
 
 {% block scripts %}
 <script>
+// Función global para scrollear manualmente
+function scrollToResults() {
+    const resultadosCard = document.getElementById('resultados-card');
+    if (resultadosCard) {
+        resultadosCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('form-restore');
     const btnRestore = document.getElementById('btn-restore');
@@ -198,10 +209,8 @@ document.addEventListener('DOMContentLoaded', function() {
         resultadosContenido.innerHTML = html;
         resultadosCard.style.display = 'block';
         
-        // Desplazar suavemente a los resultados (pero no bloquea el scroll de la página)
-        setTimeout(() => {
-            resultadosCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 300);
+        // SOLO mostramos un mensaje en la alerta, SIN scroll automático
+        mostrarAlerta('✅ Restauración completada. <a href="javascript:scrollToResults()" class="alert-link">Ver resultados</a>', 'success');
     }
 
     // Enviar formulario
@@ -238,7 +247,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
 
             if (data.success) {
-                mostrarAlerta('✅ ' + data.message, 'success');
                 mostrarResultados(data);
             } else {
                 mostrarAlerta('❌ ' + data.error, 'danger');
