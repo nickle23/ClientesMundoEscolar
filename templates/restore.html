@@ -81,17 +81,14 @@
                 </div>
             </div>
 
-            <!-- Resultados - SIN SCROLL AUTOMÁTICO -->
-            <div class="card mt-4 shadow-sm border-0" id="resultados-card" style="display: none;">
-                <div class="card-header bg-success text-white py-3 d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">✅ Resultados de la Restauración</h5>
-                    <button type="button" class="btn btn-sm btn-light" onclick="scrollToResults()">
-                        📍 Ir a resultados
-                    </button>
+            <!-- Resultados - INICIALMENTE VISIBLE PERO VACÍA -->
+            <div class="card mt-4 shadow-sm border-0" id="resultados-card">
+                <div class="card-header bg-light text-dark py-3">
+                    <h5 class="card-title mb-0">📊 Resultados de la Restauración</h5>
                 </div>
-                <div class="card-body p-4">
+                <div class="card-body p-4 text-center">
                     <div id="resultados-contenido">
-                        <!-- El contenido se insertará aquí -->
+                        <p class="text-muted mb-0">Los resultados aparecerán aquí después de la restauración</p>
                     </div>
                 </div>
             </div>
@@ -102,14 +99,6 @@
 
 {% block scripts %}
 <script>
-// Función global para scrollear manualmente
-function scrollToResults() {
-    const resultadosCard = document.getElementById('resultados-card');
-    if (resultadosCard) {
-        resultadosCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('form-restore');
     const btnRestore = document.getElementById('btn-restore');
@@ -157,8 +146,8 @@ document.addEventListener('DOMContentLoaded', function() {
             html += `
                 <div class="mb-4">
                     <h6 class="fw-semibold mb-3">📋 Clientes Procesados (${data.clientes_procesados.length})</h6>
-                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-                        <table class="table table-sm table-striped table-hover">
+                    <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-sm table-striped table-hover mb-0">
                             <thead class="table-light position-sticky top-0" style="z-index: 1; background: white;">
                                 <tr>
                                     <th>Nombre</th>
@@ -206,11 +195,16 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         }
 
-        resultadosContenido.innerHTML = html;
-        resultadosCard.style.display = 'block';
+        // Cambiar el estilo de la tarjeta a éxito
+        resultadosCard.querySelector('.card-header').className = 'card-header bg-success text-white py-3';
+        resultadosCard.querySelector('.card-title').textContent = '✅ Resultados de la Restauración';
         
-        // SOLO mostramos un mensaje en la alerta, SIN scroll automático
-        mostrarAlerta('✅ Restauración completada. <a href="javascript:scrollToResults()" class="alert-link">Ver resultados</a>', 'success');
+        resultadosContenido.innerHTML = html;
+        
+        // Scroll suave a los resultados
+        setTimeout(() => {
+            resultadosCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
     }
 
     // Enviar formulario
@@ -247,9 +241,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
 
             if (data.success) {
+                mostrarAlerta('✅ Restauración completada correctamente', 'success');
                 mostrarResultados(data);
             } else {
                 mostrarAlerta('❌ ' + data.error, 'danger');
+                // Cambiar tarjeta a estado de error
+                resultadosCard.querySelector('.card-header').className = 'card-header bg-danger text-white py-3';
+                resultadosCard.querySelector('.card-title').textContent = '❌ Error en la Restauración';
+                resultadosContenido.innerHTML = `<p class="text-danger">${data.error}</p>`;
             }
 
         } catch (error) {
@@ -296,35 +295,34 @@ document.addEventListener('DOMContentLoaded', function() {
     transform: translateY(-2px);
 }
 
-/* Scroll solo en la tabla */
-.table-responsive {
+/* Scroll para la tabla */
+.table-container {
     scrollbar-width: thin;
     scrollbar-color: #0d6efd #f8f9fa;
     border: 1px solid #dee2e6;
     border-radius: 8px;
 }
 
-.table-responsive::-webkit-scrollbar {
+.table-container::-webkit-scrollbar {
     width: 8px;
-    height: 8px;
 }
 
-.table-responsive::-webkit-scrollbar-track {
+.table-container::-webkit-scrollbar-track {
     background: #f8f9fa;
     border-radius: 4px;
 }
 
-.table-responsive::-webkit-scrollbar-thumb {
+.table-container::-webkit-scrollbar-thumb {
     background-color: #0d6efd;
     border-radius: 4px;
 }
 
-.table-responsive::-webkit-scrollbar-thumb:hover {
+.table-container::-webkit-scrollbar-thumb:hover {
     background-color: #0b5ed7;
 }
 
 /* Header sticky de la tabla */
-.table-responsive thead th {
+.table-container thead th {
     background: white !important;
     box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1);
 }
@@ -343,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function() {
         font-size: 1.5rem;
     }
     
-    .table-responsive {
+    .table-container {
         max-height: 300px !important;
     }
 }
@@ -358,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function() {
         font-size: 1rem;
     }
     
-    .table-responsive {
+    .table-container {
         max-height: 250px !important;
         font-size: 0.875rem;
     }
