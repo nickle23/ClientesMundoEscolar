@@ -81,13 +81,14 @@
                 </div>
             </div>
 
-            <!-- Resultados -->
+            <!-- Resultados - CON SCROLL EN EL CARD-BODY -->
             <div class="card mt-4 shadow-sm border-0" id="resultados-card" style="display: none;">
-                <div class="card-header bg-success text-white py-3">
+                <div class="card-header bg-success text-white py-3 position-sticky top-0" style="z-index: 1;">
                     <h5 class="card-title mb-0">✅ Resultados de la Restauración</h5>
                 </div>
-                <div class="card-body p-4">
-                    <div id="resultados-contenido"></div>
+                <div class="card-body p-0">
+                    <!-- Contenedor con scroll para TODO el contenido de resultados -->
+                    <div id="resultados-contenido" class="p-4" style="max-height: 60vh; overflow-y: auto;"></div>
                 </div>
             </div>
         </div>
@@ -117,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mostrar resultados
     function mostrarResultados(data) {
         let html = `
-            <div class="row text-center">
+            <div class="row text-center mb-4">
                 <div class="col-4">
                     <div class="border rounded p-3 bg-success bg-opacity-10">
                         <h3 class="text-success">${data.clientes_restaurados}</h3>
@@ -139,10 +140,51 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
+        // Mostrar lista de clientes procesados si existe
+        if (data.clientes_procesados && data.clientes_procesados.length > 0) {
+            html += `
+                <div class="mb-4">
+                    <h6 class="fw-semibold mb-3">📋 Clientes Procesados (${data.clientes_procesados.length})</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+            
+            data.clientes_procesados.forEach(cliente => {
+                const estado = cliente.estado === 'restaurado' ? 
+                    '<span class="badge bg-success">Restaurado</span>' : 
+                    '<span class="badge bg-warning">Omitido</span>';
+                
+                html += `
+                    <tr>
+                        <td class="fw-medium">${cliente.nombre || 'N/A'}</td>
+                        <td>${cliente.email || 'N/A'}</td>
+                        <td>${cliente.telefono || 'N/A'}</td>
+                        <td>${estado}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
         if (data.errores && data.errores.length > 0) {
             html += `
                 <div class="mt-4">
-                    <h6>⚠️ Errores encontrados:</h6>
+                    <h6 class="fw-semibold">⚠️ Errores encontrados:</h6>
                     <div class="alert alert-danger small">
                         <ul class="mb-0">
                             ${data.errores.map(error => `<li>${error}</li>`).join('')}
@@ -154,6 +196,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         resultadosContenido.innerHTML = html;
         resultadosCard.style.display = 'block';
+        
+        // Desplazar automáticamente a los resultados
+        setTimeout(() => {
+            resultadosCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
     }
 
     // Enviar formulario
@@ -240,6 +287,35 @@ document.addEventListener('DOMContentLoaded', function() {
     transform: translateY(-2px);
 }
 
+/* Estilos para el scroll */
+#resultados-contenido {
+    scrollbar-width: thin;
+    scrollbar-color: #0d6efd #f8f9fa;
+}
+
+#resultados-contenido::-webkit-scrollbar {
+    width: 8px;
+}
+
+#resultados-contenido::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+#resultados-contenido::-webkit-scrollbar-thumb {
+    background-color: #0d6efd;
+    border-radius: 4px;
+}
+
+#resultados-contenido::-webkit-scrollbar-thumb:hover {
+    background-color: #0b5ed7;
+}
+
+/* Header sticky */
+.card-header.position-sticky {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .container-fluid {
@@ -253,6 +329,10 @@ document.addEventListener('DOMContentLoaded', function() {
     h1.h3 {
         font-size: 1.5rem;
     }
+    
+    #resultados-contenido {
+        max-height: 50vh !important;
+    }
 }
 
 @media (max-width: 576px) {
@@ -263,6 +343,15 @@ document.addEventListener('DOMContentLoaded', function() {
     .btn-lg {
         padding: 12px 20px;
         font-size: 1rem;
+    }
+    
+    #resultados-contenido {
+        max-height: 40vh !important;
+        padding: 1rem !important;
+    }
+    
+    .row.text-center .col-4 {
+        margin-bottom: 1rem;
     }
 }
 </style>
