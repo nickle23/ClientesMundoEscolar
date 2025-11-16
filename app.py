@@ -6,6 +6,7 @@ import unicodedata
 import sqlite3
 import os
 from datetime import datetime
+import json
 
 # Configuración de la aplicación
 app = Flask(__name__)
