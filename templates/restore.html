@@ -81,10 +81,11 @@
                 </div>
             </div>
 
-            <!-- Resultados - INICIALMENTE VISIBLE PERO VACÍA -->
+            <!-- Resultados - SIN SCROLL AUTOMÁTICO -->
             <div class="card mt-4 shadow-sm border-0" id="resultados-card">
-                <div class="card-header bg-light text-dark py-3">
+                <div class="card-header bg-light text-dark py-3 d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">📊 Resultados de la Restauración</h5>
+                    <small class="text-muted">Esperando importación...</small>
                 </div>
                 <div class="card-body p-4 text-center">
                     <div id="resultados-contenido">
@@ -105,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const alertContainer = document.getElementById('alert-container');
     const resultadosCard = document.getElementById('resultados-card');
     const resultadosContenido = document.getElementById('resultados-contenido');
+    const resultadosHeader = resultadosCard.querySelector('.card-header');
 
     // Mostrar alerta
     function mostrarAlerta(mensaje, tipo = 'info') {
@@ -195,16 +197,21 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         }
 
-        // Cambiar el estilo de la tarjeta a éxito
-        resultadosCard.querySelector('.card-header').className = 'card-header bg-success text-white py-3';
-        resultadosCard.querySelector('.card-title').textContent = '✅ Resultados de la Restauración';
+        // Actualizar la tarjeta de resultados
+        resultadosHeader.className = 'card-header bg-success text-white py-3 d-flex justify-content-between align-items-center';
+        resultadosHeader.innerHTML = `
+            <h5 class="card-title mb-0">✅ Resultados de la Restauración</h5>
+            <button type="button" class="btn btn-sm btn-light" onclick="scrollToTop()">
+                ⬆️ Volver arriba
+            </button>
+        `;
         
         resultadosContenido.innerHTML = html;
-        
-        // Scroll suave a los resultados
-        setTimeout(() => {
-            resultadosCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
+    }
+
+    // Función global para volver arriba
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // Enviar formulario
@@ -241,13 +248,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
 
             if (data.success) {
-                mostrarAlerta('✅ Restauración completada correctamente', 'success');
+                mostrarAlerta('✅ Restauración completada correctamente. <strong>Puedes scrollear hacia abajo para ver los resultados.</strong>', 'success');
                 mostrarResultados(data);
             } else {
                 mostrarAlerta('❌ ' + data.error, 'danger');
                 // Cambiar tarjeta a estado de error
-                resultadosCard.querySelector('.card-header').className = 'card-header bg-danger text-white py-3';
-                resultadosCard.querySelector('.card-title').textContent = '❌ Error en la Restauración';
+                resultadosHeader.className = 'card-header bg-danger text-white py-3 d-flex justify-content-between align-items-center';
+                resultadosHeader.innerHTML = `
+                    <h5 class="card-title mb-0">❌ Error en la Restauración</h5>
+                    <button type="button" class="btn btn-sm btn-light" onclick="scrollToTop()">
+                        ⬆️ Volver arriba
+                    </button>
+                `;
                 resultadosContenido.innerHTML = `<p class="text-danger">${data.error}</p>`;
             }
 
