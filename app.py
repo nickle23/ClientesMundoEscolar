@@ -547,15 +547,15 @@ def backup_clientes():
                 'categoria': cliente.categoria,
                 'activo': cliente.activo
             } for cliente in clientes],
-            # 🔥 NUEVO: SECCIÓN DE USUARIOS
+            # 🔥 NUEVO: SECCIÓN DE USUARIOS CON CONTRASEÑAS
             'usuarios': [{
                 'id': usuario.id,
                 'username': usuario.username,
+                'password_hash': usuario.password_hash,  # 🔥 INCLUIR HASH DE CONTRASEÑA
                 'role': usuario.role,
                 'activo': usuario.activo,
                 'fecha_creacion': usuario.fecha_creacion.isoformat() if usuario.fecha_creacion else None,
                 'ultimo_acceso': usuario.ultimo_acceso.isoformat() if usuario.ultimo_acceso else None
-                # 🔥 NOTA: No incluimos contraseñas por seguridad
             } for usuario in usuarios]
         }
         
@@ -675,12 +675,12 @@ def restaurar_clientes():
                         resultados['errores'].append(f"Cliente {i+1}: {str(e)}")
                         continue
                 
-                # 🔥 2. NUEVO: PROCESAR USUARIOS - VERSIÓN MEJORADA
+                # 🔥 2. NUEVO: PROCESAR USUARIOS CON CONTRASEÑAS ORIGINALES
                 for i, usuario_data in enumerate(datos_backup['usuarios']):
                     try:
-                        # Verificar datos requeridos
-                        if not usuario_data.get('username') or not usuario_data.get('role'):
-                            resultados['errores'].append(f"Usuario {i+1}: Faltan datos requeridos")
+                        # Verificar datos requeridos INCLUYENDO CONTRASEÑA
+                        if not usuario_data.get('username') or not usuario_data.get('role') or not usuario_data.get('password_hash'):
+                            resultados['errores'].append(f"Usuario {i+1}: Faltan datos requeridos (username, role o password)")
                             continue
                         
                         # Verificar si el usuario ya existe
@@ -689,26 +689,27 @@ def restaurar_clientes():
                         ).first()
                         
                         if not usuario_existente:
-                            # 🔥 CREAR NUEVO USUARIO CON CONTRASEña TEMPORAL
+                            # 🔥 CREAR NUEVO USUARIO CON CONTRASEÑA ORIGINAL
                             nuevo_usuario = User(
                                 username=usuario_data['username'],
+                                password_hash=usuario_data['password_hash'],  # 🔥 USAR HASH ORIGINAL
                                 role=usuario_data['role'],
                                 activo=usuario_data.get('activo', True),
                                 fecha_creacion=datetime.fromisoformat(usuario_data['fecha_creacion']) if usuario_data.get('fecha_creacion') else None,
                                 ultimo_acceso=datetime.fromisoformat(usuario_data['ultimo_acceso']) if usuario_data.get('ultimo_acceso') else None
                             )
-                            nuevo_usuario.set_password('temp123456')  # Contraseña temporal
+                            # 🔥 IMPORTANTE: NO usar set_password() - ya tenemos el hash original
                             db.session.add(nuevo_usuario)
                             resultados['usuarios_restaurados'] += 1
-                            print(f"✅ Usuario NUEVO creado: {usuario_data['username']} con contraseña temporal")
+                            print(f"✅ Usuario NUEVO creado: {usuario_data['username']} con contraseña ORIGINAL")
                         else:
-                            # 🔥 USUARIO EXISTENTE - ACTUALIZAR DATOS PERO MANTENER CONTRASEÑA ACTUAL
+                            # 🔥 USUARIO EXISTENTE - ACTUALIZAR TODO INCLUYENDO CONTRASEÑA
+                            usuario_existente.password_hash = usuario_data['password_hash']  # 🔥 RESTAURAR CONTRASEÑA
                             usuario_existente.role = usuario_data['role']
                             usuario_existente.activo = usuario_data.get('activo', True)
                             usuario_existente.ultimo_acceso = datetime.fromisoformat(usuario_data['ultimo_acceso']) if usuario_data.get('ultimo_acceso') else usuario_existente.ultimo_acceso
-                            # 🔥 IMPORTANTE: NO modificamos la contraseña del usuario existente
                             resultados['usuarios_omitidos'] += 1
-                            print(f"⚠️ Usuario EXISTente actualizado: {usuario_data['username']} (contraseña preservada)")
+                            print(f"⚠️ Usuario EXISTENTE actualizado: {usuario_data['username']} (contraseña RESTAURADA)")
                             
                     except Exception as e:
                         resultados['errores'].append(f"Usuario {i+1}: {str(e)}")
