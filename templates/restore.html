@@ -80,18 +80,26 @@
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 
-            <!-- Resultados - SIN SCROLL AUTOMÁTICO -->
-            <div class="card mt-4 shadow-sm border-0" id="resultados-card">
-                <div class="card-header bg-light text-dark py-3 d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">📊 Resultados de la Restauración</h5>
-                    <small class="text-muted">Esperando importación...</small>
+<!-- Modal para resultados -->
+<div class="modal fade" id="resultadosModal" tabindex="-1" aria-labelledby="resultadosModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="resultadosModalLabel">✅ Resultados de la Restauración</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="resultados-contenido">
+                    <!-- El contenido se insertará aquí -->
                 </div>
-                <div class="card-body p-4 text-center">
-                    <div id="resultados-contenido">
-                        <p class="text-muted mb-0">Los resultados aparecerán aquí después de la restauración</p>
-                    </div>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="window.location.reload()">Hacer otra importación</button>
             </div>
         </div>
     </div>
@@ -104,9 +112,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('form-restore');
     const btnRestore = document.getElementById('btn-restore');
     const alertContainer = document.getElementById('alert-container');
-    const resultadosCard = document.getElementById('resultados-card');
+    const resultadosModal = new bootstrap.Modal(document.getElementById('resultadosModal'));
     const resultadosContenido = document.getElementById('resultados-contenido');
-    const resultadosHeader = resultadosCard.querySelector('.card-header');
 
     // Mostrar alerta
     function mostrarAlerta(mensaje, tipo = 'info') {
@@ -118,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 
-    // Mostrar resultados
+    // Mostrar resultados en el modal
     function mostrarResultados(data) {
         let html = `
             <div class="row text-center mb-4">
@@ -148,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
             html += `
                 <div class="mb-4">
                     <h6 class="fw-semibold mb-3">📋 Clientes Procesados (${data.clientes_procesados.length})</h6>
-                    <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+                    <div style="max-height: 400px; overflow-y: auto;">
                         <table class="table table-sm table-striped table-hover mb-0">
                             <thead class="table-light position-sticky top-0" style="z-index: 1; background: white;">
                                 <tr>
@@ -197,21 +204,10 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         }
 
-        // Actualizar la tarjeta de resultados
-        resultadosHeader.className = 'card-header bg-success text-white py-3 d-flex justify-content-between align-items-center';
-        resultadosHeader.innerHTML = `
-            <h5 class="card-title mb-0">✅ Resultados de la Restauración</h5>
-            <button type="button" class="btn btn-sm btn-light" onclick="scrollToTop()">
-                ⬆️ Volver arriba
-            </button>
-        `;
-        
         resultadosContenido.innerHTML = html;
-    }
-
-    // Función global para volver arriba
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Mostrar el modal
+        resultadosModal.show();
     }
 
     // Enviar formulario
@@ -248,19 +244,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
 
             if (data.success) {
-                mostrarAlerta('✅ Restauración completada correctamente. <strong>Puedes scrollear hacia abajo para ver los resultados.</strong>', 'success');
+                mostrarAlerta('✅ Restauración completada correctamente', 'success');
                 mostrarResultados(data);
             } else {
                 mostrarAlerta('❌ ' + data.error, 'danger');
-                // Cambiar tarjeta a estado de error
-                resultadosHeader.className = 'card-header bg-danger text-white py-3 d-flex justify-content-between align-items-center';
-                resultadosHeader.innerHTML = `
-                    <h5 class="card-title mb-0">❌ Error en la Restauración</h5>
-                    <button type="button" class="btn btn-sm btn-light" onclick="scrollToTop()">
-                        ⬆️ Volver arriba
-                    </button>
-                `;
-                resultadosContenido.innerHTML = `<p class="text-danger">${data.error}</p>`;
             }
 
         } catch (error) {
@@ -307,34 +294,44 @@ document.addEventListener('DOMContentLoaded', function() {
     transform: translateY(-2px);
 }
 
-/* Scroll para la tabla */
-.table-container {
+/* Estilos para el modal */
+.modal-content {
+    border-radius: 16px;
+    border: none;
+}
+
+.modal-header {
+    border-radius: 16px 16px 0 0;
+}
+
+/* Scroll para la tabla dentro del modal */
+.modal-body div[style*="max-height"] {
     scrollbar-width: thin;
     scrollbar-color: #0d6efd #f8f9fa;
     border: 1px solid #dee2e6;
     border-radius: 8px;
 }
 
-.table-container::-webkit-scrollbar {
+.modal-body div[style*="max-height"]::-webkit-scrollbar {
     width: 8px;
 }
 
-.table-container::-webkit-scrollbar-track {
+.modal-body div[style*="max-height"]::-webkit-scrollbar-track {
     background: #f8f9fa;
     border-radius: 4px;
 }
 
-.table-container::-webkit-scrollbar-thumb {
+.modal-body div[style*="max-height"]::-webkit-scrollbar-thumb {
     background-color: #0d6efd;
     border-radius: 4px;
 }
 
-.table-container::-webkit-scrollbar-thumb:hover {
+.modal-body div[style*="max-height"]::-webkit-scrollbar-thumb:hover {
     background-color: #0b5ed7;
 }
 
 /* Header sticky de la tabla */
-.table-container thead th {
+.modal-body thead th {
     background: white !important;
     box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1);
 }
@@ -353,8 +350,8 @@ document.addEventListener('DOMContentLoaded', function() {
         font-size: 1.5rem;
     }
     
-    .table-container {
-        max-height: 300px !important;
+    .modal-dialog {
+        margin: 1rem;
     }
 }
 
@@ -368,7 +365,7 @@ document.addEventListener('DOMContentLoaded', function() {
         font-size: 1rem;
     }
     
-    .table-container {
+    .modal-body div[style*="max-height"] {
         max-height: 250px !important;
         font-size: 0.875rem;
     }
