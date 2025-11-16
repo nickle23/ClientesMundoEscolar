@@ -509,20 +509,34 @@ def api_reset_password(usuario_id):
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
     
-# 🔥 NUEVO: Sistema de Backup y Restauración
+# 🔥 NUEVO: Sistema de Backup Completo (Clientes + Usuarios)
 @app.route('/admin/backup')
 @login_required
 def backup_clientes():
-    """Generar backup de todos los clientes en JSON"""
+    """Generar backup completo del sistema (clientes + usuarios)"""
     if current_user.role != 'admin':
         return jsonify({'error': 'No autorizado'}), 403
     
     try:
+        # 🔥 OBTENER TODOS LOS CLIENTES ACTIVOS
         clientes = Cliente.query.filter_by(activo=True).all()
         
+        # 🔥 NUEVO: OBTENER TODOS LOS USUARIOS
+        usuarios = User.query.all()
+        
+        # 🔥 NUEVO: METADATOS DEL SISTEMA
+        from datetime import timezone
+        fecha_actual = datetime.now(timezone.utc)
+        
         datos_backup = {
-            'fecha_backup': datetime.utcnow().isoformat(),
-            'total_clientes': len(clientes),
+            'metadata': {
+                'fecha_backup': fecha_actual.isoformat(),
+                'tipo_backup': 'COMPLETO',
+                'version_sistema': '2.0',
+                'total_clientes': len(clientes),
+                'total_usuarios': len(usuarios),
+                'usuario_generador': current_user.username
+            },
             'clientes': [{
                 'id': cliente.id,
                 'nombre': cliente.nombre,
@@ -532,21 +546,30 @@ def backup_clientes():
                 'longitud': cliente.longitud,
                 'categoria': cliente.categoria,
                 'activo': cliente.activo
-            } for cliente in clientes]
+            } for cliente in clientes],
+            # 🔥 NUEVO: SECCIÓN DE USUARIOS
+            'usuarios': [{
+                'id': usuario.id,
+                'username': usuario.username,
+                'role': usuario.role,
+                'activo': usuario.activo,
+                'fecha_creacion': usuario.fecha_creacion.isoformat() if usuario.fecha_creacion else None,
+                'ultimo_acceso': usuario.ultimo_acceso.isoformat() if usuario.ultimo_acceso else None
+                # 🔥 NOTA: No incluimos contraseñas por seguridad
+            } for usuario in usuarios]
         }
         
         # Crear respuesta para descargar
         from flask import make_response
-        from datetime import timezone
-        fecha_actual = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M')
+        fecha_formateada = fecha_actual.strftime('%Y%m%d_%H%M')
         response = make_response(jsonify(datos_backup))
         response.headers['Content-Type'] = 'application/json'
-        response.headers['Content-Disposition'] = f'attachment; filename=backup_clientes_{fecha_actual}.json'
+        response.headers['Content-Disposition'] = f'attachment; filename=backup_completo_{fecha_formateada}.json'
         
         return response
         
     except Exception as e:
-        return jsonify({'error': f'Error generando backup: {str(e)}'}), 500
+        return jsonify({'error': f'Error generando backup completo: {str(e)}'}), 500
 
 @app.route('/admin/estado-db')
 @login_required
@@ -579,11 +602,11 @@ def estado_base_datos():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
-# 🔥 NUEVO: Sistema de Restauración Automática - VERSIÓN PROFESIONAL
+# 🔥 NUEVO: Sistema de Restauración Completa
 @app.route('/admin/restore', methods=['GET', 'POST'])
 @login_required
 def restaurar_clientes():
-    """Restaurar clientes desde archivo JSON de backup - INTERFAZ PROFESIONAL"""
+    """Restaurar sistema completo desde archivo JSON de backup - INTERFAZ PROFESIONAL"""
     if current_user.role != 'admin':
         return redirect(url_for('login'))
     
@@ -592,7 +615,7 @@ def restaurar_clientes():
         return render_template('restore.html')
     
     elif request.method == 'POST':
-        # Procesar archivo de backup
+        # Procesar archivo de backup COMPLETO
         try:
             if 'archivo_backup' not in request.files:
                 return jsonify({'success': False, 'error': 'No se seleccionó ningún archivo'}), 400
@@ -602,21 +625,27 @@ def restaurar_clientes():
                 return jsonify({'success': False, 'error': 'No se seleccionó ningún archivo'}), 400
             
             if archivo and archivo.filename.endswith('.json'):
-                # Leer y procesar el archivo JSON
+                # Leer y procesar el archivo JSON COMPLETO
                 datos_backup = json.load(archivo)
                 
-                if 'clientes' not in datos_backup:
-                    return jsonify({'success': False, 'error': 'El archivo no contiene datos de clientes válidos'}), 400
+                # 🔥 NUEVO: VERIFICAR ESTRUCTURA DEL BACKUP COMPLETO
+                if 'clientes' not in datos_backup or 'usuarios' not in datos_backup:
+                    return jsonify({'success': False, 'error': 'El archivo no es un backup completo válido'}), 400
                 
-                clientes_restaurados = 0
-                clientes_omitidos = 0
-                errores = []
+                resultados = {
+                    'clientes_restaurados': 0,
+                    'clientes_omitidos': 0,
+                    'usuarios_restaurados': 0,
+                    'usuarios_omitidos': 0,
+                    'errores': []
+                }
                 
+                # 🔥 1. PROCESAR CLIENTES (lógica existente mejorada)
                 for i, cliente_data in enumerate(datos_backup['clientes']):
                     try:
                         # Verificar datos requeridos
                         if not cliente_data.get('nombre') or not cliente_data.get('latitud') or not cliente_data.get('longitud'):
-                            errores.append(f"Cliente {i+1}: Faltan datos requeridos")
+                            resultados['errores'].append(f"Cliente {i+1}: Faltan datos requeridos")
                             continue
                         
                         # Verificar si el cliente ya existe (por nombre normalizado)
@@ -638,23 +667,52 @@ def restaurar_clientes():
                                 activo=True
                             )
                             db.session.add(nuevo_cliente)
-                            clientes_restaurados += 1
+                            resultados['clientes_restaurados'] += 1
                         else:
-                            clientes_omitidos += 1
+                            resultados['clientes_omitidos'] += 1
                             
                     except Exception as e:
-                        errores.append(f"Cliente {i+1}: {str(e)}")
+                        resultados['errores'].append(f"Cliente {i+1}: {str(e)}")
+                        continue
+                
+                # 🔥 2. NUEVO: PROCESAR USUARIOS
+                for i, usuario_data in enumerate(datos_backup['usuarios']):
+                    try:
+                        # Verificar datos requeridos
+                        if not usuario_data.get('username') or not usuario_data.get('role'):
+                            resultados['errores'].append(f"Usuario {i+1}: Faltan datos requeridos")
+                            continue
+                        
+                        # Verificar si el usuario ya existe
+                        usuario_existente = User.query.filter_by(
+                            username=usuario_data['username']
+                        ).first()
+                        
+                        if not usuario_existente:
+                            # Crear nuevo usuario (sin contraseña por seguridad)
+                            nuevo_usuario = User(
+                                username=usuario_data['username'],
+                                role=usuario_data['role'],
+                                activo=usuario_data.get('activo', True)
+                            )
+                            # 🔥 IMPORTANTE: Asignar contraseña por defecto
+                            nuevo_usuario.set_password('temp123456')
+                            db.session.add(nuevo_usuario)
+                            resultados['usuarios_restaurados'] += 1
+                        else:
+                            resultados['usuarios_omitidos'] += 1
+                            
+                    except Exception as e:
+                        resultados['errores'].append(f"Usuario {i+1}: {str(e)}")
                         continue
                 
                 db.session.commit()
                 
                 return jsonify({
                     'success': True,
-                    'message': '✅ Restauración completada exitosamente',
-                    'clientes_restaurados': clientes_restaurados,
-                    'clientes_omitidos': clientes_omitidos,
-                    'total_procesados': len(datos_backup['clientes']),
-                    'errores': errores[:10]  # Mostrar solo primeros 10 errores
+                    'message': '✅ Restauración completa exitosa',
+                    'resultados': resultados,
+                    'metadata': datos_backup.get('metadata', {})
                 })
             else:
                 return jsonify({'success': False, 'error': 'El archivo debe ser un JSON válido (.json)'}), 400

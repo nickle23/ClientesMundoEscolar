@@ -28,11 +28,12 @@
                         <div class="d-flex">
                             <div class="me-3">💡</div>
                             <div>
-                                <h6 class="alert-heading text-light">Instrucciones de Restauración</h6>
+                                <h6 class="alert-heading text-light">Instrucciones de Restauración COMPLETA</h6>
                                 <ul class="mb-0 ps-3 text-light">
-                                    <li>Selecciona un archivo JSON previamente descargado del sistema</li>
-                                    <li>Los clientes se agregarán automáticamente</li>
-                                    <li>Clientes duplicados (mismo nombre) serán omitidos</li>
+                                    <li>Selecciona un archivo JSON de <strong>backup completo</strong> del sistema</li>
+                                    <li>Se restaurarán <strong>clientes + usuarios</strong> automáticamente</li>
+                                    <li>Clientes y usuarios duplicados serán omitidos</li>
+                                    <li>Los usuarios nuevos tendrán contraseña temporal</li>
                                     <li>El proceso puede tomar algunos segundos</li>
                                 </ul>
                             </div>
@@ -125,84 +126,101 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 
-    // Mostrar resultados en el modal
+    // 🔥 NUEVO: Mostrar resultados de restauración COMPLETA
     function mostrarResultados(data) {
         let html = `
+            <div class="alert alert-success border-0 mb-4">
+                <h4 class="alert-heading">✅ ${data.message}</h4>
+                <p class="mb-0">Restauración del backup completo finalizada</p>
+            </div>
+            
             <div class="row text-center mb-4">
-                <div class="col-4">
+                <div class="col-md-3 col-6 mb-3">
                     <div class="border rounded p-3 bg-success bg-opacity-10">
-                        <h3 class="text-success mb-1">${data.clientes_restaurados}</h3>
-                        <small class="text-muted">Restaurados</small>
+                        <h3 class="text-success mb-1">${data.resultados.clientes_restaurados}</h3>
+                        <small class="text-muted">Clientes Restaurados</small>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-md-3 col-6 mb-3">
                     <div class="border rounded p-3 bg-warning bg-opacity-10">
-                        <h3 class="text-warning mb-1">${data.clientes_omitidos}</h3>
-                        <small class="text-muted">Omitidos</small>
+                        <h3 class="text-warning mb-1">${data.resultados.clientes_omitidos}</h3>
+                        <small class="text-muted">Clientes Omitidos</small>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-md-3 col-6 mb-3">
                     <div class="border rounded p-3 bg-info bg-opacity-10">
-                        <h3 class="text-info mb-1">${data.total_procesados}</h3>
-                        <small class="text-muted">Total</small>
+                        <h3 class="text-info mb-1">${data.resultados.usuarios_restaurados}</h3>
+                        <small class="text-muted">Usuarios Restaurados</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="border rounded p-3 bg-secondary bg-opacity-10">
+                        <h3 class="text-secondary mb-1">${data.resultados.usuarios_omitidos}</h3>
+                        <small class="text-muted">Usuarios Omitidos</small>
                     </div>
                 </div>
             </div>
         `;
 
-        // Mostrar lista de clientes procesados si existe
-        if (data.clientes_procesados && data.clientes_procesados.length > 0) {
+        // 🔥 NUEVO: Mostrar metadatos del backup
+        if (data.metadata) {
             html += `
-                <div class="mb-4">
-                    <h6 class="fw-semibold mb-3">📋 Clientes Procesados (${data.clientes_procesados.length})</h6>
-                    <div class="table-container-modal">
-                        <table class="table table-sm table-striped table-hover mb-0">
-                            <thead class="table-light position-sticky top-0">
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Email</th>
-                                    <th>Teléfono</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-            `;
-            
-            data.clientes_procesados.forEach(cliente => {
-                const estado = cliente.estado === 'restaurado' ? 
-                    '<span class="badge bg-success">Restaurado</span>' : 
-                    '<span class="badge bg-warning">Omitido</span>';
-                
-                html += `
-                    <tr>
-                        <td class="fw-medium">${cliente.nombre || 'N/A'}</td>
-                        <td>${cliente.email || 'N/A'}</td>
-                        <td>${cliente.telefono || 'N/A'}</td>
-                        <td>${estado}</td>
-                    </tr>
-                `;
-            });
-            
-            html += `
-                            </tbody>
-                        </table>
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0">📊 Información del Backup</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <small class="text-muted">Fecha del Backup:</small>
+                                <p class="fw-medium">${new Date(data.metadata.fecha_backup).toLocaleString()}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <small class="text-muted">Generado por:</small>
+                                <p class="fw-medium">${data.metadata.usuario_generador || 'N/A'}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <small class="text-muted">Tipo:</small>
+                                <p class="fw-medium">${data.metadata.tipo_backup || 'Completo'}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <small class="text-muted">Clientes originales:</small>
+                                <p class="fw-medium">${data.metadata.total_clientes || 'N/A'}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
         }
 
-        if (data.errores && data.errores.length > 0) {
+        if (data.resultados.errores && data.resultados.errores.length > 0) {
             html += `
-                <div class="mt-4">
-                    <h6 class="fw-semibold">⚠️ Errores encontrados:</h6>
-                    <div class="alert alert-danger small">
+                <div class="alert alert-warning">
+                    <h6 class="alert-heading">⚠️ Se encontraron algunos errores:</h6>
+                    <div class="small">
                         <ul class="mb-0">
-                            ${data.errores.map(error => `<li>${error}</li>`).join('')}
+                            ${data.resultados.errores.slice(0, 10).map(error => `<li>${error}</li>`).join('')}
                         </ul>
+                        ${data.resultados.errores.length > 10 ? 
+                        `<small class="text-muted">... y ${data.resultados.errores.length - 10} errores más</small>` : ''}
                     </div>
                 </div>
             `;
         }
+        
+        // 🔥 NUEVO: Instrucciones importantes
+        html += `
+            <div class="alert alert-info">
+                <h6 class="alert-heading">💡 Información Importante</h6>
+                <ul class="mb-0 small">
+                    <li>Los usuarios restaurados tienen contraseña temporal: <code>temp123456</code></li>
+                    <li>Debes cambiar las contraseñas después del primer login</li>
+                    <li>Los clientes/usuarios duplicados fueron omitidos automáticamente</li>
+                </ul>
+            </div>
+        `;
 
         resultadosContenido.innerHTML = html;
         
