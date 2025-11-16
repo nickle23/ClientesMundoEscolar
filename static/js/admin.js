@@ -1084,5 +1084,5 @@ function navegarSugerenciasNombre(sugerencias, direccion) {
 }
 
 // Variable global para el ID del usuario actual (esto debe venir de tu sistema)
-// 🔥 CORREGIDO: ID del usuario admin actual
-const currentUserId = 1;
+// 🔥 CORREGIDO: Obtener ID del usuario actual dinámicamente
+const currentUserId = window.currentUserID || 1;
