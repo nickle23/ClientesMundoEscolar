@@ -11,14 +11,23 @@ from datetime import datetime
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'tu_clave_secreta_muy_segura_aqui_123'
 
-# ✅ CORRECCIÓN: Ruta ABSOLUTA para la base de datos
-base_dir = os.path.abspath(os.path.dirname(__file__))
-db_path = os.path.join(base_dir, 'data', 'clientes.db')
+# 🔥 NUEVO: Configuración para Render con SQLite persistente
+import os
 
-# Crear carpeta data si no existe
-os.makedirs(os.path.dirname(db_path), exist_ok=True)
+# En Render, usamos /tmp para persistencia entre deploys
+if 'RENDER' in os.environ:
+    # 🔥 RENDER - SQLite en carpeta persistente
+    db_path = '/tmp/clientes.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+    print("🚀 Render: Usando SQLite persistente en /tmp/")
+else:
+    # 🔥 DESARROLLO LOCAL - SQLite normal
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    db_path = os.path.join(base_dir, 'data', 'clientes.db')
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+    print("💻 Desarrollo: Usando SQLite local")
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Inicializar extensiones
@@ -40,10 +49,6 @@ def index():
     else:
         # Usuario no logueado - ir al login
         return redirect(url_for('login'))
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 
 # 🔥 NUEVO: Actualizar último acceso al hacer login
 @login_manager.user_loader
@@ -70,25 +75,26 @@ def normalizar_texto(texto):
         texto = texto.replace(typo, correcto)
     return texto
 
-# Crear tablas y usuario admin al inicio
+# 🔥 NUEVO: Crear tablas y usuario admin al inicio - VERSIÓN MEJORADA
 with app.app_context():
     try:
         db.create_all()
-        # 🔥 COMENTADO: Creación automática de usuario admin
-        # Descomenta estas líneas si necesitas crear el usuario admin por primera vez
-        '''
+        
+        # 🔥 CREAR USUARIO ADMIN SI NO EXISTE (funciona en PostgreSQL y SQLite)
         if not User.query.filter_by(username='admin').first():
             admin_user = User(username='admin', role='admin')
             admin_user.set_password('admin123')
             db.session.add(admin_user)
             db.session.commit()
-            print("✅ Base de datos y usuario admin creados exitosamente")
-        '''
+            print("✅ Usuario admin creado: admin / admin123")
+        else:
+            print("✅ Usuario admin ya existe")
+            
         print("✅ Base de datos verificada correctamente")
+        
     except Exception as e:
-        print(f"❌ Error creando base de datos: {e}")
-    except Exception as e:
-        print(f"❌ Error creando base de datos: {e}")
+        print(f"❌ Error inicializando base de datos: {e}")
+        # No hacemos rollback para permitir que la app inicie igual
 
 # Ruta de login
 @app.route('/', methods=['GET', 'POST'])
@@ -500,6 +506,76 @@ def api_reset_password(usuario_id):
         
     except Exception as e:
         db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+    
+# 🔥 NUEVO: Sistema de Backup y Restauración
+@app.route('/admin/backup')
+@login_required
+def backup_clientes():
+    """Generar backup de todos los clientes en JSON"""
+    if current_user.role != 'admin':
+        return jsonify({'error': 'No autorizado'}), 403
+    
+    try:
+        clientes = Cliente.query.filter_by(activo=True).all()
+        
+        datos_backup = {
+            'fecha_backup': datetime.utcnow().isoformat(),
+            'total_clientes': len(clientes),
+            'clientes': [{
+                'id': cliente.id,
+                'nombre': cliente.nombre,
+                'direccion': cliente.direccion,
+                'telefono': cliente.telefono,
+                'latitud': cliente.latitud,
+                'longitud': cliente.longitud,
+                'categoria': cliente.categoria,
+                'activo': cliente.activo
+            } for cliente in clientes]
+        }
+        
+        # Crear respuesta para descargar
+        from flask import make_response
+        from datetime import timezone
+        fecha_actual = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M')
+        response = make_response(jsonify(datos_backup))
+        response.headers['Content-Type'] = 'application/json'
+        response.headers['Content-Disposition'] = f'attachment; filename=backup_clientes_{fecha_actual}.json'
+        
+        return response
+        
+    except Exception as e:
+        return jsonify({'error': f'Error generando backup: {str(e)}'}), 500
+
+@app.route('/admin/estado-db')
+@login_required
+def estado_base_datos():
+    """Mostrar información del estado de la base de datos"""
+    if current_user.role != 'admin':
+        return jsonify({'error': 'No autorizado'}), 403
+    
+    try:
+        total_clientes = Cliente.query.filter_by(activo=True).count()
+        total_usuarios = User.query.count()
+        
+        # Información del archivo de base de datos
+        import os
+        if os.path.exists(db_path):
+            tamaño = os.path.getsize(db_path)
+            tamaño_mb = tamaño / (1024 * 1024)
+        else:
+            tamaño_mb = 0
+            
+        return jsonify({
+            'estado': 'ok',
+            'ubicacion_db': db_path,
+            'total_clientes': total_clientes,
+            'total_usuarios': total_usuarios,
+            'tamaño_db_mb': round(tamaño_mb, 2),
+            'en_render': 'RENDER' in os.environ
+        })
+        
+    except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':

@@ -111,6 +111,8 @@ function configurarEventListenersAdmin() {
     } else {
         console.error('❌ No se encontró el buscador admin o el contenedor de sugerencias');
     }
+    // 🔥 NUEVO: Autocompletado para campo nombre en formulario de cliente
+    configurarAutocompletadoNombre();
 }
 
 // 🔥 NUEVO: Función para activar GPS en admin
@@ -902,6 +904,174 @@ document.getElementById('btn-confirmar-eliminar').addEventListener('click', asyn
         usuarioAEliminar = null;
     }
 });
+
+// 🔥 NUEVA FUNCIÓN: Autocompletado para campo nombre en formulario de cliente
+function configurarAutocompletadoNombre() {
+    console.log('🔧 Configurando autocompletado para campo nombre...');
+    
+    const campoNombre = document.getElementById('nombre');
+    const sugerenciasContainer = document.getElementById('sugerencias-nombre');
+    const listaSugerencias = document.getElementById('lista-sugerencias-nombre');
+    
+    if (!campoNombre || !sugerenciasContainer) {
+        console.error('❌ No se encontraron elementos para autocompletado');
+        return;
+    }
+    
+    let timeoutBusqueda;
+    
+    // Event listener para cuando se escribe en el campo nombre
+    campoNombre.addEventListener('input', function(e) {
+        const termino = e.target.value.trim();
+        clearTimeout(timeoutBusqueda);
+        
+        // Ocultar sugerencias si el campo está vacío
+        if (termino.length === 0) {
+            ocultarSugerenciasNombre();
+            return;
+        }
+        
+        // Mostrar sugerencias después de 300ms de inactividad
+        timeoutBusqueda = setTimeout(() => {
+            buscarSugerenciasNombre(termino);
+        }, 300);
+    });
+    
+    // Ocultar sugerencias al hacer clic fuera
+    document.addEventListener('click', function(e) {
+        if (!campoNombre.contains(e.target) && !sugerenciasContainer.contains(e.target)) {
+            ocultarSugerenciasNombre();
+        }
+    });
+    
+    // Navegación con teclado
+    campoNombre.addEventListener('keydown', function(e) {
+        const sugerencias = document.querySelectorAll('#sugerencias-nombre .sugerencia-item');
+        const sugerenciaActiva = document.querySelector('#sugerencias-nombre .sugerencia-item.active');
+        
+        switch(e.key) {
+            case 'ArrowDown':
+                e.preventDefault();
+                navegarSugerenciasNombre(sugerencias, 1);
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                navegarSugerenciasNombre(sugerencias, -1);
+                break;
+            case 'Enter':
+                e.preventDefault();
+                if (sugerenciaActiva) {
+                    sugerenciaActiva.click();
+                }
+                break;
+            case 'Escape':
+                ocultarSugerenciasNombre();
+                break;
+        }
+    });
+}
+
+// Función para buscar sugerencias de nombres
+async function buscarSugerenciasNombre(termino) {
+    if (termino.length < 2) {
+        ocultarSugerenciasNombre();
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/buscar-clientes?q=${encodeURIComponent(termino)}`);
+        const clientes = await response.json();
+        
+        mostrarSugerenciasNombre(clientes, termino);
+    } catch (error) {
+        console.error('❌ Error buscando sugerencias:', error);
+    }
+}
+
+// Función para mostrar sugerencias
+function mostrarSugerenciasNombre(clientes, termino) {
+    const sugerenciasContainer = document.getElementById('sugerencias-nombre');
+    const listaSugerencias = document.getElementById('lista-sugerencias-nombre');
+    
+    if (!sugerenciasContainer || !listaSugerencias) return;
+    
+    if (clientes.length === 0) {
+        listaSugerencias.innerHTML = `
+            <div class="sugerencia-item text-muted p-2">
+                ✅ No se encontraron clientes con nombre similar
+            </div>
+        `;
+    } else {
+        listaSugerencias.innerHTML = '';
+        
+        clientes.slice(0, 5).forEach(cliente => {
+            const sugerenciaItem = document.createElement('div');
+            sugerenciaItem.className = 'sugerencia-item p-2 border-bottom';
+            sugerenciaItem.style.cursor = 'pointer';
+            sugerenciaItem.innerHTML = `
+                <div class="sugerencia-nombre fw-bold">${cliente.nombre}</div>
+                <div class="sugerencia-detalles small text-muted">
+                    📞 ${cliente.telefono || 'No disponible'} 
+                    <span class="badge bg-secondary ms-1">${cliente.categoria}</span>
+                </div>
+                <div class="sugerencia-detalles small text-muted">
+                    📍 ${cliente.direccion || 'No disponible'}
+                </div>
+            `;
+            
+            // Al hacer clic en una sugerencia
+            sugerenciaItem.addEventListener('click', function() {
+                document.getElementById('nombre').value = cliente.nombre;
+                ocultarSugerenciasNombre();
+                
+                // Opcional: Puedes llenar automáticamente otros campos si quieres
+                // document.getElementById('telefono').value = cliente.telefono || '';
+                // document.getElementById('direccion').value = cliente.direccion || '';
+            });
+            
+            listaSugerencias.appendChild(sugerenciaItem);
+        });
+        
+        // Agregar mensaje informativo
+        const mensajeInfo = document.createElement('div');
+        mensajeInfo.className = 'sugerencia-item text-info small p-2 border-top';
+        mensajeInfo.innerHTML = '💡 Haz clic en un cliente para usar su nombre';
+        listaSugerencias.appendChild(mensajeInfo);
+    }
+    
+    // Mostrar el contenedor de sugerencias
+    sugerenciasContainer.style.display = 'block';
+}
+
+// Función para ocultar sugerencias
+function ocultarSugerenciasNombre() {
+    const sugerenciasContainer = document.getElementById('sugerencias-nombre');
+    if (sugerenciasContainer) {
+        sugerenciasContainer.style.display = 'none';
+    }
+}
+
+// Función para navegar sugerencias con teclado
+function navegarSugerenciasNombre(sugerencias, direccion) {
+    if (sugerencias.length === 0) return;
+    
+    const sugerenciaActiva = document.querySelector('#sugerencias-nombre .sugerencia-item.active');
+    let siguienteIndex = 0;
+    
+    if (sugerenciaActiva) {
+        const currentIndex = Array.from(sugerencias).indexOf(sugerenciaActiva);
+        siguienteIndex = currentIndex + direccion;
+        
+        if (siguienteIndex < 0) siguienteIndex = sugerencias.length - 1;
+        if (siguienteIndex >= sugerencias.length) siguienteIndex = 0;
+        
+        sugerenciaActiva.classList.remove('active');
+    }
+    
+    if (sugerencias[siguienteIndex]) {
+        sugerencias[siguienteIndex].classList.add('active');
+    }
+}
 
 // Variable global para el ID del usuario actual (esto debe venir de tu sistema)
 // 🔥 CORREGIDO: ID del usuario admin actual

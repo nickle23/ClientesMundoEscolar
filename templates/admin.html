@@ -118,6 +118,17 @@
                     👥 <strong>Ver Todos los Clientes</strong>
                 </a>
             </li>
+                <li class="nav-item">
+                    <a class="nav-link py-3 border-bottom" href="/admin/backup" target="_blank"
+                    style="transition: all 0.3s ease;">
+                        💾 <strong>Descargar Backup Clientes</strong>
+                    </a>
+                    <li class="nav-item">
+                        <a class="nav-link py-3 border-bottom" href="/admin/estado-db" target="_blank"
+                        style="transition: all 0.3s ease;">
+                            📊 <strong>Estado Base de Datos</strong>
+                        </a>
+                    </li>
             <li class="nav-item">
                 <a class="nav-link py-3 border-bottom" href="#" data-bs-toggle="modal" data-bs-target="#agregarClienteModal" data-bs-dismiss="offcanvas"
                    style="transition: all 0.3s ease;">
@@ -146,9 +157,21 @@
                 <form id="form-agregar-cliente">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="mb-3">
+                            <div class="mb-3 position-relative">
                                 <label for="nombre" class="form-label">Nombre del Cliente *</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required 
+                                    autocomplete="off" placeholder="Escribe el nombre del cliente...">
+                                
+                                <!-- 🔥 NUEVO: Contenedor de sugerencias para evitar duplicados -->
+                                <div class="sugerencias-dropdown" id="sugerencias-nombre" style="display: none;">
+                                    <div id="lista-sugerencias-nombre">
+                                        <!-- Las sugerencias se cargarán aquí automáticamente -->
+                                    </div>
+                                </div>
+                                
+                                <small class="form-text text-muted">
+                                    💡 Se mostrarán coincidencias para evitar duplicados
+                                </small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -532,4 +555,31 @@
         }
     }
 </style>
+
+<script>
+// 🔥 SOLUCIÓN: Botones de backup en menú offcanvas
+document.addEventListener('DOMContentLoaded', function() {
+    // Forzar que los enlaces del menú funcionen
+    const enlacesMenu = document.querySelectorAll('#adminOffcanvas a[href]');
+    
+    enlacesMenu.forEach(enlace => {
+        enlace.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            // Si es un enlace de backup/estado, abrir en nueva pestaña
+            if (href.includes('/admin/backup') || href.includes('/admin/estado-db')) {
+                e.preventDefault();
+                window.open(href, '_blank');
+                
+                // Cerrar el menú offcanvas
+                const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('adminOffcanvas'));
+                if (offcanvas) {
+                    offcanvas.hide();
+                }
+            }
+        });
+    });
+});
+</script>
+
 {% endblock %}

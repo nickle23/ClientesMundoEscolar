@@ -4,6 +4,18 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
+# 🔥 NUEVO: Configuración para compatibilidad con PostgreSQL
+def configure_db(app):
+    with app.app_context():
+        # Para PostgreSQL, necesitamos manejar diferencias en tipos de datos
+        import os
+        if 'DATABASE_URL' in os.environ:
+            # Estamos en PostgreSQL - configuraciones específicas
+            print("🔧 Configurando PostgreSQL...")
+        else:
+            # Estamos en SQLite - configuraciones locales
+            print("🔧 Configurando SQLite local...")
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -12,12 +24,6 @@ class User(UserMixin, db.Model):
     activo = db.Column(db.Boolean, default=True)  # 🔥 NUEVO: para bloquear/activar
     fecha_creacion = db.Column(db.DateTime, default=db.func.current_timestamp())  # 🔥 NUEVO
     ultimo_acceso = db.Column(db.DateTime)  # 🔥 NUEVO
-    
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-    
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
     
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
