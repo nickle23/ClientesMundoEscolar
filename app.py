@@ -675,7 +675,7 @@ def restaurar_clientes():
                         resultados['errores'].append(f"Cliente {i+1}: {str(e)}")
                         continue
                 
-                # 🔥 2. NUEVO: PROCESAR USUARIOS
+                # 🔥 2. NUEVO: PROCESAR USUARIOS - VERSIÓN MEJORADA
                 for i, usuario_data in enumerate(datos_backup['usuarios']):
                     try:
                         # Verificar datos requeridos
@@ -689,18 +689,26 @@ def restaurar_clientes():
                         ).first()
                         
                         if not usuario_existente:
-                            # Crear nuevo usuario (sin contraseña por seguridad)
+                            # 🔥 CREAR NUEVO USUARIO CON CONTRASEña TEMPORAL
                             nuevo_usuario = User(
                                 username=usuario_data['username'],
                                 role=usuario_data['role'],
-                                activo=usuario_data.get('activo', True)
+                                activo=usuario_data.get('activo', True),
+                                fecha_creacion=datetime.fromisoformat(usuario_data['fecha_creacion']) if usuario_data.get('fecha_creacion') else None,
+                                ultimo_acceso=datetime.fromisoformat(usuario_data['ultimo_acceso']) if usuario_data.get('ultimo_acceso') else None
                             )
-                            # 🔥 IMPORTANTE: Asignar contraseña por defecto
-                            nuevo_usuario.set_password('temp123456')
+                            nuevo_usuario.set_password('temp123456')  # Contraseña temporal
                             db.session.add(nuevo_usuario)
                             resultados['usuarios_restaurados'] += 1
+                            print(f"✅ Usuario NUEVO creado: {usuario_data['username']} con contraseña temporal")
                         else:
+                            # 🔥 USUARIO EXISTENTE - ACTUALIZAR DATOS PERO MANTENER CONTRASEÑA ACTUAL
+                            usuario_existente.role = usuario_data['role']
+                            usuario_existente.activo = usuario_data.get('activo', True)
+                            usuario_existente.ultimo_acceso = datetime.fromisoformat(usuario_data['ultimo_acceso']) if usuario_data.get('ultimo_acceso') else usuario_existente.ultimo_acceso
+                            # 🔥 IMPORTANTE: NO modificamos la contraseña del usuario existente
                             resultados['usuarios_omitidos'] += 1
+                            print(f"⚠️ Usuario EXISTente actualizado: {usuario_data['username']} (contraseña preservada)")
                             
                     except Exception as e:
                         resultados['errores'].append(f"Usuario {i+1}: {str(e)}")
