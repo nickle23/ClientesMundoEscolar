@@ -8,6 +8,23 @@ document.addEventListener('DOMContentLoaded', function() {
     inicializarSistema();
 });
 
+// 🔥 NUEVA FUNCIÓN: Cerrar modal y ejecutar acción
+function cerrarModalYEjecutar(accion) {
+    console.log('🔒 Cerrando modal de clientes...');
+    
+    // Cerrar el modal de clientes
+    const modalClientes = bootstrap.Modal.getInstance(document.getElementById('modalTodosClientes'));
+    if (modalClientes) {
+        modalClientes.hide();
+    }
+    
+    // Pequeño delay para que el modal se cierre completamente
+    setTimeout(() => {
+        console.log('🎯 Ejecutando acción después de cerrar modal...');
+        accion();
+    }, 300);
+}
+
 function inicializarSistema() {
     // Inicializar mapa
     inicializarMapaAdmin();
@@ -22,6 +39,15 @@ function inicializarSistema() {
 
 function configurarEventListenersAdmin() {
     console.log('🔧 Configurando event listeners admin...');
+
+    // 🔥 NUEVO: Cargar clientes cuando se abre el modal
+    document.getElementById('modalTodosClientes').addEventListener('show.bs.modal', function () {
+        console.log('🎯 Modal de clientes abierto - cargando datos...');
+        // Pequeño delay para asegurar que el modal esté visible
+        setTimeout(() => {
+            cargarClientesEnModal();
+        }, 100);
+    });
     
     // Botón guardar cliente
     document.getElementById('btn-guardar-cliente').addEventListener('click', guardarCliente);
@@ -162,6 +188,56 @@ async function cargarClientes() {
         console.error('❌ Error cargando clientes:', error);
         alert('Error al cargar los clientes: ' + error.message);
     }
+}
+
+// 🔥 NUEVA FUNCIÓN: Cargar clientes en el modal
+function cargarClientesEnModal() {
+    console.log('🔄 Cargando clientes en modal...');
+    
+    // Usar la misma lógica que cargarClientes() pero para el modal
+    const tbodyModal = document.getElementById('cuerpo-tabla-clientes-modal');
+    const contadorModal = document.getElementById('contador-clientes-modal');
+    
+    if (!tbodyModal) {
+        console.error('❌ No se encontró el tbody del modal');
+        return;
+    }
+    
+    tbodyModal.innerHTML = '';
+    
+    // 🔥 ORDENAR clientes alfabéticamente (igual que antes)
+    const clientesOrdenados = [...clientes].sort((a, b) => {
+        return a.nombre.localeCompare(b.nombre);
+    });
+    
+    clientesOrdenados.forEach(cliente => {
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+            <td class="d-none d-md-table-cell">${cliente.nombre}</td>
+            <td class="d-none d-lg-table-cell">${cliente.direccion || 'No especificada'}</td>
+            <td class="d-none d-sm-table-cell">${cliente.telefono || '-'}</td>
+            <td class="d-none d-sm-table-cell"><span class="badge bg-secondary">${cliente.categoria}</span></td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="cerrarModalYEjecutar(() => centrarEnCliente(${cliente.id}))">
+                    🗺️ Ver en Mapa
+                </button>
+                <button class="btn btn-sm btn-outline-warning" onclick="cerrarModalYEjecutar(() => abrirEditarCliente(${cliente.id}))">
+                    ✏️ Editar
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="cerrarModalYEjecutar(() => eliminarCliente(${cliente.id}))">
+                    🗑️ Eliminar
+                </button>
+            </td>
+        `;
+        tbodyModal.appendChild(fila);
+    });
+    
+    // Actualizar contador del modal
+    if (contadorModal) {
+        contadorModal.textContent = `📊 ${clientes.length} clientes`;
+    }
+    
+    console.log('✅ Clientes cargados en modal:', clientes.length);
 }
 
 // Actualizar la interfaz con los clientes - ORDEN ALFABÉTICO
@@ -424,10 +500,11 @@ function navegarSugerenciasAdmin(sugerencias, direccion) {
     sugerencias[siguienteIndex].classList.add('active');
 }
 
-// Mostrar todos los clientes
+// Mostrar todos los clientes - AHORA EN MODAL
 function mostrarTodosLosClientes() {
-    actualizarInterfazClientes();
-    cargarClientesEnMapa(clientes);
+    // 🔥 Ahora abre el modal en lugar de mostrar la lista original
+    const modal = new bootstrap.Modal(document.getElementById('modalTodosClientes'));
+    modal.show();
 }
 
 // Función para normalizar texto
