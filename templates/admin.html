@@ -8,7 +8,7 @@
         <!-- Main content -->
         <div class="col-12 main-content mx-auto" style="max-width: 1400px; height: 100vh; overflow-y: auto;">
             <!-- Header Principal con Hamburguesa -->
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom admin-header">
                 <div class="d-flex align-items-center">
                     <!-- Botón Hamburguesa -->
                     <button class="btn btn-outline-primary btn-sm me-3" type="button" id="adminMenuBtn" data-bs-toggle="offcanvas" data-bs-target="#adminOffcanvas" 
@@ -152,14 +152,14 @@
 </div>
 
 <!-- Modal para Agregar Cliente -->
-<div class="modal fade" id="agregarClienteModal" tabindex="-1" aria-labelledby="agregarClienteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-responsive-custom">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-primary text-white py-3">
+<div class="modal fade modal-mobile-fixed" id="agregarClienteModal" tabindex="-1" aria-labelledby="agregarClienteModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-primary text-white py-3 modal-mobile-header">
                 <h5 class="modal-title fw-bold" id="agregarClienteModalLabel">➕ Agregar Nuevo Cliente</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-4">
+            <div class="modal-body p-4 modal-mobile-body">
                 <form id="form-agregar-cliente">
                     <div class="row">
                         <div class="col-md-6">
@@ -229,7 +229,7 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer bg-light py-3">
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="btn-guardar-cliente">Guardar Cliente</button>
             </div>
@@ -238,14 +238,14 @@
 </div>
 
 <!-- Modal para Editar Cliente -->
-<div class="modal fade" id="editarClienteModal" tabindex="-1" aria-labelledby="editarClienteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-responsive-custom">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-primary text-white py-3">
+<div class="modal fade modal-mobile-fixed" id="editarClienteModal" tabindex="-1" aria-labelledby="editarClienteModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-primary text-white py-3 modal-mobile-header">
                 <h5 class="modal-title fw-bold" id="editarClienteModalLabel">✏️ Editar Cliente</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-4">
+            <div class="modal-body p-4 modal-mobile-body">
                 <form id="form-editar-cliente">
                     <input type="hidden" id="editar-cliente-id" name="id">
                     
@@ -301,7 +301,7 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer bg-light py-3">
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="btn-actualizar-cliente">💾 Actualizar Cliente</button>
             </div>
@@ -310,14 +310,14 @@
 </div>
 
 <!-- Modal para Gestión de Usuarios -->
-<div class="modal fade" id="gestionUsuariosModal" tabindex="-1" aria-labelledby="gestionUsuariosModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-responsive-custom">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-primary text-white py-3">
+<div class="modal fade modal-mobile-fixed" id="gestionUsuariosModal" tabindex="-1" aria-labelledby="gestionUsuariosModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-primary text-white py-3 modal-mobile-header">
                 <h5 class="modal-title fw-bold" id="gestionUsuariosModalLabel">👥 Gestión de Usuarios</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-4">
+            <div class="modal-body p-4 modal-mobile-body">
                 <!-- Alertas -->
                 <div id="alert-usuarios" class="alert" style="display: none;"></div>
 
@@ -385,7 +385,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer bg-light py-3">
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
@@ -393,14 +393,14 @@
 </div>
 
 <!-- Modal para Editar Usuario -->
-<div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-responsive-custom">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-primary text-white py-3">
+<div class="modal fade modal-mobile-fixed" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-primary text-white py-3 modal-mobile-header">
                 <h5 class="modal-title fw-bold" id="modalEditarUsuarioLabel">✏️ Editar Usuario</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-4">
+            <div class="modal-body p-4 modal-mobile-body">
                 <form id="form-editar-usuario">
                     <input type="hidden" id="editar-usuario-id">
                     
@@ -429,7 +429,7 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer bg-light py-3">
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="btn-guardar-usuario">💾 Guardar Cambios</button>
             </div>
@@ -438,18 +438,18 @@
 </div>
 
 <!-- Modal de confirmación para eliminar usuario -->
-<div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" aria-labelledby="modalConfirmarEliminarLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-responsive-custom">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-warning text-dark py-3">
+<div class="modal fade modal-mobile-fixed" id="modalConfirmarEliminar" tabindex="-1" aria-labelledby="modalConfirmarEliminarLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-warning text-dark py-3 modal-mobile-header">
                 <h5 class="modal-title fw-bold" id="modalConfirmarEliminarLabel">⚠️ Confirmar Eliminación</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-4">
+            <div class="modal-body p-4 modal-mobile-body">
                 <p>¿Estás seguro de que quieres eliminar al usuario <strong id="usuario-eliminar-nombre"></strong>?</p>
                 <p class="text-danger"><small>Esta acción no se puede deshacer.</small></p>
             </div>
-            <div class="modal-footer bg-light py-3">
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-danger" id="btn-confirmar-eliminar">🗑️ Eliminar</button>
             </div>
@@ -458,14 +458,14 @@
 </div>
 
 <!-- Modal para Reiniciar Contraseña -->
-<div class="modal fade" id="modalResetPassword" tabindex="-1" aria-labelledby="modalResetPasswordLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-responsive-custom">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-warning text-dark py-3">
+<div class="modal fade modal-mobile-fixed" id="modalResetPassword" tabindex="-1" aria-labelledby="modalResetPasswordLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-warning text-dark py-3 modal-mobile-header">
                 <h5 class="modal-title fw-bold" id="modalResetPasswordLabel">🔑 Reiniciar Contraseña</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-4">
+            <div class="modal-body p-4 modal-mobile-body">
                 <p>Reiniciar contraseña para: <strong id="usuario-reset-nombre"></strong></p>
                 <div class="mb-3">
                     <label for="nueva-password" class="form-label">Nueva Contraseña</label>
@@ -473,7 +473,7 @@
                     <div class="form-text">Contraseña por defecto: 123456</div>
                 </div>
             </div>
-            <div class="modal-footer bg-light py-3">
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-warning" id="btn-confirmar-reset">🔑 Reiniciar Contraseña</button>
             </div>
@@ -482,14 +482,14 @@
 </div>
 
 <!-- Modal Ver Todos los Clientes -->
-<div class="modal fade" id="modalTodosClientes" tabindex="-1" aria-labelledby="modalTodosClientesLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-responsive-custom">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-primary text-white py-3">
+<div class="modal fade modal-mobile-fixed" id="modalTodosClientes" tabindex="-1" aria-labelledby="modalTodosClientesLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-primary text-white py-3 modal-mobile-header">
                 <h5 class="modal-title fw-bold" id="modalTodosClientesLabel">👥 Todos los Clientes</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-3">
+            <div class="modal-body p-3 modal-mobile-body">
                 <!-- Contador -->
                 <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                     <span class="text-muted small" id="contador-clientes-modal">Cargando...</span>
@@ -514,7 +514,7 @@
                     </table>
                 </div>
             </div>
-            <div class="modal-footer bg-light py-3">
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
@@ -561,124 +561,151 @@
         scrollbar-width: none;
     }
 
-    /* 🔥 SOLUCIÓN DEFINITIVA PARA MODALES RESPONSIVE */
-    .modal-responsive-custom {
-        max-width: 95%;
-        max-height: 90vh;
-        margin: 2rem auto;
+    /* 🔥 SOLUCIÓN DEFINITIVA PARA MÓVILES - MODALES FULLSCREEN */
+    .modal-mobile-fixed {
+        z-index: 9999 !important;
     }
     
-    /* Para móviles pequeños */
-    @media (max-width: 576px) {
-        .modal-responsive-custom {
-            max-width: 98%;
-            max-height: 95vh;
-            margin: 1rem auto;
+    .modal-mobile-fixed .modal-dialog {
+        z-index: 10000 !important;
+    }
+    
+    .modal-mobile-fixed .modal-content {
+        z-index: 10001 !important;
+    }
+
+    /* 🔥 MODALES FULLSCREEN EN MÓVIL */
+    @media (max-width: 768px) {
+        .modal-fullscreen-mobile {
+            max-width: 100% !important;
+            max-height: 100% !important;
+            margin: 0 !important;
+            height: 100% !important;
+            width: 100% !important;
         }
         
-        .modal-body {
+        .modal-mobile-content {
+            height: 100vh !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+        }
+        
+        .modal-mobile-header {
+            position: sticky;
+            top: 0;
+            z-index: 10002;
+            border-radius: 0 !important;
+        }
+        
+        .modal-mobile-body {
+            max-height: calc(100vh - 140px) !important;
+            overflow-y: auto !important;
             padding: 1rem !important;
         }
         
-        .modal-header, .modal-footer {
-            padding: 0.75rem 1rem !important;
+        .modal-mobile-footer {
+            position: sticky;
+            bottom: 0;
+            z-index: 10002;
+            border-radius: 0 !important;
+            background: white !important;
+            border-top: 1px solid #dee2e6 !important;
+        }
+        
+        /* Asegurar que el modal ocupe toda la pantalla */
+        .modal-mobile-fixed.show .modal-dialog {
+            transform: none !important;
+            display: flex !important;
+            align-items: stretch !important;
+            min-height: 100vh !important;
+        }
+        
+        /* Fondo del modal más oscuro en móviles */
+        .modal-backdrop {
+            z-index: 9998 !important;
+            background-color: rgba(0, 0, 0, 0.8) !important;
+        }
+        
+        /* Header fijo del admin con z-index más bajo */
+        .admin-header {
+            z-index: 100 !important;
+            position: relative;
         }
     }
-    
-    /* Para tablets */
-    @media (min-width: 577px) and (max-width: 768px) {
-        .modal-responsive-custom {
-            max-width: 90%;
-            max-height: 85vh;
-        }
-    }
-    
-    /* Para laptops y escritorio */
+
+    /* 🔥 COMPORTAMIENTO NORMAL EN ESCRITORIO */
     @media (min-width: 769px) {
-        .modal-responsive-custom {
+        .modal-fullscreen-mobile {
             max-width: 800px;
             max-height: 80vh;
         }
-    }
-
-    /* 🔥 POSICIONAMIENTO ABSOLUTO PARA MODALES EN MÓVIL */
-    @media (max-width: 768px) {
-        .modal {
-            padding-left: 0 !important;
-            padding-right: 0 !important;
+        
+        .modal-mobile-content {
+            height: auto;
+            border-radius: 12px;
         }
         
-        .modal-dialog {
-            margin: 10px !important;
-            min-height: calc(100vh - 20px) !important;
-            display: flex !important;
-            align-items: center !important;
-        }
-        
-        .modal-content {
-            max-height: calc(100vh - 40px) !important;
-            overflow: hidden !important;
-        }
-        
-        .modal-body {
-            max-height: calc(100vh - 140px) !important;
-            overflow-y: auto !important;
+        .modal-mobile-body {
+            max-height: 60vh;
         }
     }
 
-    /* 🔥 MEJORAS ESPECÍFICAS PARA TABLETS */
-    @media (min-width: 769px) and (max-width: 1024px) {
-        .modal-responsive-custom {
-            max-width: 95%;
-        }
-        
-        .modal-body {
-            max-height: 60vh !important;
-        }
-    }
-
-    /* 🔥 GARANTIZAR QUE LOS MODALES SIEMPRE SEAN VISIBLES */
-    .modal.show .modal-dialog {
-        transform: none !important;
-    }
-    
-    .modal-backdrop {
-        z-index: 1040 !important;
-    }
-    
-    .modal {
-        z-index: 1050 !important;
-    }
-
-    /* 🔥 MEJORAS PARA FORMULARIOS EN MÓVIL */
+    /* 🔥 MEJORAS ESPECÍFICAS PARA MÓVILES PEQUEÑOS */
     @media (max-width: 576px) {
+        .modal-mobile-body {
+            padding: 0.75rem !important;
+        }
+        
+        .modal-mobile-header,
+        .modal-mobile-footer {
+            padding: 0.75rem !important;
+        }
+        
         .form-control, .form-select {
             font-size: 16px !important; /* Evita zoom en iOS */
         }
         
-        .btn-group-vertical .btn {
-            margin-bottom: 5px;
+        /* Botones más grandes en móviles */
+        .btn {
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
         }
         
-        .table-responsive {
-            font-size: 14px;
+        .btn-sm {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.9rem;
         }
     }
 
-    /* 🔥 MEJORAS PARA BOTONES EN MÓVIL */
-    @media (max-width: 768px) {
-        .btn-sm {
-            padding: 0.5rem 0.75rem;
-            font-size: 0.875rem;
+    /* 🔥 MEJORAS PARA TABLETS */
+    @media (min-width: 577px) and (max-width: 768px) {
+        .modal-fullscreen-mobile {
+            max-width: 95%;
+            max-height: 90vh;
+            margin: 2.5vh auto !important;
         }
         
-        .btn-group-vertical {
-            width: 100%;
+        .modal-mobile-content {
+            height: 95vh;
+            border-radius: 12px;
         }
         
-        .btn-group-vertical .btn {
-            margin: 2px 0;
+        .modal-mobile-body {
+            max-height: calc(95vh - 140px);
         }
+    }
+
+    /* 🔥 GARANTIZAR QUE LOS MODALES SIEMPRE ESTÉN POR ENCIMA */
+    .modal {
+        z-index: 9999 !important;
+    }
+    
+    .modal-dialog {
+        z-index: 10000 !important;
+    }
+    
+    .modal-content {
+        z-index: 10001 !important;
     }
 
     /* 🔥 SUGERENCIAS DROPDOWN RESPONSIVE */
@@ -691,7 +718,7 @@
         border: 1px solid #dee2e6;
         border-radius: 0.375rem;
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-        z-index: 1060;
+        z-index: 10002;
         max-height: 200px;
         overflow-y: auto;
     }
@@ -753,6 +780,13 @@
             min-width: 40px;
         }
     }
+
+    /* 🔥 PREVENIR SCROLL DEL BODY CUANDO EL MODAL ESTÁ ABIERTO */
+    body.modal-open {
+        overflow: hidden !important;
+        position: fixed !important;
+        width: 100% !important;
+    }
 </style>
 
 <script>
@@ -777,17 +811,45 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// 🔥 INICIALIZACIÓN MEJORADA DE MODALES PARA DISPOSITIVOS MÓVILES
+// 🔥 SOLUCIÓN DEFINITIVA PARA MODALES EN MÓVILES
 document.addEventListener('DOMContentLoaded', function() {
-    // Forzar redibujado de modales en dispositivos móviles
+    // Forzar modales en móviles
     if (window.innerWidth <= 768) {
-        const modales = document.querySelectorAll('.modal');
+        const modales = document.querySelectorAll('.modal-mobile-fixed');
+        
         modales.forEach(modal => {
-            modal.style.display = 'none'; // Reset temporal
-            setTimeout(() => {
-                modal.style.display = 'block';
-            }, 10);
+            // Configurar evento para cuando se abre el modal
+            modal.addEventListener('show.bs.modal', function() {
+                // Prevenir scroll del body
+                document.body.classList.add('modal-open');
+                document.body.style.overflow = 'hidden';
+                document.body.style.position = 'fixed';
+                document.body.style.width = '100%';
+            });
+            
+            // Configurar evento para cuando se cierra el modal
+            modal.addEventListener('hidden.bs.modal', function() {
+                // Restaurar scroll del body
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
+            });
         });
+    }
+});
+
+// 🔥 AJUSTAR MODALES AL CAMBIAR ORIENTACIÓN DEL DISPOSITIVO
+window.addEventListener('orientationchange', function() {
+    const modalAbierto = document.querySelector('.modal-mobile-fixed.show');
+    if (modalAbierto && window.innerWidth <= 768) {
+        // Forzar redibujado del modal
+        setTimeout(() => {
+            const modalDialog = modalAbierto.querySelector('.modal-dialog');
+            if (modalDialog) {
+                modalDialog.style.transform = 'translateY(0)';
+            }
+        }, 300);
     }
 });
 </script>
