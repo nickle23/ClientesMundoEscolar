@@ -45,10 +45,12 @@ function configurarModalesMobile() {
     }
 }
 
-// 🔥 NUEVA FUNCIÓN: Forzar modal al frente en móviles
+// 🔥 NUEVA FUNCIÓN: Forzar modal al frente en móviles - MEJORADA
 function forzarModalArriba(modal) {
     if (window.innerWidth <= 768) {
-        // Aplicar estilos directamente para garantizar visibilidad
+        console.log('🎯 Aplicando correcciones de tamaño para móvil...');
+        
+        // Aplicar estilos directamente para garantizar visibilidad y tamaño correcto
         modal.style.display = 'block';
         modal.style.zIndex = '9999';
         modal.style.position = 'fixed';
@@ -65,13 +67,39 @@ function forzarModalArriba(modal) {
             modalDialog.style.maxWidth = '100%';
             modalDialog.style.maxHeight = '100%';
             modalDialog.style.height = '100%';
+            modalDialog.style.width = '100%';
         }
         
         const modalContent = modal.querySelector('.modal-content');
         if (modalContent) {
             modalContent.style.zIndex = '10001';
-            modalContent.style.height = '100%';
+            modalContent.style.height = '100vh';
+            modalContent.style.maxHeight = '100vh';
             modalContent.style.borderRadius = '0';
+            modalContent.style.display = 'flex';
+            modalContent.style.flexDirection = 'column';
+        }
+        
+        const modalHeader = modal.querySelector('.modal-header');
+        const modalFooter = modal.querySelector('.modal-footer');
+        const modalBody = modal.querySelector('.modal-body');
+        
+        // 🔥 CALCULAR ALTURAS EXACTAS
+        const headerHeight = modalHeader ? modalHeader.offsetHeight : 60;
+        const footerHeight = modalFooter ? modalFooter.offsetHeight : 60;
+        const availableHeight = window.innerHeight - headerHeight - footerHeight;
+        
+        console.log('📐 Cálculos de altura:');
+        console.log('  - Ventana:', window.innerHeight, 'px');
+        console.log('  - Header:', headerHeight, 'px');
+        console.log('  - Footer:', footerHeight, 'px');
+        console.log('  - Disponible para body:', availableHeight, 'px');
+        
+        if (modalBody) {
+            modalBody.style.maxHeight = availableHeight + 'px';
+            modalBody.style.height = availableHeight + 'px';
+            modalBody.style.overflowY = 'auto';
+            modalBody.style.flex = '1';
         }
     }
 }
