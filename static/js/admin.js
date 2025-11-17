@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     configurarModalesMobile();
 });
 
-// 🔥 NUEVA FUNCIÓN: Configurar modales específicamente para móviles
+
+// 🔥 NUEVA FUNCIÓN: Configurar modales específicamente para móviles - CORREGIDA
 function configurarModalesMobile() {
     console.log('📱 Configurando modales para móviles...');
     
@@ -24,21 +25,23 @@ function configurarModalesMobile() {
             modal.addEventListener('show.bs.modal', function(e) {
                 console.log('📱 Modal móvil abriéndose...');
                 forzarModalArriba(this);
+                
+                // 🔥 CORRECCIÓN: Solo ocultar scroll, NO cambiar position
+                document.body.style.overflow = 'hidden';
+                document.body.classList.add('modal-open-mobile');
             });
             
             modal.addEventListener('shown.bs.modal', function() {
                 console.log('✅ Modal móvil completamente visible');
                 ajustarScrollModal(this);
             });
+            
+            modal.addEventListener('hidden.bs.modal', function() {
+                // 🔥 CORRECCIÓN: Restaurar scroll sin afectar position
+                document.body.style.overflow = '';
+                document.body.classList.remove('modal-open-mobile');
+            });
         });
-        
-        // Prevenir problemas de scroll en iOS
-        document.addEventListener('touchmove', function(e) {
-            const modalAbierto = document.querySelector('.modal-mobile-fixed.show');
-            if (modalAbierto && !modalAbierto.contains(e.target)) {
-                e.preventDefault();
-            }
-        }, { passive: false });
     }
 }
 
