@@ -6,7 +6,61 @@ let gpsAdminActivado = false;
 // Cuando el documento esté listo
 document.addEventListener('DOMContentLoaded', function() {
     inicializarSistema();
+    configurarModalesResponsive();
 });
+
+// 🔥 NUEVA FUNCIÓN: Configurar modales para dispositivos responsive
+function configurarModalesResponsive() {
+    console.log('📱 Configurando modales responsive...');
+    
+    // Ajustar modales cuando se muestren
+    const modales = document.querySelectorAll('.modal');
+    modales.forEach(modal => {
+        modal.addEventListener('show.bs.modal', function() {
+            ajustarModalParaDispositivo(this);
+        });
+        
+        modal.addEventListener('shown.bs.modal', function() {
+            // Forzar redibujado en móviles
+            if (window.innerWidth <= 768) {
+                setTimeout(() => {
+                    const modalContent = this.querySelector('.modal-content');
+                    if (modalContent) {
+                        modalContent.style.transform = 'translateY(0)';
+                    }
+                }, 50);
+            }
+        });
+    });
+    
+    // Ajustar en redimensionamiento de ventana
+    window.addEventListener('resize', function() {
+        const modalAbierto = document.querySelector('.modal.show');
+        if (modalAbierto) {
+            ajustarModalParaDispositivo(modalAbierto);
+        }
+    });
+}
+
+// 🔥 NUEVA FUNCIÓN: Ajustar modal según dispositivo
+function ajustarModalParaDispositivo(modal) {
+    const modalDialog = modal.querySelector('.modal-dialog');
+    const modalBody = modal.querySelector('.modal-body');
+    
+    if (!modalDialog || !modalBody) return;
+    
+    if (window.innerWidth <= 576) {
+        // Móviles pequeños
+        modalBody.style.maxHeight = 'calc(100vh - 140px)';
+        modalDialog.style.margin = '10px';
+    } else if (window.innerWidth <= 768) {
+        // Tablets y móviles grandes
+        modalBody.style.maxHeight = 'calc(100vh - 150px)';
+    } else {
+        // Escritorio
+        modalBody.style.maxHeight = '70vh';
+    }
+}
 
 // 🔥 NUEVA FUNCIÓN: Cerrar modal y ejecutar acción
 function cerrarModalYEjecutar(accion) {
