@@ -104,7 +104,7 @@
     </div>
 </div>
 
-<!-- 🔥 NUEVO: Menú Hamburguesa Profesional -->
+<!-- Menú Hamburguesa Profesional -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="adminOffcanvas" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
     <div class="offcanvas-header border-bottom" style="background: white;">
         <h5 class="offcanvas-title fw-bold">📊 Panel de Control</h5>
@@ -151,7 +151,7 @@
     </div>
 </div>
 
-<!-- Modal para Agregar Cliente - CORREGIDO -->
+<!-- Modal para Agregar Cliente -->
 <div class="modal fade" id="agregarClienteModal" tabindex="-1" aria-labelledby="agregarClienteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
         <div class="modal-content border-0 shadow-lg">
@@ -237,7 +237,7 @@
     </div>
 </div>
 
-<!-- Modal para Editar Cliente - CORREGIDO -->
+<!-- Modal para Editar Cliente -->
 <div class="modal fade" id="editarClienteModal" tabindex="-1" aria-labelledby="editarClienteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
         <div class="modal-content border-0 shadow-lg">
@@ -309,7 +309,7 @@
     </div>
 </div>
 
-<!-- Modal para Gestión de Usuarios - CORREGIDO -->
+<!-- Modal para Gestión de Usuarios -->
 <div class="modal fade" id="gestionUsuariosModal" tabindex="-1" aria-labelledby="gestionUsuariosModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
         <div class="modal-content border-0 shadow-lg">
@@ -392,7 +392,7 @@
     </div>
 </div>
 
-<!-- Modal para Editar Usuario - CORREGIDO -->
+<!-- Modal para Editar Usuario -->
 <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
         <div class="modal-content border-0 shadow-lg">
@@ -437,7 +437,7 @@
     </div>
 </div>
 
-<!-- Modal de confirmación para eliminar usuario - CORREGIDO -->
+<!-- Modal de confirmación para eliminar usuario -->
 <div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" aria-labelledby="modalConfirmarEliminarLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
         <div class="modal-content border-0 shadow-lg">
@@ -457,7 +457,7 @@
     </div>
 </div>
 
-<!-- Modal para Reiniciar Contraseña - CORREGIDO -->
+<!-- Modal para Reiniciar Contraseña -->
 <div class="modal fade" id="modalResetPassword" tabindex="-1" aria-labelledby="modalResetPasswordLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
         <div class="modal-content border-0 shadow-lg">
@@ -481,7 +481,7 @@
     </div>
 </div>
 
-<!-- Modal Ver Todos los Clientes - CORREGIDO -->
+<!-- Modal Ver Todos los Clientes -->
 <div class="modal fade" id="modalTodosClientes" tabindex="-1" aria-labelledby="modalTodosClientesLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
         <div class="modal-content border-0 shadow-lg">
@@ -561,7 +561,7 @@
         scrollbar-width: none;
     }
 
-    /* 🔥 MODALES PROFESIONALES - CORREGIDOS */
+    /* 🔥 MODALES PROFESIONALES */
     .modal-content {
         border: none;
         border-radius: 12px;
@@ -578,6 +578,29 @@
         border-top: 1px solid #dee2e6;
     }
 
+    /* 🔥 SOLUCIÓN DEFINITIVA PARA MODALES EN MÓVIL */
+    @media (max-width: 768px) {
+        .modal.show .modal-dialog {
+            margin-top: 80px !important;
+            margin-bottom: 20px !important;
+        }
+        
+        .modal-body {
+            max-height: calc(100vh - 220px) !important;
+        }
+        
+        .modal-content {
+            margin: 0 10px;
+        }
+    }
+
+    /* Asegurar que los modales sean siempre visibles */
+    .modal-dialog {
+        display: flex !important;
+        align-items: center !important;
+        min-height: 100vh !important;
+    }
+
     /* Responsive mejorado */
     @media (max-width: 576px) {
         .main-content {
@@ -588,35 +611,21 @@
             width: 150px !important;
         }
     }
-    
-    @media (max-width: 768px) {
-        .modal-body {
-            padding: 1rem !important;
-        }
-    }
-
-    /* Asegurar que los modales nunca se escondan */
-    .modal-dialog {
-        margin: 2rem auto;
-    }
 </style>
 
 <script>
-// 🔥 SOLUCIÓN: Botones de backup en menú offcanvas
+// Botones de backup en menú offcanvas
 document.addEventListener('DOMContentLoaded', function() {
-    // Forzar que los enlaces del menú funcionen
     const enlacesMenu = document.querySelectorAll('#adminOffcanvas a[href]');
     
     enlacesMenu.forEach(enlace => {
         enlace.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
             
-            // Si es un enlace de backup/estado, abrir en nueva pestaña
             if (href.includes('/admin/backup') || href.includes('/admin/estado-db')) {
                 e.preventDefault();
                 window.open(href, '_blank');
                 
-                // Cerrar el menú offcanvas
                 const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('adminOffcanvas'));
                 if (offcanvas) {
                     offcanvas.hide();
