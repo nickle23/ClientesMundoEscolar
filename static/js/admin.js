@@ -213,20 +213,27 @@ function cargarClientesEnModal() {
     clientesOrdenados.forEach(cliente => {
         const fila = document.createElement('tr');
         fila.innerHTML = `
-            <td><strong>${cliente.nombre}</strong></td> <!-- 🔥 VISIBLE EN TODOS -->
-            <td>${cliente.direccion || 'No especificada'}</td> <!-- 🔥 VISIBLE EN TODOS -->
-            <td>${cliente.telefono || '-'}</td> <!-- 🔥 VISIBLE EN TODOS -->
-            <td><span class="badge bg-secondary">${cliente.categoria}</span></td> <!-- 🔥 VISIBLE EN TODOS -->
-            <td>
-                <button class="btn btn-sm btn-outline-primary" onclick="cerrarModalYEjecutar(() => centrarEnCliente(${cliente.id}))">
-                    🗺️ Ver en Mapa
-                </button>
-                <button class="btn btn-sm btn-outline-warning" onclick="cerrarModalYEjecutar(() => abrirEditarCliente(${cliente.id}))">
-                    ✏️ Editar
-                </button>
-                <button class="btn btn-sm btn-outline-danger" onclick="cerrarModalYEjecutar(() => eliminarCliente(${cliente.id}))">
-                    🗑️ Eliminar
-                </button>
+            <td class="align-middle">
+                <div class="fw-medium">${cliente.nombre}</div>
+                <small class="text-muted d-md-none">${cliente.telefono || 'Sin teléfono'}</small>
+            </td>
+            <td class="align-middle d-none d-md-table-cell">${cliente.direccion || 'No especificada'}</td>
+            <td class="align-middle d-none d-sm-table-cell">${cliente.telefono || '-'}</td>
+            <td class="align-middle">
+                <span class="badge bg-secondary">${cliente.categoria}</span>
+            </td>
+            <td class="align-middle text-center">
+                <div class="btn-group-vertical btn-group-sm" role="group">
+                    <button class="btn btn-outline-primary" onclick="cerrarModalYEjecutar(() => centrarEnCliente(${cliente.id}))" title="Ver en mapa">
+                        🗺️
+                    </button>
+                    <button class="btn btn-outline-warning" onclick="cerrarModalYEjecutar(() => abrirEditarCliente(${cliente.id}))" title="Editar cliente">
+                        ✏️
+                    </button>
+                    <button class="btn btn-outline-danger" onclick="cerrarModalYEjecutar(() => eliminarCliente(${cliente.id}))" title="Eliminar cliente">
+                        🗑️
+                    </button>
+                </div>
             </td>
         `;
         tbodyModal.appendChild(fila);
