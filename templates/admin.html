@@ -151,16 +151,15 @@
     </div>
 </div>
 
-<!-- Modal para Agregar Cliente - MEJORADO -->
+<!-- Modal para Agregar Cliente - CORREGIDO -->
 <div class="modal fade" id="agregarClienteModal" tabindex="-1" aria-labelledby="agregarClienteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 85vh; margin-top: 60px;"></div>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header bg-primary text-white py-3">
                 <h5 class="modal-title fw-bold" id="agregarClienteModalLabel">➕ Agregar Nuevo Cliente</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4" style="max-height: 70vh; overflow-y: auto;">
-                <!-- 🔥 MANTENER EL FORMULARIO ORIGINAL COMPLETO AQUÍ -->
                 <form id="form-agregar-cliente">
                     <div class="row">
                         <div class="col-md-6">
@@ -169,7 +168,6 @@
                                 <input type="text" class="form-control" id="nombre" name="nombre" required 
                                     autocomplete="off" placeholder="Escribe el nombre del cliente...">
                                 
-                                <!-- 🔥 MANTENER sugerencias para evitar duplicados -->
                                 <div class="sugerencias-dropdown" id="sugerencias-nombre" style="display: none;">
                                     <div id="lista-sugerencias-nombre">
                                         <!-- Las sugerencias se cargarán aquí automáticamente -->
@@ -239,15 +237,15 @@
     </div>
 </div>
 
-<!-- Modal para Editar Cliente - MEJORADO -->
+<!-- Modal para Editar Cliente - CORREGIDO -->
 <div class="modal fade" id="editarClienteModal" tabindex="-1" aria-labelledby="editarClienteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="editarClienteModalLabel">✏️ Editar Cliente</h5>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white py-3">
+                <h5 class="modal-title fw-bold" id="editarClienteModalLabel">✏️ Editar Cliente</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4" style="max-height: 70vh; overflow-y: auto;">
                 <form id="form-editar-cliente">
                     <input type="hidden" id="editar-cliente-id" name="id">
                     
@@ -303,7 +301,7 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer bg-light py-3">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="btn-actualizar-cliente">💾 Actualizar Cliente</button>
             </div>
@@ -311,22 +309,22 @@
     </div>
 </div>
 
-<!-- Modal para Gestión de Usuarios - MEJORADO -->
+<!-- Modal para Gestión de Usuarios - CORREGIDO -->
 <div class="modal fade" id="gestionUsuariosModal" tabindex="-1" aria-labelledby="gestionUsuariosModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="gestionUsuariosModalLabel">👥 Gestión de Usuarios</h5>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white py-3">
+                <h5 class="modal-title fw-bold" id="gestionUsuariosModalLabel">👥 Gestión de Usuarios</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4" style="max-height: 70vh; overflow-y: auto;">
                 <!-- Alertas -->
                 <div id="alert-usuarios" class="alert" style="display: none;"></div>
 
                 <div class="row">
                     <!-- Formulario para crear usuario -->
                     <div class="col-md-5">
-                        <div class="card h-100">
+                        <div class="card h-100 border-0 shadow-sm">
                             <div class="card-header bg-primary text-white">
                                 <h5 class="card-title mb-0">➕ Crear Nuevo Usuario</h5>
                             </div>
@@ -360,15 +358,15 @@
 
                     <!-- Lista de usuarios existentes -->
                     <div class="col-md-7">
-                        <div class="card h-100">
+                        <div class="card h-100 border-0 shadow-sm">
                             <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">📋 Usuarios del Sistema</h5>
                                 <span class="badge bg-light text-dark" id="contador-usuarios">0 usuarios</span>
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-                                    <table class="table table-striped table-sm">
-                                        <thead>
+                            <div class="card-body p-0">
+                                <div class="table-responsive" style="max-height: 300px;">
+                                    <table class="table table-striped table-sm mb-0">
+                                        <thead class="table-light sticky-top">
                                             <tr>
                                                 <th>Usuario</th>
                                                 <th>Tipo</th>
@@ -387,22 +385,22 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer bg-light py-3">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal para Editar Usuario - MEJORADO -->
+<!-- Modal para Editar Usuario - CORREGIDO -->
 <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="modalEditarUsuarioLabel">✏️ Editar Usuario</h5>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white py-3">
+                <h5 class="modal-title fw-bold" id="modalEditarUsuarioLabel">✏️ Editar Usuario</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4" style="max-height: 70vh; overflow-y: auto;">
                 <form id="form-editar-usuario">
                     <input type="hidden" id="editar-usuario-id">
                     
@@ -431,7 +429,7 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer bg-light py-3">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="btn-guardar-usuario">💾 Guardar Cambios</button>
             </div>
@@ -439,19 +437,19 @@
     </div>
 </div>
 
-<!-- Modal de confirmación para eliminar usuario - MEJORADO -->
+<!-- Modal de confirmación para eliminar usuario - CORREGIDO -->
 <div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" aria-labelledby="modalConfirmarEliminarLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-warning text-dark">
-                <h5 class="modal-title" id="modalConfirmarEliminarLabel">⚠️ Confirmar Eliminación</h5>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-warning text-dark py-3">
+                <h5 class="modal-title fw-bold" id="modalConfirmarEliminarLabel">⚠️ Confirmar Eliminación</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4">
                 <p>¿Estás seguro de que quieres eliminar al usuario <strong id="usuario-eliminar-nombre"></strong>?</p>
                 <p class="text-danger"><small>Esta acción no se puede deshacer.</small></p>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer bg-light py-3">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-danger" id="btn-confirmar-eliminar">🗑️ Eliminar</button>
             </div>
@@ -459,15 +457,15 @@
     </div>
 </div>
 
-<!-- Modal para Reiniciar Contraseña - MEJORADO -->
+<!-- Modal para Reiniciar Contraseña - CORREGIDO -->
 <div class="modal fade" id="modalResetPassword" tabindex="-1" aria-labelledby="modalResetPasswordLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-warning text-dark">
-                <h5 class="modal-title" id="modalResetPasswordLabel">🔑 Reiniciar Contraseña</h5>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-warning text-dark py-3">
+                <h5 class="modal-title fw-bold" id="modalResetPasswordLabel">🔑 Reiniciar Contraseña</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4">
                 <p>Reiniciar contraseña para: <strong id="usuario-reset-nombre"></strong></p>
                 <div class="mb-3">
                     <label for="nueva-password" class="form-label">Nueva Contraseña</label>
@@ -475,7 +473,7 @@
                     <div class="form-text">Contraseña por defecto: 123456</div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer bg-light py-3">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-warning" id="btn-confirmar-reset">🔑 Reiniciar Contraseña</button>
             </div>
@@ -483,17 +481,15 @@
     </div>
 </div>
 
-<!-- 🔥 MODAL FLOTANTE PERFECTO: Ver Todos los Clientes -->
+<!-- Modal Ver Todos los Clientes - CORREGIDO -->
 <div class="modal fade" id="modalTodosClientes" tabindex="-1" aria-labelledby="modalTodosClientesLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 85vh; margin-top: 60px;"></div>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 90vh;">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header bg-primary text-white py-3">
-                <h5 class="modal-title fw-bold" id="modalTodosClientesLabel">
-                    👥 Todos los Clientes
-                </h5>
+                <h5 class="modal-title fw-bold" id="modalTodosClientesLabel">👥 Todos los Clientes</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-3" style="max-height: 60vh; overflow-y: auto;">
+            <div class="modal-body p-3" style="max-height: 70vh; overflow-y: auto;">
                 <!-- Contador -->
                 <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                     <span class="text-muted small" id="contador-clientes-modal">Cargando...</span>
@@ -518,8 +514,8 @@
                     </table>
                 </div>
             </div>
-            <div class="modal-footer bg-light py-2">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+            <div class="modal-footer bg-light py-3">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -565,7 +561,7 @@
         scrollbar-width: none;
     }
 
-    /* 🔥 MODALES PROFESIONALES */
+    /* 🔥 MODALES PROFESIONALES - CORREGIDOS */
     .modal-content {
         border: none;
         border-radius: 12px;
@@ -582,7 +578,7 @@
         border-top: 1px solid #dee2e6;
     }
 
-    /* Responsive */
+    /* Responsive mejorado */
     @media (max-width: 576px) {
         .main-content {
             padding-left: 10px;
@@ -591,17 +587,17 @@
         #buscador-clientes {
             width: 150px !important;
         }
-        
-        .modal-dialog {
-            margin: 10px;
-        }
     }
     
     @media (max-width: 768px) {
-        .modal-xl {
-            max-width: 95%;
-            margin: 10px auto;
+        .modal-body {
+            padding: 1rem !important;
         }
+    }
+
+    /* Asegurar que los modales nunca se escondan */
+    .modal-dialog {
+        margin: 2rem auto;
     }
 </style>
 
