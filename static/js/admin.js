@@ -34,6 +34,13 @@ function configurarModalesMobile() {
             modal.addEventListener('shown.bs.modal', function() {
                 console.log('✅ Modal móvil completamente visible');
                 ajustarScrollModal(this);
+                // 🔥 NUEVO: Aplicar posicionamiento perfecto
+                setTimeout(() => {
+                    posicionarModalPerfecto(this);
+                    // Forzar scroll al inicio
+                    const modalBody = this.querySelector('.modal-mobile-body');
+                    if (modalBody) modalBody.scrollTop = 0;
+                }, 50);
             });
             
             modal.addEventListener('hidden.bs.modal', function() {
@@ -42,6 +49,27 @@ function configurarModalesMobile() {
                 document.body.classList.remove('modal-open-mobile');
             });
         });
+    }
+}
+
+// 🔥 NUEVA FUNCIÓN: Posicionamiento perfecto para modales móviles
+function posicionarModalPerfecto(modal) {
+    if (window.innerWidth <= 768) {
+        const modalDialog = modal.querySelector('.modal-dialog');
+        const modalContent = modal.querySelector('.modal-content');
+        
+        if (modalDialog && modalContent) {
+            // Calcular posición considerando el header fijo
+            const headerHeight = 56; // Altura del navbar
+            const viewportHeight = window.innerHeight;
+            const modalHeight = modalContent.offsetHeight;
+            
+            // Posicionar con margen superior mínimo
+            const topMargin = Math.max(headerHeight + 10, (viewportHeight - modalHeight) / 2);
+            
+            modalDialog.style.marginTop = topMargin + 'px';
+            modalDialog.style.marginBottom = '20px';
+        }
     }
 }
 
