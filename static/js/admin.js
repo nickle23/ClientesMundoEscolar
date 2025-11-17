@@ -6,63 +6,87 @@ let gpsAdminActivado = false;
 // Cuando el documento esté listo
 document.addEventListener('DOMContentLoaded', function() {
     inicializarSistema();
-    configurarModalesResponsive();
+    configurarModalesMobile();
 });
 
-// 🔥 NUEVA FUNCIÓN: Configurar modales para dispositivos responsive
-function configurarModalesResponsive() {
-    console.log('📱 Configurando modales responsive...');
+// 🔥 NUEVA FUNCIÓN: Configurar modales específicamente para móviles
+function configurarModalesMobile() {
+    console.log('📱 Configurando modales para móviles...');
     
-    // Ajustar modales cuando se muestren
-    const modales = document.querySelectorAll('.modal');
-    modales.forEach(modal => {
-        modal.addEventListener('show.bs.modal', function() {
-            ajustarModalParaDispositivo(this);
+    if (window.innerWidth <= 768) {
+        const modales = document.querySelectorAll('.modal-mobile-fixed');
+        
+        modales.forEach(modal => {
+            // Forzar backdrop estático en móviles
+            modal.setAttribute('data-bs-backdrop', 'static');
+            
+            // Configurar eventos específicos para móviles
+            modal.addEventListener('show.bs.modal', function(e) {
+                console.log('📱 Modal móvil abriéndose...');
+                forzarModalArriba(this);
+            });
+            
+            modal.addEventListener('shown.bs.modal', function() {
+                console.log('✅ Modal móvil completamente visible');
+                ajustarScrollModal(this);
+            });
         });
         
-        modal.addEventListener('shown.bs.modal', function() {
-            // Forzar redibujado en móviles
-            if (window.innerWidth <= 768) {
-                setTimeout(() => {
-                    const modalContent = this.querySelector('.modal-content');
-                    if (modalContent) {
-                        modalContent.style.transform = 'translateY(0)';
-                    }
-                }, 50);
+        // Prevenir problemas de scroll en iOS
+        document.addEventListener('touchmove', function(e) {
+            const modalAbierto = document.querySelector('.modal-mobile-fixed.show');
+            if (modalAbierto && !modalAbierto.contains(e.target)) {
+                e.preventDefault();
             }
-        });
-    });
-    
-    // Ajustar en redimensionamiento de ventana
-    window.addEventListener('resize', function() {
-        const modalAbierto = document.querySelector('.modal.show');
-        if (modalAbierto) {
-            ajustarModalParaDispositivo(modalAbierto);
-        }
-    });
-}
-
-// 🔥 NUEVA FUNCIÓN: Ajustar modal según dispositivo
-function ajustarModalParaDispositivo(modal) {
-    const modalDialog = modal.querySelector('.modal-dialog');
-    const modalBody = modal.querySelector('.modal-body');
-    
-    if (!modalDialog || !modalBody) return;
-    
-    if (window.innerWidth <= 576) {
-        // Móviles pequeños
-        modalBody.style.maxHeight = 'calc(100vh - 140px)';
-        modalDialog.style.margin = '10px';
-    } else if (window.innerWidth <= 768) {
-        // Tablets y móviles grandes
-        modalBody.style.maxHeight = 'calc(100vh - 150px)';
-    } else {
-        // Escritorio
-        modalBody.style.maxHeight = '70vh';
+        }, { passive: false });
     }
 }
 
-// 🔥 NUEVA FUNCIÓN: Cerrar modal y ejecutar acción
+// 🔥 NUEVA FUNCIÓN: Forzar modal al frente en móviles
+function forzarModalArriba(modal) {
+    if (window.innerWidth <= 768) {
+        // Aplicar estilos directamente para garantizar visibilidad
+        modal.style.display = 'block';
+        modal.style.zIndex = '9999';
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.background = 'rgba(0,0,0,0.8)';
+        
+        const modalDialog = modal.querySelector('.modal-dialog');
+        if (modalDialog) {
+            modalDialog.style.zIndex = '10000';
+            modalDialog.style.margin = '0';
+            modalDialog.style.maxWidth = '100%';
+            modalDialog.style.maxHeight = '100%';
+            modalDialog.style.height = '100%';
+        }
+        
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.style.zIndex = '10001';
+            modalContent.style.height = '100%';
+            modalContent.style.borderRadius = '0';
+        }
+    }
+}
+
+// 🔥 NUEVA FUNCIÓN: Ajustar scroll en modales móviles
+function ajustarScrollModal(modal) {
+    if (window.innerWidth <= 768) {
+        const modalBody = modal.querySelector('.modal-mobile-body');
+        if (modalBody) {
+            // Asegurar que el modal body tenga scroll correcto
+            setTimeout(() => {
+                modalBody.scrollTop = 0;
+            }, 100);
+        }
+    }
+}
+
+// Función para cerrar modal y ejecutar acción
 function cerrarModalYEjecutar(accion) {
     console.log('🔒 Cerrando modal de clientes...');
     
@@ -94,7 +118,7 @@ function inicializarSistema() {
 function configurarEventListenersAdmin() {
     console.log('🔧 Configurando event listeners admin...');
 
-    // 🔥 NUEVO: Cargar clientes cuando se abre el modal
+    // Cargar clientes cuando se abre el modal
     document.getElementById('modalTodosClientes').addEventListener('show.bs.modal', function () {
         console.log('🎯 Modal de clientes abierto - cargando datos...');
         // Pequeño delay para asegurar que el modal esté visible
@@ -109,12 +133,13 @@ function configurarEventListenersAdmin() {
     // Botón ver clientes
     document.getElementById('btn-ver-clientes').addEventListener('click', cargarClientes);
     
-    // 🔥 NUEVO: Botón GPS para admin
+    // Botón GPS para admin
     const btnGPSAdmin = document.getElementById('btn-actualizar-ubicacion-admin');
     if (btnGPSAdmin) {
         btnGPSAdmin.addEventListener('click', activarGPSAdmin);
         console.log('✅ Botón GPS admin configurado');
     }
+    
     // Botón actualizar cliente
     document.getElementById('btn-actualizar-cliente').addEventListener('click', actualizarCliente);
     
@@ -191,11 +216,12 @@ function configurarEventListenersAdmin() {
     } else {
         console.error('❌ No se encontró el buscador admin o el contenedor de sugerencias');
     }
-    // 🔥 NUEVO: Autocompletado para campo nombre en formulario de cliente
+    
+    // Autocompletado para campo nombre en formulario de cliente
     configurarAutocompletadoNombre();
 }
 
-// 🔥 NUEVO: Función para activar GPS en admin
+// Función para activar GPS en admin
 function activarGPSAdmin() {
     console.log('🎯 Activando GPS en panel admin...');
     
@@ -244,7 +270,7 @@ async function cargarClientes() {
     }
 }
 
-// 🔥 NUEVA FUNCIÓN: Cargar clientes en el modal
+// Cargar clientes en el modal
 function cargarClientesEnModal() {
     console.log('🔄 Cargando clientes en modal...');
     
@@ -259,7 +285,7 @@ function cargarClientesEnModal() {
     
     tbodyModal.innerHTML = '';
     
-    // 🔥 ORDENAR clientes alfabéticamente (igual que antes)
+    // ORDENAR clientes alfabéticamente
     const clientesOrdenados = [...clientes].sort((a, b) => {
         return a.nombre.localeCompare(b.nombre);
     });
@@ -306,7 +332,7 @@ function actualizarInterfazClientes() {
     const tbody = document.getElementById('cuerpo-tabla-clientes');
     tbody.innerHTML = '';
     
-    // 🔥 ORDENAR clientes alfabéticamente por nombre
+    // ORDENAR clientes alfabéticamente por nombre
     const clientesOrdenados = [...clientes].sort((a, b) => {
         return a.nombre.localeCompare(b.nombre);
     });
@@ -406,7 +432,7 @@ function buscarClientes(termino) {
         return nombreNormalizado.includes(terminoNormalizado);
     });
 
-    // 🔥 ORDENAR resultados alfabéticamente
+    // ORDENAR resultados alfabéticamente
     const clientesOrdenados = clientesFiltrados.sort((a, b) => {
         return a.nombre.localeCompare(b.nombre);
     });
@@ -445,7 +471,7 @@ function buscarClientes(termino) {
     cargarClientesEnMapa(clientesFiltrados);
 }
 
-// 🔥 NUEVO: Mostrar sugerencias para admin
+// Mostrar sugerencias para admin
 function mostrarSugerenciasAdmin(termino) {
     console.log('🎯 Mostrar sugerencias admin para:', termino);
     console.log('📊 Total clientes disponibles:', clientes.length);
@@ -533,7 +559,7 @@ function mostrarSugerenciasAdmin(termino) {
     console.log('✅ Sugerencias mostradas');
 }
 
-// 🔥 NUEVO: Ocultar sugerencias para admin
+// Ocultar sugerencias para admin
 function ocultarSugerenciasAdmin() {
     const sugerenciasContainer = document.getElementById('sugerencias-container-admin');
     if (sugerenciasContainer) {
@@ -541,7 +567,7 @@ function ocultarSugerenciasAdmin() {
     }
 }
 
-// 🔥 NUEVO: Navegación por teclado para admin
+// Navegación por teclado para admin
 function navegarSugerenciasAdmin(sugerencias, direccion) {
     if (sugerencias.length === 0) return;
     
@@ -563,7 +589,7 @@ function navegarSugerenciasAdmin(sugerencias, direccion) {
 
 // Mostrar todos los clientes - AHORA EN MODAL
 function mostrarTodosLosClientes() {
-    // 🔥 Ahora abre el modal en lugar de mostrar la lista original
+    // Ahora abre el modal en lugar de mostrar la lista original
     const modal = new bootstrap.Modal(document.getElementById('modalTodosClientes'));
     modal.show();
 }
@@ -621,7 +647,7 @@ async function eliminarCliente(id) {
     }
 }
 
-// 🔥 NUEVO: Abrir modal de edición
+// Abrir modal de edición
 function abrirEditarCliente(id) {
     const cliente = clientes.find(c => c.id === id);
     if (!cliente) {
@@ -643,7 +669,7 @@ function abrirEditarCliente(id) {
     modal.show();
 }
 
-// 🔥 NUEVO: Actualizar cliente
+// Actualizar cliente
 async function actualizarCliente() {
     const form = document.getElementById('form-editar-cliente');
     const formData = new FormData(form);
@@ -665,7 +691,6 @@ async function actualizarCliente() {
     };
     
     try {
-        // 🔥 IMPORTANTE: Necesitamos crear esta ruta en app.py
         const response = await fetch(`/api/clientes/${clienteId}`, {
             method: 'PUT',
             headers: {
@@ -693,7 +718,7 @@ async function actualizarCliente() {
     }
 }
 
-// 🔥 NUEVO COMPLETO: Gestión de Usuarios Avanzada
+// Gestión de Usuarios Avanzada
 let usuarioAEliminar = null;
 let usuarioAReset = null;
 let usuarioAEditar = null;
@@ -841,7 +866,7 @@ function editarUsuario(id, username, role, activo) {
     document.getElementById('editar-activo').checked = activo;
     document.getElementById('editar-password').value = '';
     
-    // 🔥 PERMITIR edición completa sin restricciones
+    // PERMITIR edición completa sin restricciones
     const roleSelect = document.getElementById('editar-role');
     const activoCheckbox = document.getElementById('editar-activo');
     const modalTitle = document.querySelector('#modalEditarUsuario .modal-title');
@@ -875,7 +900,7 @@ document.getElementById('btn-guardar-usuario').addEventListener('click', async f
         activo: formData.get('activo') === 'on'
     };
     
-    // 🔥 ADVERTENCIA si el usuario se está desactivando a sí mismo
+    // ADVERTENCIA si el usuario se está desactivando a sí mismo
     if (usuarioAEditar === currentUserId && !data.activo) {
         const confirmar = confirm(`⚠️ ¡ADVERTENCIA!\n\nEstás a punto de DESACTIVAR tu propio usuario.\n\nSi continúas:\n• NO podrás iniciar sesión\n• Perderás acceso inmediatamente\n• Necesitarás ayuda de otro admin\n\n¿Continuar?`);
         if (!confirmar) return;
@@ -905,7 +930,7 @@ document.getElementById('btn-guardar-usuario').addEventListener('click', async f
             mostrarAlerta('✅ Usuario actualizado correctamente');
             cargarUsuarios();
             
-            // 🔥 Redirigir si se desactivó a sí mismo
+            // Redirigir si se desactivó a sí mismo
             if (usuarioAEditar === currentUserId && !data.activo) {
                 setTimeout(() => {
                     alert('Tu usuario ha sido desactivado. Serás redirigido.');
@@ -928,7 +953,7 @@ document.getElementById('btn-guardar-usuario').addEventListener('click', async f
 async function toggleUsuario(id, username, activoActual) {
     const accion = activoActual ? 'desactivar' : 'activar';
     
-    // 🔥 ADVERTENCIA ESPECIAL si es el usuario actual
+    // ADVERTENCIA ESPECIAL si es el usuario actual
     if (id === currentUserId && activoActual) {
         const confirmar = confirm(`⚠️ ¡ADVERTENCIA CRÍTICA!\n\nEstás a punto de DESACTIVAR tu propio usuario (${username}).\n\nSi lo haces:\n• NO podrás volver a iniciar sesión\n• Perderás acceso al sistema\n• Necesitarás que otro admin te reactive\n\n¿Estás ABSOLUTAMENTE seguro?`);
         if (!confirmar) return;
@@ -950,7 +975,7 @@ async function toggleUsuario(id, username, activoActual) {
             mostrarAlerta(`✅ Usuario ${result.activo ? 'activado' : 'desactivado'} correctamente`);
             cargarUsuarios();
             
-            // 🔥 ADVERTENCIA si se desactivó a sí mismo
+            // ADVERTENCIA si se desactivó a sí mismo
             if (id === currentUserId && !result.activo) {
                 setTimeout(() => {
                     alert('⚠️ Has desactivado tu propio usuario. Serás redirigido al login.');
@@ -1053,7 +1078,7 @@ document.getElementById('btn-confirmar-eliminar').addEventListener('click', asyn
     }
 });
 
-// 🔥 NUEVA FUNCIÓN: Autocompletado para campo nombre en formulario de cliente
+// Autocompletado para campo nombre en formulario de cliente
 function configurarAutocompletadoNombre() {
     console.log('🔧 Configurando autocompletado para campo nombre...');
     
@@ -1171,10 +1196,6 @@ function mostrarSugerenciasNombre(clientes, termino) {
             sugerenciaItem.addEventListener('click', function() {
                 document.getElementById('nombre').value = cliente.nombre;
                 ocultarSugerenciasNombre();
-                
-                // Opcional: Puedes llenar automáticamente otros campos si quieres
-                // document.getElementById('telefono').value = cliente.telefono || '';
-                // document.getElementById('direccion').value = cliente.direccion || '';
             });
             
             listaSugerencias.appendChild(sugerenciaItem);
@@ -1221,6 +1242,5 @@ function navegarSugerenciasNombre(sugerencias, direccion) {
     }
 }
 
-// Variable global para el ID del usuario actual (esto debe venir de tu sistema)
-// 🔥 CORREGIDO: Obtener ID del usuario actual dinámicamente
+// Variable global para el ID del usuario actual
 const currentUserId = window.currentUserID || 1;
