@@ -482,27 +482,27 @@
     </div>
 </div>
 
-<!-- 🔥 MODAL PROFESIONAL: Ver Todos los Clientes -->
-<div class="modal fade" id="modalTodosClientes" tabindex="-1" aria-labelledby="modalTodosClientesLabel" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-fullscreen-md-down modal-xl modal-dialog-centered modal-dialog-scrollable">
+<!-- 🔥 MODAL FLOTANTE PERFECTO: Ver Todos los Clientes -->
+<div class="modal fade" id="modalTodosClientes" tabindex="-1" aria-labelledby="modalTodosClientesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 95%; max-height: 85vh;">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header bg-primary text-white py-3">
-                <h5 class="modal-title fs-6 fs-md-5" id="modalTodosClientesLabel">
+                <h5 class="modal-title fw-bold" id="modalTodosClientesLabel">
                     👥 Todos los Clientes
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-3 p-md-4">
+            <div class="modal-body p-3" style="max-height: 60vh; overflow-y: auto;">
                 <!-- Contador -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                     <span class="text-muted small" id="contador-clientes-modal">Cargando...</span>
-                    <small class="text-muted">Orden alfabético</small>
+                    <small class="text-muted badge bg-light text-dark">Orden alfabético</small>
                 </div>
                 
-                <!-- Tabla responsive profesional -->
-                <div class="table-responsive border rounded">
+                <!-- Tabla compacta y responsive -->
+                <div class="table-responsive">
                     <table class="table table-hover table-sm mb-0">
-                        <thead class="table-light">
+                        <thead class="table-light sticky-top">
                             <tr>
                                 <th class="fw-semibold">Nombre</th>
                                 <th class="fw-semibold d-none d-md-table-cell">Dirección</th>
@@ -517,7 +517,7 @@
                     </table>
                 </div>
             </div>
-            <div class="modal-footer bg-light py-3">
+            <div class="modal-footer bg-light py-2">
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
