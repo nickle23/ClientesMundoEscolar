@@ -1,0 +1,859 @@
+{% extends "base.html" %}
+
+{% block title %}Panel Administrador - Sistema de Clientes{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Main content -->
+        <div class="col-12 main-content mx-auto" style="max-width: 1400px; height: 100vh; overflow-y: auto;">
+            <!-- Header Principal con Hamburguesa -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom admin-header">
+                <div class="d-flex align-items-center">
+                    <!-- Botón Hamburguesa -->
+                    <button class="btn btn-outline-primary btn-sm me-3" type="button" id="adminMenuBtn" data-bs-toggle="offcanvas" data-bs-target="#adminOffcanvas" 
+                            style="border-radius: 8px; padding: 8px 12px;">
+                        ☰ <span class="d-none d-sm-inline">Menú</span>
+                    </button>
+                    <h1 class="h4 h-md-2 mb-0">🌎 Admin - Mundo Escolar</h1>
+                </div>
+                
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <!-- Estado GPS -->
+                    <div class="me-3 d-none d-md-block">
+                        <small id="estado-ubicacion-admin" class="text-muted">
+                            📍 GPS: No activado
+                        </small>
+                    </div>
+                    
+                    <!-- Buscador -->
+                    <div class="me-2 position-relative" id="buscador-container-admin">
+                        <input type="text" 
+                            class="form-control" 
+                            id="buscador-clientes" 
+                            placeholder="🔍 Buscar cliente..."
+                            style="width: 200px;"
+                            autocomplete="off">
+                            
+                        <!-- Panel de sugerencias -->
+                        <div class="dropdown-menu position-absolute" id="sugerencias-container-admin" 
+                            style="display: none; max-height: 300px; overflow-y: auto; width: 100%; z-index: 1050; top: 100%; left: 0;">
+                            <div id="lista-sugerencias-admin">
+                                <!-- Las sugerencias se cargarán aquí -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Botón GPS -->
+                    <button class="btn btn-warning btn-sm me-2" type="button" id="btn-actualizar-ubicacion-admin"
+                            title="Activar GPS en panel admin">
+                        🚀 GPS
+                    </button>
+                    
+                    <!-- Contador -->
+                    <div class="btn-group">
+                        <span class="btn btn-sm btn-outline-secondary" id="contador-clientes">
+                            Cargando...
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estado GPS para móvil -->
+            <div class="d-md-none mb-3">
+                <small id="estado-ubicacion-admin-mobile" class="text-muted">
+                    📍 GPS: No activado
+                </small>
+            </div>
+
+            <!-- Mapa -->
+            <div class="card mx-auto" style="max-width: 1400px;">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">🗺️ Mapa de Clientes</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div id="map-admin" style="height: 600px; width: 100%; border-radius: 0 0 8px 8px;"></div>
+                </div>
+            </div>
+
+            <!-- Lista de Clientes - OCULTA INICIALMENTE -->
+            <div class="card mt-4 mx-auto d-none" id="lista-clientes-original" style="max-width: 1400px;">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">📋 Lista de Clientes</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="tabla-clientes">
+                            <thead>
+                                <tr>
+                                    <th class="d-none d-md-table-cell">Nombre</th>
+                                    <th class="d-none d-lg-table-cell">Dirección</th>
+                                    <th class="d-none d-sm-table-cell">Teléfono</th>
+                                    <th class="d-none d-sm-table-cell">Categoría</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cuerpo-tabla-clientes">
+                                <!-- Los clientes se cargarán aquí con JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Menú Hamburguesa Profesional -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="adminOffcanvas" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+    <div class="offcanvas-header border-bottom" style="background: white;">
+        <h5 class="offcanvas-title fw-bold">📊 Panel de Control</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active py-3 border-bottom" href="#" data-bs-toggle="modal" data-bs-target="#modalTodosClientes" data-bs-dismiss="offcanvas" 
+                style="transition: all 0.3s ease; border-left: 4px solid #0d6efd;">
+                    👥 <strong>Ver Todos los Clientes</strong>
+                </a>
+            </li>
+                <li class="nav-item">
+                    <a class="nav-link py-3 border-bottom" href="/admin/backup" target="_blank"
+                    style="transition: all 0.3s ease;">
+                        💾 <strong>Descargar Backup Completo</strong>
+                    </a>
+                <li class="nav-item">
+                     <a class="nav-link py-3 border-bottom" href="/admin/estado-db" target="_blank"
+                     style="transition: all 0.3s ease;">
+                        📊 <strong>Estado Base de Datos</strong>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link py-3 border-bottom" href="/admin/restore" target="_blank"
+                    style="transition: all 0.3s ease;">
+                        🔄 <strong>Restaurar desde Backup</strong>
+                    </a>
+                </li>
+            <li class="nav-item">
+                <a class="nav-link py-3 border-bottom" href="#" data-bs-toggle="modal" data-bs-target="#agregarClienteModal" data-bs-dismiss="offcanvas"
+                   style="transition: all 0.3s ease;">
+                    ➕ <strong>Agregar Nuevo Cliente</strong>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link py-3 border-bottom" href="#" data-bs-toggle="modal" data-bs-target="#gestionUsuariosModal" data-bs-dismiss="offcanvas"
+                   style="transition: all 0.3s ease;">
+                    👥 <strong>Gestión de Usuarios</strong>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Modal para Agregar Cliente -->
+<div class="modal fade modal-mobile-fixed" id="agregarClienteModal" tabindex="-1" aria-labelledby="agregarClienteModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-primary text-white py-3 modal-mobile-header">
+                <h5 class="modal-title fw-bold" id="agregarClienteModalLabel">➕ Agregar Nuevo Cliente</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 modal-mobile-body">
+                <form id="form-agregar-cliente">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3 position-relative">
+                                <label for="nombre" class="form-label">Nombre del Cliente *</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required 
+                                    autocomplete="off" placeholder="Escribe el nombre del cliente...">
+                                
+                                <div class="sugerencias-dropdown" id="sugerencias-nombre" style="display: none;">
+                                    <div id="lista-sugerencias-nombre">
+                                        <!-- Las sugerencias se cargarán aquí automáticamente -->
+                                    </div>
+                                </div>
+                                
+                                <small class="form-text text-muted">
+                                    💡 Se mostrarán coincidencias para evitar duplicados
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="telefono" name="telefono">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Dirección *</label>
+                        <input type="text" class="form-control" id="direccion" name="direccion" required>
+                        <small class="form-text text-muted">Puedes pegar un link de Google Maps o escribir la dirección</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="latitud" class="form-label">Latitud *</label>
+                                <input type="number" step="any" class="form-control" id="latitud" name="latitud" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="longitud" class="form-label">Longitud *</label>
+                                <input type="number" step="any" class="form-control" id="longitud" name="longitud" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="categoria" class="form-label">Categoría</label>
+                        <select class="form-select" id="categoria" name="categoria">
+                            <option value="Librería">📚 Librería</option>
+                            <option value="Papelería">📄 Papelería</option>
+                            <option value="Tienda Escolar">🎒 Tienda Escolar</option>
+                            <option value="Colegio">🏫 Colegio</option>
+                            <option value="Universidad">🎓 Universidad</option>
+                            <option value="Oficina">🏢 Oficina</option>
+                            <option value="Distribuidor">🚚 Distribuidor</option>
+                            <option value="Bodega">🏭 Bodega</option>
+                            <option value="Casa">🏠 Casa</option>
+                            <option value="Otro">📦 Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <small>💡 <strong>Consejo:</strong> Para obtener coordenadas, ve a <a href="https://maps.google.com" target="_blank">Google Maps</a>, haz clic derecho en cualquier ubicación y selecciona "¿Qué hay aquí?"</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-guardar-cliente">Guardar Cliente</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Editar Cliente -->
+<div class="modal fade modal-mobile-fixed" id="editarClienteModal" tabindex="-1" aria-labelledby="editarClienteModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-primary text-white py-3 modal-mobile-header">
+                <h5 class="modal-title fw-bold" id="editarClienteModalLabel">✏️ Editar Cliente</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 modal-mobile-body">
+                <form id="form-editar-cliente">
+                    <input type="hidden" id="editar-cliente-id" name="id">
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editar-nombre" class="form-label">Nombre del Cliente *</label>
+                                <input type="text" class="form-control" id="editar-nombre" name="nombre" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editar-telefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="editar-telefono" name="telefono">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="editar-direccion" class="form-label">Dirección *</label>
+                        <input type="text" class="form-control" id="editar-direccion" name="direccion" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editar-latitud" class="form-label">Latitud *</label>
+                                <input type="number" step="any" class="form-control" id="editar-latitud" name="latitud" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editar-longitud" class="form-label">Longitud *</label>
+                                <input type="number" step="any" class="form-control" id="editar-longitud" name="longitud" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editar-categoria" class="form-label">Categoría</label>
+                        <select class="form-select" id="editar-categoria" name="categoria">
+                            <option value="Librería">📚 Librería</option>
+                            <option value="Papelería">📄 Papelería</option>
+                            <option value="Tienda Escolar">🎒 Tienda Escolar</option>
+                            <option value="Colegio">🏫 Colegio</option>
+                            <option value="Universidad">🎓 Universidad</option>
+                            <option value="Oficina">🏢 Oficina</option>
+                            <option value="Distribuidor">🚚 Distribuidor</option>
+                            <option value="Bodega">🏭 Bodega</option>
+                            <option value="Casa">🏠 Casa</option>
+                            <option value="Otro">📦 Otro</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-actualizar-cliente">💾 Actualizar Cliente</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Gestión de Usuarios -->
+<div class="modal fade modal-mobile-fixed" id="gestionUsuariosModal" tabindex="-1" aria-labelledby="gestionUsuariosModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-primary text-white py-3 modal-mobile-header">
+                <h5 class="modal-title fw-bold" id="gestionUsuariosModalLabel">👥 Gestión de Usuarios</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 modal-mobile-body">
+                <!-- Alertas -->
+                <div id="alert-usuarios" class="alert" style="display: none;"></div>
+
+                <div class="row">
+                    <!-- Formulario para crear usuario -->
+                    <div class="col-md-5">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">➕ Crear Nuevo Usuario</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="form-crear-usuario">
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Usuario *</label>
+                                        <input type="text" class="form-control" id="username" name="username" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Contraseña *</label>
+                                        <input type="password" class="form-control" id="password" name="password" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="role" class="form-label">Tipo de Usuario *</label>
+                                        <select class="form-select" id="role" name="role" required>
+                                            <option value="trabajador">🚗 Trabajador</option>
+                                            <option value="admin">👑 Administrador</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-success w-100" id="btn-crear-usuario">
+                                        Crear Usuario
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lista de usuarios existentes -->
+                    <div class="col-md-7">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">📋 Usuarios del Sistema</h5>
+                                <span class="badge bg-light text-dark" id="contador-usuarios">0 usuarios</span>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive" style="max-height: 300px;">
+                                    <table class="table table-striped table-sm mb-0">
+                                        <thead class="table-light sticky-top">
+                                            <tr>
+                                                <th>Usuario</th>
+                                                <th>Tipo</th>
+                                                <th>Estado</th>
+                                                <th>Último Acceso</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabla-usuarios-body">
+                                            <!-- Los usuarios se cargarán con JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Editar Usuario -->
+<div class="modal fade modal-mobile-fixed" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-primary text-white py-3 modal-mobile-header">
+                <h5 class="modal-title fw-bold" id="modalEditarUsuarioLabel">✏️ Editar Usuario</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 modal-mobile-body">
+                <form id="form-editar-usuario">
+                    <input type="hidden" id="editar-usuario-id">
+                    
+                    <div class="mb-3">
+                        <label for="editar-username" class="form-label">Usuario *</label>
+                        <input type="text" class="form-control" id="editar-username" name="username" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="editar-role" class="form-label">Tipo de Usuario *</label>
+                        <select class="form-select" id="editar-role" name="role" required>
+                            <option value="trabajador">🚗 Trabajador</option>
+                            <option value="admin">👑 Administrador</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="editar-password" class="form-label">Nueva Contraseña (dejar vacío para no cambiar)</label>
+                        <input type="password" class="form-control" id="editar-password" name="password">
+                        <div class="form-text">Si no quieres cambiar la contraseña, deja este campo vacío</div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="editar-activo" name="activo">
+                        <label class="form-check-label" for="editar-activo">Usuario activo</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-guardar-usuario">💾 Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación para eliminar usuario -->
+<div class="modal fade modal-mobile-fixed" id="modalConfirmarEliminar" tabindex="-1" aria-labelledby="modalConfirmarEliminarLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-warning text-dark py-3 modal-mobile-header">
+                <h5 class="modal-title fw-bold" id="modalConfirmarEliminarLabel">⚠️ Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 modal-mobile-body">
+                <p>¿Estás seguro de que quieres eliminar al usuario <strong id="usuario-eliminar-nombre"></strong>?</p>
+                <p class="text-danger"><small>Esta acción no se puede deshacer.</small></p>
+            </div>
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="btn-confirmar-eliminar">🗑️ Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Reiniciar Contraseña -->
+<div class="modal fade modal-mobile-fixed" id="modalResetPassword" tabindex="-1" aria-labelledby="modalResetPasswordLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-warning text-dark py-3 modal-mobile-header">
+                <h5 class="modal-title fw-bold" id="modalResetPasswordLabel">🔑 Reiniciar Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 modal-mobile-body">
+                <p>Reiniciar contraseña para: <strong id="usuario-reset-nombre"></strong></p>
+                <div class="mb-3">
+                    <label for="nueva-password" class="form-label">Nueva Contraseña</label>
+                    <input type="password" class="form-control" id="nueva-password" value="123456">
+                    <div class="form-text">Contraseña por defecto: 123456</div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-warning" id="btn-confirmar-reset">🔑 Reiniciar Contraseña</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ver Todos los Clientes -->
+<div class="modal fade modal-mobile-fixed" id="modalTodosClientes" tabindex="-1" aria-labelledby="modalTodosClientesLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-mobile">
+        <div class="modal-content border-0 shadow-lg modal-mobile-content">
+            <div class="modal-header bg-primary text-white py-3 modal-mobile-header">
+                <h5 class="modal-title fw-bold" id="modalTodosClientesLabel">👥 Todos los Clientes</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3 modal-mobile-body">
+                <!-- Contador -->
+                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                    <span class="text-muted small" id="contador-clientes-modal">Cargando...</span>
+                    <small class="text-muted badge bg-light text-dark">Orden alfabético</small>
+                </div>
+                
+                <!-- Tabla compacta y responsive -->
+                <div class="table-responsive">
+                    <table class="table table-hover table-sm mb-0">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th class="fw-semibold">Nombre</th>
+                                <th class="fw-semibold d-none d-md-table-cell">Dirección</th>
+                                <th class="fw-semibold d-none d-sm-table-cell">Teléfono</th>
+                                <th class="fw-semibold">Categoría</th>
+                                <th class="fw-semibold text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpo-tabla-clientes-modal">
+                            <!-- Los clientes se cargarán aquí con JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer bg-light py-3 modal-mobile-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}
+
+{% block styles %}
+<style>
+    /* 🔥 MODALES COMPACTOS PARA MÓVILES */
+    
+    /* Estilos base */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    
+    .container-fluid {
+        height: 100vh;
+    }
+    
+    .main-content {
+        height: 100%;
+        overflow-y: auto;
+        padding-bottom: 20px;
+    }
+    
+    .main-content::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .main-content {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    /* 🔥 MODALES PEQUEÑOS EN MÓVILES */
+    @media (max-width: 768px) {
+        /* Modal más pequeño - 85% de la pantalla */
+        .modal-fullscreen-mobile {
+            max-width: 95% !important;
+            max-height: 75% !important; /* 🔥 MÁS PEQUEÑO */
+            margin: auto !important;
+            height: auto !important;
+        }
+        
+        /* Contenido compacto */
+        .modal-mobile-content {
+            height: auto !important;
+            max-height: 75vh !important; /* 🔥 MÁS PEQUEÑO */
+            border-radius: 12px !important;
+            margin: 10vh auto !important; /* 🔥 CENTRADO CON MARGEN */
+        }
+        
+        /* Header compacto */
+        .modal-mobile-header {
+            padding: 0.5rem 1rem !important; /* 🔥 MÁS COMPACTO */
+            min-height: 50px !important;
+        }
+        
+        .modal-mobile-header h5 {
+            font-size: 1rem !important; /* 🔥 TEXTO MÁS PEQUEÑO */
+            margin: 0 !important;
+        }
+        
+        /* Body compacto */
+        .modal-mobile-body {
+            max-height: 50vh !important; /* 🔥 MÁS PEQUEÑO */
+            padding: 0.75rem !important;
+            overflow-y: auto !important;
+            font-size: 0.875rem !important; /* 🔥 TEXTO MÁS PEQUEÑO */
+        }
+        
+        /* Footer compacto */
+        .modal-mobile-footer {
+            padding: 0.5rem 1rem !important; /* 🔥 MÁS COMPACTO */
+            min-height: 50px !important;
+        }
+        
+        /* Formularios compactos */
+        .modal-mobile-body .form-label {
+            font-size: 0.8rem !important; /* 🔥 LABELS PEQUEÑOS */
+            margin-bottom: 0.25rem !important;
+        }
+        
+        .modal-mobile-body .form-control,
+        .modal-mobile-body .form-select {
+            font-size: 0.875rem !important; /* 🔥 INPUTS PEQUEÑOS */
+            padding: 0.4rem 0.75rem !important;
+            height: 38px !important; /* 🔥 INPUTS MÁS CORTOS */
+        }
+        
+        .modal-mobile-body .btn {
+            font-size: 0.875rem !important; /* 🔥 BOTONES PEQUEÑOS */
+            padding: 0.4rem 0.75rem !important;
+        }
+        
+        .modal-mobile-body .alert {
+            font-size: 0.8rem !important; /* 🔥 ALERTS PEQUEÑOS */
+            padding: 0.5rem 0.75rem !important;
+            margin-bottom: 0.75rem !important;
+        }
+        
+        .modal-mobile-body .table {
+            font-size: 0.8rem !important; /* 🔥 TABLAS PEQUEÑAS */
+        }
+        
+        .modal-mobile-body .table th,
+        .modal-mobile-body .table td {
+            padding: 0.4rem 0.5rem !important;
+        }
+        
+        /* Botones más compactos */
+        .modal-mobile-body .btn-sm {
+            padding: 0.25rem 0.5rem !important;
+            font-size: 0.75rem !important;
+        }
+        
+        /* Badges más pequeños */
+        .modal-mobile-body .badge {
+            font-size: 0.7rem !important;
+            padding: 0.25rem 0.4rem !important;
+        }
+        
+        /* Espaciados reducidos */
+        .modal-mobile-body .mb-3 {
+            margin-bottom: 0.75rem !important;
+        }
+        
+        .modal-mobile-body .mb-2 {
+            margin-bottom: 0.5rem !important;
+        }
+        
+        .modal-mobile-body .row {
+            margin-bottom: 0.5rem !important;
+        }
+        
+        /* Grid más compacto */
+        .modal-mobile-body .col-md-6 {
+            margin-bottom: 0.5rem !important;
+        }
+    }
+
+    /* 🔥 MÓVILES MUY PEQUEÑOS - AÚN MÁS COMPACTO */
+    @media (max-width: 480px) {
+        .modal-fullscreen-mobile {
+            max-width: 98% !important;
+            max-height: 70% !important; /* 🔥 AÚN MÁS PEQUEÑO */
+        }
+        
+        .modal-mobile-content {
+            max-height: 70vh !important;
+            margin: 15vh auto !important;
+        }
+        
+        .modal-mobile-body {
+            max-height: 45vh !important;
+            padding: 0.5rem !important;
+            font-size: 0.8rem !important;
+        }
+        
+        .modal-mobile-header,
+        .modal-mobile-footer {
+            padding: 0.4rem 0.75rem !important;
+            min-height: 45px !important;
+        }
+        
+        .modal-mobile-header h5 {
+            font-size: 0.9rem !important;
+        }
+        
+        .modal-mobile-body .form-control,
+        .modal-mobile-body .form-select {
+            font-size: 0.8rem !important;
+            padding: 0.3rem 0.6rem !important;
+            height: 35px !important;
+        }
+        
+        .modal-mobile-body .btn {
+            font-size: 0.8rem !important;
+            padding: 0.3rem 0.6rem !important;
+        }
+    }
+
+    /* 🔥 COMPORTAMIENTO NORMAL EN ESCRITORIO */
+    @media (min-width: 769px) {
+        .modal-fullscreen-mobile {
+            max-width: 800px;
+            max-height: 80vh;
+        }
+        
+        .modal-mobile-content {
+            height: auto;
+            border-radius: 12px;
+            max-height: 80vh !important;
+        }
+        
+        .modal-mobile-body {
+            max-height: 60vh;
+        }
+    }
+
+    /* 🔥 SUGERENCIAS DROPDOWN RESPONSIVE */
+    .sugerencias-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        z-index: 10002;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    
+    .sugerencia-item {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border-bottom: 1px solid #f8f9fa;
+    }
+    
+    .sugerencia-item:hover, .sugerencia-item.active {
+        background-color: #f8f9fa;
+    }
+    
+    .sugerencia-item:last-child {
+        border-bottom: none;
+    }
+
+    /* Responsive mejorado para buscadores */
+    @media (max-width: 576px) {
+        .main-content {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        #buscador-clientes {
+            width: 150px !important;
+        }
+        
+        .d-flex.justify-content-between {
+            flex-wrap: wrap;
+        }
+        
+        .btn-toolbar {
+            margin-top: 10px;
+        }
+    }
+
+    /* 🔥 MEJORAS ESPECÍFICAS PARA EL MODAL DE GESTIÓN DE USUARIOS */
+    @media (max-width: 768px) {
+        #gestionUsuariosModal .row {
+            flex-direction: column;
+        }
+        
+        #gestionUsuariosModal .col-md-5,
+        #gestionUsuariosModal .col-md-7 {
+            width: 100%;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        #tabla-usuarios-body .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        #tabla-usuarios-body .btn-group .btn {
+            margin: 1px;
+            flex: 1;
+            min-width: 35px !important;
+            padding: 0.2rem 0.3rem !important;
+            font-size: 0.7rem !important;
+        }
+    }
+
+    /* 🔥 PREVENIR SCROLL */
+    body.modal-open-mobile {
+        overflow: hidden !important;
+    }
+
+    /* 🔥 BACKDROP */
+    .modal-backdrop {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 9998 !important;
+    }
+</style>
+
+<script>
+// Botones de backup en menú offcanvas
+document.addEventListener('DOMContentLoaded', function() {
+    const enlacesMenu = document.querySelectorAll('#adminOffcanvas a[href]');
+    
+    enlacesMenu.forEach(enlace => {
+        enlace.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            if (href.includes('/admin/backup') || href.includes('/admin/estado-db')) {
+                e.preventDefault();
+                window.open(href, '_blank');
+                
+                const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('adminOffcanvas'));
+                if (offcanvas) {
+                    offcanvas.hide();
+                }
+            }
+        });
+    });
+});
+
+// 🔥 CONFIGURACIÓN PARA MODALES COMPACTOS
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.innerWidth <= 768) {
+        const modales = document.querySelectorAll('.modal-mobile-fixed');
+        
+        modales.forEach(modal => {
+            modal.addEventListener('show.bs.modal', function() {
+                document.body.style.overflow = 'hidden';
+                document.body.classList.add('modal-open-mobile');
+            });
+            
+            modal.addEventListener('hidden.bs.modal', function() {
+                document.body.style.overflow = '';
+                document.body.classList.remove('modal-open-mobile');
+            });
+        });
+    }
+});
+</script>
+
+{% endblock %}
