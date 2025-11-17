@@ -213,10 +213,10 @@ function cargarClientesEnModal() {
     clientesOrdenados.forEach(cliente => {
         const fila = document.createElement('tr');
         fila.innerHTML = `
-            <td class="d-none d-md-table-cell">${cliente.nombre}</td>
-            <td class="d-none d-lg-table-cell">${cliente.direccion || 'No especificada'}</td>
-            <td class="d-none d-sm-table-cell">${cliente.telefono || '-'}</td>
-            <td class="d-none d-sm-table-cell"><span class="badge bg-secondary">${cliente.categoria}</span></td>
+            <td><strong>${cliente.nombre}</strong></td> <!-- 🔥 VISIBLE EN TODOS -->
+            <td>${cliente.direccion || 'No especificada'}</td> <!-- 🔥 VISIBLE EN TODOS -->
+            <td>${cliente.telefono || '-'}</td> <!-- 🔥 VISIBLE EN TODOS -->
+            <td><span class="badge bg-secondary">${cliente.categoria}</span></td> <!-- 🔥 VISIBLE EN TODOS -->
             <td>
                 <button class="btn btn-sm btn-outline-primary" onclick="cerrarModalYEjecutar(() => centrarEnCliente(${cliente.id}))">
                     🗺️ Ver en Mapa
