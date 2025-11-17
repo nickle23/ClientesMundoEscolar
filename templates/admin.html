@@ -561,7 +561,7 @@
         scrollbar-width: none;
     }
 
-    /* 🔥 SOLUCIÓN DEFINITIVA PARA MÓVILES - MODALES FULLSCREEN */
+    /* 🔥 SOLUCIÓN DEFINITIVA PARA MÓVILES - MODALES QUE CABEN EN PANTALLA */
     .modal-mobile-fixed {
         z-index: 9999 !important;
     }
@@ -570,11 +570,11 @@
         z-index: 10000 !important;
     }
     
-    .modal-mobile-fixed .modal-content {
+    .modal-mobile-content {
         z-index: 10001 !important;
     }
 
-    /* 🔥 MODALES FULLSCREEN EN MÓVIL */
+    /* 🔥 MODALES QUE SIEMPRE CABEN EN MÓVIL - SIN SOBREPASAR */
     @media (max-width: 768px) {
         .modal-fullscreen-mobile {
             max-width: 100% !important;
@@ -588,6 +588,7 @@
             height: 100vh !important;
             border-radius: 0 !important;
             margin: 0 !important;
+            max-height: 100vh !important; /* 🔥 NUEVO: LIMITE MÁXIMO */
         }
         
         .modal-mobile-header {
@@ -595,12 +596,16 @@
             top: 0;
             z-index: 10002;
             border-radius: 0 !important;
+            min-height: 60px !important; /* 🔥 NUEVO: ALTURA FIJA */
+            max-height: 60px !important; /* 🔥 NUEVO: NO CRECE */
         }
         
         .modal-mobile-body {
-            max-height: calc(100vh - 140px) !important;
+            max-height: calc(100vh - 120px) !important; /* 🔥 CORREGIDO: 100vh - (header + footer) */
+            min-height: auto !important;
             overflow-y: auto !important;
             padding: 1rem !important;
+            flex: 1 !important; /* 🔥 NUEVO: OCUPA ESPACIO DISPONIBLE */
         }
         
         .modal-mobile-footer {
@@ -610,14 +615,23 @@
             border-radius: 0 !important;
             background: white !important;
             border-top: 1px solid #dee2e6 !important;
+            min-height: 60px !important; /* 🔥 NUEVO: ALTURA FIJA */
+            max-height: 60px !important; /* 🔥 NUEVO: NO CRECE */
         }
         
-        /* Asegurar que el modal ocupe toda la pantalla */
+        /* Asegurar que el modal ocupe exactamente la pantalla */
         .modal-mobile-fixed.show .modal-dialog {
             transform: none !important;
             display: flex !important;
             align-items: stretch !important;
             min-height: 100vh !important;
+            max-height: 100vh !important; /* 🔥 NUEVO: NO SOBREPASA */
+        }
+        
+        /* Contenedor del modal que limita el tamaño */
+        .modal-mobile-fixed .modal-content {
+            max-height: 100vh !important; /* 🔥 NUEVO: MÁXIMO VIEWPORT */
+            overflow: hidden !important;
         }
         
         /* Fondo del modal más oscuro en móviles */
@@ -643,6 +657,7 @@
         .modal-mobile-content {
             height: auto;
             border-radius: 12px;
+            max-height: 80vh !important;
         }
         
         .modal-mobile-body {
@@ -654,11 +669,14 @@
     @media (max-width: 576px) {
         .modal-mobile-body {
             padding: 0.75rem !important;
+            max-height: calc(100vh - 110px) !important; /* 🔥 AJUSTE PARA MÓVILES PEQUEÑOS */
         }
         
         .modal-mobile-header,
         .modal-mobile-footer {
             padding: 0.75rem !important;
+            min-height: 55px !important; /* 🔥 MÁS COMPACTO EN MÓVILES PEQUEÑOS */
+            max-height: 55px !important;
         }
         
         .form-control, .form-select {
@@ -677,6 +695,21 @@
         }
     }
 
+    /* 🔥 MÓVILES MUY PEQUEÑOS (iPhone SE) */
+    @media (max-width: 375px) {
+        .modal-mobile-body {
+            max-height: calc(100vh - 100px) !important; /* 🔥 MÁS ESPACIO EN PANTALLAS PEQUEÑAS */
+            padding: 0.5rem !important;
+        }
+        
+        .modal-mobile-header,
+        .modal-mobile-footer {
+            min-height: 50px !important;
+            max-height: 50px !important;
+            padding: 0.5rem !important;
+        }
+    }
+
     /* 🔥 MEJORAS PARA TABLETS */
     @media (min-width: 577px) and (max-width: 768px) {
         .modal-fullscreen-mobile {
@@ -686,12 +719,13 @@
         }
         
         .modal-mobile-content {
-            height: 95vh;
+            height: 90vh;
             border-radius: 12px;
+            max-height: 90vh !important;
         }
         
         .modal-mobile-body {
-            max-height: calc(95vh - 140px);
+            max-height: calc(90vh - 120px);
         }
     }
 
@@ -781,15 +815,7 @@
         }
     }
 
-    /* 🔥 CORRECCIÓN DEFINITIVA: ELIMINAR position: fixed DEL BODY */
-    /* ESTO ES LO QUE CAUSABA EL PROBLEMA EN MÓVILES */
-    body.modal-open {
-        overflow: hidden !important;
-        /* ❌ ELIMINADO: position: fixed !important; */
-        /* ❌ ELIMINADO: width: 100% !important; */
-    }
-
-    /* 🔥 NUEVA SOLUCIÓN PARA PREVENIR SCROLL SIN ROMPER EL LAYOUT */
+    /* 🔥 CORRECCIÓN DEFINITIVA: PREVENIR SCROLL SIN ROMPER LAYOUT */
     body.modal-open-mobile {
         overflow: hidden !important;
         position: relative !important;
@@ -804,6 +830,23 @@
         width: 100vw !important;
         height: 100vh !important;
         z-index: 9998 !important;
+    }
+
+    /* 🔥 FORZAR QUE EL MODAL USE FLEXBOX PARA DISTRIBUIR ESPACIO */
+    .modal-mobile-fixed .modal-dialog {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    .modal-mobile-content {
+        display: flex !important;
+        flex-direction: column !important;
+        flex: 1 !important;
+    }
+    
+    .modal-mobile-body {
+        flex: 1 !important;
+        overflow-y: auto !important;
     }
 </style>
 
@@ -829,7 +872,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// 🔥 SOLUCIÓN DEFINITIVA PARA MODALES EN MÓVILES - CORREGIDA
+// 🔥 SOLUCIÓN DEFINITIVA PARA MODALES EN MÓVILES - MEJORADA
 document.addEventListener('DOMContentLoaded', function() {
     // Forzar modales en móviles
     if (window.innerWidth <= 768) {
@@ -838,9 +881,38 @@ document.addEventListener('DOMContentLoaded', function() {
         modales.forEach(modal => {
             // Configurar evento para cuando se abre el modal
             modal.addEventListener('show.bs.modal', function() {
-                // SOLO ocultar scroll, NO cambiar position
+                console.log('📱 Modal móvil abriéndose...');
+                // Solo ocultar scroll, NO cambiar position
                 document.body.style.overflow = 'hidden';
                 document.body.classList.add('modal-open-mobile');
+                
+                // 🔥 FORZAR TAMAÑO CORRECTO INMEDIATAMENTE
+                setTimeout(() => {
+                    const modalContent = this.querySelector('.modal-content');
+                    const modalBody = this.querySelector('.modal-body');
+                    const modalHeader = this.querySelector('.modal-header');
+                    const modalFooter = this.querySelector('.modal-footer');
+                    
+                    if (modalContent) {
+                        modalContent.style.maxHeight = '100vh';
+                        modalContent.style.height = '100vh';
+                    }
+                    if (modalBody) {
+                        modalBody.style.maxHeight = 'calc(100vh - 120px)';
+                    }
+                }, 50);
+            });
+            
+            modal.addEventListener('shown.bs.modal', function() {
+                console.log('✅ Modal móvil completamente visible');
+                
+                // 🔥 VERIFICACIÓN FINAL DE TAMAÑOS
+                const modalContent = this.querySelector('.modal-content');
+                const modalBody = this.querySelector('.modal-body');
+                
+                console.log('📏 Altura del modal content:', modalContent?.offsetHeight);
+                console.log('📏 Altura del modal body:', modalBody?.offsetHeight);
+                console.log('📐 Altura de la ventana:', window.innerHeight);
             });
             
             // Configurar evento para cuando se cierra el modal
@@ -857,15 +929,33 @@ document.addEventListener('DOMContentLoaded', function() {
 window.addEventListener('orientationchange', function() {
     const modalAbierto = document.querySelector('.modal-mobile-fixed.show');
     if (modalAbierto && window.innerWidth <= 768) {
-        // Forzar redibujado del modal
+        // Forzar redibujado del modal con nuevos cálculos
         setTimeout(() => {
             const modalDialog = modalAbierto.querySelector('.modal-dialog');
+            const modalContent = modalAbierto.querySelector('.modal-content');
+            const modalBody = modalAbierto.querySelector('.modal-body');
+            
             if (modalDialog) {
                 modalDialog.style.transform = 'translateY(0)';
+            }
+            if (modalContent) {
+                modalContent.style.maxHeight = '100vh';
+                modalContent.style.height = '100vh';
+            }
+            if (modalBody) {
+                modalBody.style.maxHeight = 'calc(100vh - 120px)';
             }
         }, 300);
     }
 });
+
+// 🔥 CORRECCIÓN EXTRA: AJUSTAR AL CARGAR LA PÁGINA EN MÓVIL
+if (window.innerWidth <= 768) {
+    document.addEventListener('DOMContentLoaded', function() {
+        // Pre-cargar cálculos para móviles
+        console.log('📱 Dispositivo móvil detectado, configurando modales...');
+    });
+}
 </script>
 
 {% endblock %}
