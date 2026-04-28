@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1a365d">
+    <title>Panel de Gestión - Sistema de Clientes</title>
+
+    <!-- Bootstrap 5.3.2 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Leaflet CSS - Usando CDN alternativo para mayor fiabilidad -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="static/css/style.css?v=8.6">
+</head>
+
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fas fa-map-marked-alt me-2"></i>
+                <span>Hola <span id="navbar-username">Usuario</span> - Mundo Escolar</span>
+            </a>
+            <div class="navbar-nav ms-auto align-items-center flex-row">
+                <div class="client-count-badge me-3 d-none d-md-flex">
+                    <i class="fas fa-users"></i>
+                    <span>Total Clientes: <span id="total-clientes-count">0</span></span>
+                </div>
+                <span class="navbar-text me-3 d-none d-sm-inline">
+                    <i class="fas fa-user me-1"></i>
+                    <span id="current-username">Usuario</span>
+                </span>
+                <button class="btn btn-outline-light btn-sm" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="d-none d-sm-inline ms-1">Salir</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Interfaz de Pantalla Completa -->
+    <div class="trabajadores-fullscreen">
+        <!-- Buscador Flotante Profesional -->
+        <div class="floating-search">
+            <div class="input-group">
+                <input type="text" class="form-control" id="buscador-clientes"
+                    placeholder="🔍 Buscar cliente por nombre..." aria-label="Buscar cliente">
+                <button class="btn btn-primary" type="button" id="btn-actualizar-ubicacion">
+                    <i class="fas fa-satellite-dish"></i>
+                </button>
+            </div>
+
+            <!-- Sugerencias -->
+            <div class="suggestions-container" id="sugerencias-container-trabajadores">
+                <div id="lista-sugerencias-trabajadores"></div>
+            </div>
+        </div>
+
+        <!-- Controles de Mapa Premium (v9.0) -->
+        <div class="map-controls">
+            <button class="map-control-btn" id="btn-volver-ubicacion" title="Mi ubicación">
+                <i class="fas fa-location-arrow"></i>
+            </button>
+            <button class="map-control-btn" id="btn-recargar-clientes" title="Recargar clientes">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+            <button class="map-control-btn btn-ruta-especial" id="btn-ruta" title="Crear ruta" onclick="window.activarModoRuta()">
+                <i class="fas fa-route"></i>
+            </button>
+            <button class="map-control-btn" id="btn-iniciar-ruta" title="Iniciar ruta" style="display:none;" onclick="window.iniciarRuta()">
+                <i class="fas fa-play"></i>
+            </button>
+        </div>
+
+        <!-- Mapa - CONTENEDOR PRINCIPAL -->
+        <div id="map-trabajadores"></div>
+
+        <!-- BARRA DE ESTADO PARA TRABAJADORES (PANTALLA COMPLETA) -->
+        <div class="estado-sistema" id="estado-sistema-trabajadores"></div>
+
+        <!-- Panel de Resultados -->
+        <div class="position-absolute top-50 start-50 translate-middle w-75" id="panel-resultados"
+            style="display: none; z-index: 1000; max-height: 70vh;">
+            <div class="professional-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">
+                        <i class="fas fa-search me-2"></i>
+                        Resultados de Búsqueda
+                    </h6>
+                    <button type="button" class="btn-close" id="btn-cerrar-resultados"></button>
+                </div>
+                <div class="card-body">
+                    <div id="info-resultados-busqueda" class="search-results-info"></div>
+                    <div id="lista-resultados" style="max-height: 60vh; overflow-y: auto;">
+                        <!-- Resultados aquí -->
+</div>
+            </div>
+        </div>
+
+        <!-- Panel Flotante de Ruta -->
+        <div class="position-absolute top-10 end-0 m-2" id="panel-ruta"
+            style="display:none; z-index: 1000; width: 260px;">
+            <div class="professional-card">
+                <div class="card-header d-flex justify-content-between align-items-center" style="background:#10b981; color:white; padding:10px;">
+                    <h6 class="mb-0" style="font-size:14px;">
+                        <i class="fas fa-route me-1"></i>
+                        Ruta del Día
+                    </h6>
+                    <button type="button" class="btn-close btn-close-white" onclick="window.cerrarRuta()"></button>
+                </div>
+                <div class="card-body p-2" style="max-height: 50vh; overflow-y: auto;">
+                    <div id="lista-ruta">
+                        <div class="text-center text-muted p-3">Toca clientes en el mapa</div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex gap-2" style="padding:8px;">
+<button class="btn btn-sm btn-outline-danger flex-grow-1" onclick="window.cerrarRuta()">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button class="btn btn-sm btn-success flex-grow-1" onclick="window.iniciarRuta()">
+                        <i class="fas fa-play"></i> Iniciar
+                    </button>
+                    <button class="btn btn-sm btn-primary w-100" onclick="window.abrirEnGoogleMaps()">
+                        <i class="fas fa-location-arrow"></i> Google Maps
+                    </button>
+                    <button class="btn btn-sm btn-success flex-grow-1" onclick="iniciarRuta()">
+                        <i class="fas fa-play"></i> Iniciar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Modal Información del Cliente -->
+    <div class="modal fade" id="infoClienteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-user me-2"></i>
+                        <span id="modal-cliente-nombre">Cliente</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <span class="badge bg-primary fs-6" id="modal-cliente-categoria">-</span>
+                        </div>
+                        <div class="col-12 mb-2">
+                            <strong><i class="fas fa-phone me-2"></i>Teléfono:</strong>
+                            <span id="modal-cliente-telefono" class="ms-2">No disponible</span>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <strong><i class="fas fa-map-marker-alt me-2"></i>Dirección:</strong>
+                            <div id="modal-cliente-direccion" class="mt-1 text-muted">No disponible</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        Cerrar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn-abrir-maps">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Ir al Cliente
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script INMEDIATO para evitar flash de nombre -->
+    <script>
+        // Ejecutar INMEDIATAMENTE para mostrar el nombre del usuario sin flash
+        try {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                const usernameElements = document.querySelectorAll('#navbar-username, #current-username');
+                usernameElements.forEach(elem => {
+                    if (elem) elem.textContent = user.username || 'Usuario';
+                });
+            }
+        } catch (e) {
+            console.log('No se pudo cargar el nombre del usuario inmediatamente');
+        }
+    </script>
+
+    <!-- Bootstrap JS (requerido para modales) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Scripts -->
+    <script>
+        (function () {
+            // ✅ BLINDAJE DE SEGURIDAD v9.6: Verificar sesión antes de cargar nada
+            const savedUser = localStorage.getItem('currentUser');
+            if (!savedUser) {
+                console.warn('🛑 Acceso no autorizado detectado. Redirigiendo...');
+                window.location.href = 'index.html';
+                return;
+            }
+
+const scripts = [
+                'static/js/utils.js',
+                'static/js/auth.js',
+                'static/js/db.js',
+                'static/js/sync.js',
+                'static/js/api.js',
+                'static/js/maps.js',
+                'static/js/trabajadores.js',
+                'static/js/ruta_funciones.js'
+            ];
+            const t = Date.now();
+
+            let loaded = 0;
+            scripts.forEach(src => {
+                const s = document.createElement('script');
+                s.src = src + '?v=10.0&t=' + t;
+                s.async = false;
+                s.onload = () => {
+                    loaded++;
+                    if (loaded === scripts.length) iniciarSistema();
+                };
+                s.onerror = () => console.error(`❌ FALLO CARGA: ${src}`);
+                document.body.appendChild(s);
+            });
+
+            function iniciarSistema() {
+                if (typeof L === 'undefined') {
+                    const ljs = document.createElement('script');
+                    ljs.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+                    ljs.onload = () => arrancarApp();
+                    document.body.appendChild(ljs);
+                } else {
+                    arrancarApp();
+                }
+            }
+
+            function arrancarApp() {
+                setTimeout(() => {
+                    try {
+                        if (typeof authSystem === 'undefined') return;
+                        
+                        // ✅ SEGURIDAD: Verificar sesión contra datos frescos del sistema.json
+                        authSystem.verificarSesion().then(sesionValida => {
+                            if (!sesionValida) {
+                                // Si no es válida, ya redireccionó al login
+                                return;
+                            }
+                            
+                            // Actualizar nombre de usuario INMEDIATAMENTE para evitar flash
+                            if (authSystem.currentUser) {
+                                const usernameElem = document.getElementById('navbar-username');
+                                const usernameElem2 = document.getElementById('current-username');
+                                if (usernameElem) {
+                                    usernameElem.textContent = authSystem.currentUser.username;
+                                }
+                                if (usernameElem2) {
+                                    usernameElem2.textContent = authSystem.currentUser.username;
+                                }
+                            }
+
+                            if (typeof trabajadoresSystem !== 'undefined') {
+                                trabajadoresSystem.inicializar();
+                            }
+                        });
+                    } catch (e) {
+                        console.error("❌ Excepción en arranque:", e);
+                    }
+                }, 300);
+            }
+        })();
+
+        // Botón de logout
+        document.addEventListener('click', e => {
+            if (e.target.id === 'logout-btn' || e.target.closest('#logout-btn')) {
+                authSystem.logout();
+                window.location.href = 'index.html';
+            }
+        });
+</script>
+    </body>
+
+</html>
