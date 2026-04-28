@@ -1,7 +1,7 @@
 {
   "version": "3.9.0",
-  "ultima_actualizacion": "2026-04-25 11:45:58",
-  "timestamp": 1777135558,
+  "ultima_actualizacion": "2026-04-28 16:03:37",
+  "timestamp": 1777410217,
   "usuarios": [
     {
       "id": 2,
@@ -2555,7 +2555,7 @@
     },
     {
       "id": 254,
-      "nombre": "Patricia Ayaviri",
+      "nombre": "Patricia Tatiana Ayaviri Quito (Ayauri)",
       "telefono": "",
       "direccion": "ESPERANZA ALTA",
       "latitud": -8.077601,
@@ -4642,6 +4642,17 @@
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-04-24 23:51:18"
+    },
+    {
+      "id": 445,
+      "nombre": "Medrano Valle (Rita)",
+      "telefono": "",
+      "direccion": "COVICORTI",
+      "latitud": -8.108117,
+      "longitud": -79.043263,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-04-28 16:02:02"
     }
   ]
 }
