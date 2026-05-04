@@ -1,7 +1,7 @@
 {
   "version": "3.9.0",
-  "ultima_actualizacion": "2026-04-28 23:52:39",
-  "timestamp": 1777438359,
+  "ultima_actualizacion": "2026-05-04 17:02:01",
+  "timestamp": 1777932121,
   "usuarios": [
     {
       "id": 2,
@@ -3185,8 +3185,8 @@
       "nombre": "Juana Sanchez FM",
       "telefono": "",
       "direccion": "FLORENCIA DE MORA",
-      "latitud": -8.080191,
-      "longitud": -79.016521,
+      "latitud": -8.080533577107845,
+      "longitud": -79.01645651448577,
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-04-01 21:57:34"
@@ -4348,7 +4348,7 @@
     },
     {
       "id": 419,
-      "nombre": "Elba Palomino",
+      "nombre": "Elba Palomino (Paitan Escobar Feliciana)",
       "telefono": "",
       "direccion": "ALTO TRUJILLO B1",
       "latitud": -8.067236749948401,
@@ -4708,6 +4708,105 @@
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-04-28 23:52:39"
+    },
+    {
+      "id": 452,
+      "nombre": "Nereida Solano",
+      "telefono": "",
+      "direccion": "ALTO TRUJILLO B3C / (Bodega Bazar) fachada color azul y verde en toda una esquina rejas plomas",
+      "latitud": -8.057404,
+      "longitud": -79.020279,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-04 16:49:40"
+    },
+    {
+      "id": 453,
+      "nombre": "Nicol Villanueva",
+      "telefono": "",
+      "direccion": "ALTO TRUJILLO",
+      "latitud": -8.062105,
+      "longitud": -79.029375,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-04 16:51:30"
+    },
+    {
+      "id": 454,
+      "nombre": "Maria Abanto",
+      "telefono": "",
+      "direccion": "FLORENCIA DE MORA",
+      "latitud": -8.073729573445847,
+      "longitud": -79.0161866628614,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-04 16:53:14"
+    },
+    {
+      "id": 455,
+      "nombre": "Adriana Rivera",
+      "telefono": "",
+      "direccion": "FLORENCIA DE MORA",
+      "latitud": -8.077026,
+      "longitud": -79.030104,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-04 16:55:09"
+    },
+    {
+      "id": 456,
+      "nombre": "Sthefany Pamela Leon",
+      "telefono": "",
+      "direccion": "FLORENCIA DE MORA",
+      "latitud": -8.081112,
+      "longitud": -79.021082,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-04 16:56:13"
+    },
+    {
+      "id": 457,
+      "nombre": "Iris Yolanda (Jhordan Calderon)",
+      "telefono": "",
+      "direccion": "FLORENCIA DE MORA / AV. LAS MAGNOLIAS",
+      "latitud": -8.071765,
+      "longitud": -79.020535,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-04 16:57:42"
+    },
+    {
+      "id": 458,
+      "nombre": "Marina Zavaleta",
+      "telefono": "",
+      "direccion": "AV LOS LAURELES AL FRENTE DEL COLEGIO SIMÓN LOZANO GARCÍA FLORENICA DE MORA",
+      "latitud": -8.072652,
+      "longitud": -79.024284,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-04 16:58:44"
+    },
+    {
+      "id": 459,
+      "nombre": "Violeta Haro",
+      "telefono": "",
+      "direccion": "LAREDO",
+      "latitud": -8.087663,
+      "longitud": -78.955153,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-04 17:00:55"
+    },
+    {
+      "id": 460,
+      "nombre": "Elkee Castillo",
+      "telefono": "",
+      "direccion": "EL MILAGRO PARTE BAJA CERCA A JUANA PRETELL",
+      "latitud": -8.031345,
+      "longitud": -79.071211,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-04 17:02:01"
     }
   ]
 }
