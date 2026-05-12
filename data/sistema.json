@@ -1,7 +1,7 @@
 {
   "version": "3.9.0",
-  "ultima_actualizacion": "2026-05-04 17:02:01",
-  "timestamp": 1777932121,
+  "ultima_actualizacion": "2026-05-11 19:15:00",
+  "timestamp": 1778544900,
   "usuarios": [
     {
       "id": 2,
@@ -3394,22 +3394,11 @@
       "nombre": "Norma Cabrera Hilario",
       "telefono": "",
       "direccion": "CALIFORNIA: Manzana F lote 31 frente a la gallera",
-      "latitud": -8.410995,
-      "longitud": -78.805168,
+      "latitud": -8.410961290453528,
+      "longitud": -78.80521904792332,
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-04-01 23:01:43"
-    },
-    {
-      "id": 333,
-      "nombre": "Darwin Jara",
-      "telefono": "",
-      "direccion": "PUENTE VIRU",
-      "latitud": -8.425331,
-      "longitud": -78.778719,
-      "categoria": "Librería",
-      "activo": 1,
-      "fecha_creacion": "2026-04-01 23:02:54"
     },
     {
       "id": 334,
@@ -4807,6 +4796,138 @@
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-05-04 17:02:01"
+    },
+    {
+      "id": 461,
+      "nombre": "Lucy Plasencia (Luci Plasencia)",
+      "telefono": "",
+      "direccion": "URB. SANCHEZ CARRION",
+      "latitud": -8.104297,
+      "longitud": -79.039268,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-11 19:00:32"
+    },
+    {
+      "id": 462,
+      "nombre": "Victoria Melon",
+      "telefono": "",
+      "direccion": "Calle Libertadores",
+      "latitud": -8.09994,
+      "longitud": -79.050667,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-11 19:02:30"
+    },
+    {
+      "id": 463,
+      "nombre": "Marleny Vergara",
+      "telefono": "",
+      "direccion": "MOCHE",
+      "latitud": -8.168864,
+      "longitud": -79.010798,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-11 19:03:49"
+    },
+    {
+      "id": 464,
+      "nombre": "Libreria Janet",
+      "telefono": "",
+      "direccion": "Alto Moche",
+      "latitud": -8.183726,
+      "longitud": -78.990513,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-11 19:04:52"
+    },
+    {
+      "id": 465,
+      "nombre": "Elizabeth Principe",
+      "telefono": "",
+      "direccion": "Alto Moche",
+      "latitud": -8.183695,
+      "longitud": -78.985726,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-11 19:05:43"
+    },
+    {
+      "id": 466,
+      "nombre": "Liliana Lezama",
+      "telefono": "",
+      "direccion": "VICTOR RAUL (VALLE SUR)",
+      "latitud": -8.404258,
+      "longitud": -78.825776,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-11 19:07:03"
+    },
+    {
+      "id": 467,
+      "nombre": "Romy Perez",
+      "telefono": "",
+      "direccion": "VICTOR RAUL (VALLE SUR)",
+      "latitud": -8.404441068798643,
+      "longitud": -78.82516243689136,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-11 19:08:03"
+    },
+    {
+      "id": 468,
+      "nombre": "Maria Villalde (Darwin Jara)",
+      "telefono": "",
+      "direccion": "PTE. VIRU",
+      "latitud": -8.425391,
+      "longitud": -78.778826,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-11 19:09:54"
+    },
+    {
+      "id": 469,
+      "nombre": "Lucia",
+      "telefono": "",
+      "direccion": "VILLA VIRU",
+      "latitud": -8.412047,
+      "longitud": -78.819013,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-11 19:11:48"
+    },
+    {
+      "id": 470,
+      "nombre": "Libreria YUNZU",
+      "telefono": "",
+      "direccion": "VIRU",
+      "latitud": -8.41407390610383,
+      "longitud": -78.75261253311719,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-11 19:13:12"
+    },
+    {
+      "id": 471,
+      "nombre": "Martha Rios",
+      "telefono": "",
+      "direccion": "SAN JOSE",
+      "latitud": -8.447298,
+      "longitud": -78.737992,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-11 19:14:05"
+    },
+    {
+      "id": 472,
+      "nombre": "Joselin Pastor",
+      "telefono": "",
+      "direccion": "CHAO",
+      "latitud": -8.540604383936662,
+      "longitud": -78.67795662275147,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-05-11 19:15:00"
     }
   ]
 }
