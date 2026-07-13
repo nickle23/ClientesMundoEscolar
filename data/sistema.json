@@ -1,7 +1,7 @@
 {
   "version": "3.9.0",
-  "ultima_actualizacion": "2026-06-08 19:33:15",
-  "timestamp": 1780965195,
+  "ultima_actualizacion": "2026-07-13 18:08:12",
+  "timestamp": 1783984092,
   "usuarios": [
     {
       "id": 2,
@@ -2049,7 +2049,7 @@
     },
     {
       "id": 205,
-      "nombre": "Rosa Lopez",
+      "nombre": "Rosa Lopez (ROSALU)",
       "telefono": "",
       "direccion": "ESPERANZA BAJA",
       "latitud": -8.067121,
@@ -2324,7 +2324,7 @@
     },
     {
       "id": 234,
-      "nombre": "Rosani Minchola (Romy Minchola)",
+      "nombre": "Rosani Minchola (Romy Minchola / Antonella Salvatierra)",
       "telefono": "",
       "direccion": "LOS GRANADOS",
       "latitud": -8.093410811672761,
@@ -3897,7 +3897,7 @@
     },
     {
       "id": 379,
-      "nombre": "Nancy Castillo",
+      "nombre": "Nancy Castillo Sebastian",
       "telefono": "",
       "direccion": "PESQUEDA",
       "latitud": -8.095143,
@@ -5412,6 +5412,226 @@
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-06-08 19:33:15"
+    },
+    {
+      "id": 518,
+      "nombre": "Reymundo Beltran Karelyn",
+      "telefono": "",
+      "direccion": "ESPERANZA ALTA",
+      "latitud": -8.083412,
+      "longitud": -79.032609,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 17:47:05"
+    },
+    {
+      "id": 519,
+      "nombre": "Libreria Simons",
+      "telefono": "",
+      "direccion": "ALTO TRUJILLO B2",
+      "latitud": -8.067555,
+      "longitud": -79.022682,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 17:47:48"
+    },
+    {
+      "id": 520,
+      "nombre": "Dany Morillo",
+      "telefono": "",
+      "direccion": "ALTO TRUJILLO B2",
+      "latitud": -8.067729,
+      "longitud": -79.022736,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 17:48:38"
+    },
+    {
+      "id": 521,
+      "nombre": "Orlando Jimenez",
+      "telefono": "",
+      "direccion": "ALTO TRUJILLO B3C",
+      "latitud": -8.053015,
+      "longitud": -79.024629,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 17:49:18"
+    },
+    {
+      "id": 522,
+      "nombre": "Sandra Yncil",
+      "telefono": "",
+      "direccion": "ALTO TRUJILLO B3C",
+      "latitud": -8.060756,
+      "longitud": -79.021774,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 17:50:05"
+    },
+    {
+      "id": 523,
+      "nombre": "Rosa Salinas",
+      "telefono": "",
+      "direccion": "ALTO TRUJILLO B5A",
+      "latitud": -8.064389,
+      "longitud": -79.007227,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 17:53:00"
+    },
+    {
+      "id": 524,
+      "nombre": "Flor Eustaquio",
+      "telefono": "",
+      "direccion": "ALTO TRUJILLO B7",
+      "latitud": -8.065314,
+      "longitud": -79.005463,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 17:53:40"
+    },
+    {
+      "id": 525,
+      "nombre": "Silvia Soledad",
+      "telefono": "",
+      "direccion": "EL MILAGRO P.ALTA",
+      "latitud": -8.029181,
+      "longitud": -79.062073,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 17:55:39"
+    },
+    {
+      "id": 526,
+      "nombre": "Roxana Aracely Rodriguez",
+      "telefono": "",
+      "direccion": "RAMIRO PRIALE - ESPZA ALTA",
+      "latitud": -8.057899,
+      "longitud": -79.049291,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 17:56:39"
+    },
+    {
+      "id": 527,
+      "nombre": "Andrea Belen",
+      "telefono": "",
+      "direccion": "ALTO  MOCHICA",
+      "latitud": -8.089373,
+      "longitud": -79.040062,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 17:58:10"
+    },
+    {
+      "id": 528,
+      "nombre": "Martha Chavez (Olenka Flores)",
+      "telefono": "",
+      "direccion": "ESPERANZA ALTA (COSTADO COMERCIAL DIMA)",
+      "latitud": -8.084055,
+      "longitud": -79.039118,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 17:59:12"
+    },
+    {
+      "id": 529,
+      "nombre": "Melva Solano",
+      "telefono": "",
+      "direccion": "MANUEL AREVALO",
+      "latitud": -8.06967,
+      "longitud": -79.071209,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 17:59:49"
+    },
+    {
+      "id": 530,
+      "nombre": "Marcela Jiron",
+      "telefono": "",
+      "direccion": "LAS PALMERAS ESPZA",
+      "latitud": -8.046357,
+      "longitud": -79.048555,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 18:00:38"
+    },
+    {
+      "id": 531,
+      "nombre": "Willy Pizan",
+      "telefono": "",
+      "direccion": "VICTOR RAUL - ESP BAJA",
+      "latitud": -8.062314,
+      "longitud": -79.077067,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 18:01:21"
+    },
+    {
+      "id": 532,
+      "nombre": "Olga Torres",
+      "telefono": "",
+      "direccion": "LAS PALMERAS - ESP ALTA",
+      "latitud": -8.048025,
+      "longitud": -79.049396,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 18:02:11"
+    },
+    {
+      "id": 533,
+      "nombre": "Keyko Mauricio",
+      "telefono": "",
+      "direccion": "LAS PALMERAS - ESP ALTA",
+      "latitud": -8.054228,
+      "longitud": -79.049171,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 18:03:34"
+    },
+    {
+      "id": 534,
+      "nombre": "Giuliana Quijano",
+      "telefono": "",
+      "direccion": "LOS 4 SUYOS",
+      "latitud": -8.04887259962117,
+      "longitud": -79.05743355836334,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 18:04:52"
+    },
+    {
+      "id": 535,
+      "nombre": "Nilton Castillo",
+      "telefono": "",
+      "direccion": "ESPERANZA BAJA",
+      "latitud": -8.078545,
+      "longitud": -79.055668,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 18:06:09"
+    },
+    {
+      "id": 536,
+      "nombre": "Mini Book (a partir de 7pm menos trafico)",
+      "telefono": "",
+      "direccion": "MONSERRATE",
+      "latitud": -8.122381,
+      "longitud": -79.032349,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 18:07:02"
+    },
+    {
+      "id": 537,
+      "nombre": "Graciela Benites",
+      "telefono": "",
+      "direccion": "PORVENIR - MCDO 7 JUNIO (INGRESANDO, CASI A MITAD DE MERCADO)",
+      "latitud": -8.078294,
+      "longitud": -79.007573,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-13 18:08:12"
     }
   ]
 }
