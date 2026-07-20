@@ -1,7 +1,7 @@
 {
   "version": "3.9.0",
-  "ultima_actualizacion": "2026-07-13 18:08:12",
-  "timestamp": 1783984092,
+  "ultima_actualizacion": "2026-07-20 17:39:42",
+  "timestamp": 1784587182,
   "usuarios": [
     {
       "id": 2,
@@ -5110,8 +5110,8 @@
       "nombre": "Alisson Peralta (Wendy)",
       "telefono": "",
       "direccion": "VICTOR RAUL ESPERANZA BAJA",
-      "latitud": -8.067046,
-      "longitud": -79.075831,
+      "latitud": -8.066906,
+      "longitud": -79.075384,
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-05-25 11:28:34"
@@ -5632,6 +5632,50 @@
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-07-13 18:08:12"
+    },
+    {
+      "id": 538,
+      "nombre": "Karen Dominguez (Juana la cubana)",
+      "telefono": "",
+      "direccion": "MANUEL AREVALO",
+      "latitud": -8.069945360893499,
+      "longitud": -79.06815015577823,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-20 17:36:17"
+    },
+    {
+      "id": 539,
+      "nombre": "Katherine Avila Mendoza",
+      "telefono": "",
+      "direccion": "EL MILAGRO PARTE BAJA",
+      "latitud": -8.031042929352068,
+      "longitud": -79.06402036165832,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-20 17:37:23"
+    },
+    {
+      "id": 540,
+      "nombre": "Karen Ibañez Roncal",
+      "telefono": "",
+      "direccion": "PORVENIR - RIO SECO",
+      "latitud": -8.070261,
+      "longitud": -79.003815,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-20 17:38:53"
+    },
+    {
+      "id": 541,
+      "nombre": "Edith Gutierrez Herrera",
+      "telefono": "",
+      "direccion": "CALLE ESTAMBUL",
+      "latitud": -8.103312,
+      "longitud": -79.043819,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-20 17:39:42"
     }
   ]
 }
