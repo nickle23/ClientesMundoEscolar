@@ -1,7 +1,7 @@
 {
   "version": "3.9.0",
-  "ultima_actualizacion": "2026-07-21 17:05:35",
-  "timestamp": 1784671535,
+  "ultima_actualizacion": "2026-07-31 11:44:10",
+  "timestamp": 1785516250,
   "usuarios": [
     {
       "id": 2,
@@ -1942,8 +1942,8 @@
       "nombre": "Martha Cuba",
       "telefono": "",
       "direccion": "EL PORVENIR (MCDO LOS PORTALES)",
-      "latitud": -8.087251877741657,
-      "longitud": -79.00313502729095,
+      "latitud": -8.087820228919163,
+      "longitud": -79.00265729880394,
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-02-17 22:30:01"
@@ -5687,6 +5687,72 @@
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-07-21 17:05:15"
+    },
+    {
+      "id": 543,
+      "nombre": "Andrea Carranza ( Costado de Lucy del Pilar)",
+      "telefono": "",
+      "direccion": "FLORENCIA DE MORA",
+      "latitud": -8.075184863892972,
+      "longitud": -79.02425197657784,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-31 11:35:56"
+    },
+    {
+      "id": 544,
+      "nombre": "Vilma Valverde (Libreria Arco Iris)",
+      "telefono": "",
+      "direccion": "ESPERANZA BAJA",
+      "latitud": -8.075763,
+      "longitud": -79.050407,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-31 11:37:47"
+    },
+    {
+      "id": 545,
+      "nombre": "Renovare (Centro Infantil)",
+      "telefono": "",
+      "direccion": "ESPERANZA ALTA - TAHUANTINSUYO",
+      "latitud": -8.076114948829291,
+      "longitud": -79.04669030935327,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-31 11:39:22"
+    },
+    {
+      "id": 546,
+      "nombre": "Patricia Garcia (Libreria Bazar)",
+      "telefono": "",
+      "direccion": "Jose Marti 785 - Esperanza Alta",
+      "latitud": -8.084037,
+      "longitud": -79.039055,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-31 11:40:49"
+    },
+    {
+      "id": 547,
+      "nombre": "Marcelo Venegas Mayra Katherin (Libreria Mayra)",
+      "telefono": "",
+      "direccion": "RIO SECO",
+      "latitud": -8.068411,
+      "longitud": -79.003178,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-31 11:42:00"
+    },
+    {
+      "id": 548,
+      "nombre": "Carlos Asmat",
+      "telefono": "",
+      "direccion": "MOCHE",
+      "latitud": -8.170823,
+      "longitud": -79.006096,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-07-31 11:42:48"
     }
   ]
 }
