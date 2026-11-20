@@ -1,7 +1,7 @@
 {
   "version": "3.9.0",
-  "ultima_actualizacion": "2026-07-31 11:44:10",
-  "timestamp": 1785516250,
+  "ultima_actualizacion": "2026-11-20 09:38:34",
+  "timestamp": 1795185514,
   "usuarios": [
     {
       "id": 2,
@@ -5753,6 +5753,17 @@
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-07-31 11:42:48"
+    },
+    {
+      "id": 549,
+      "nombre": "Victoria Mili LLERENA AROCO",
+      "telefono": "",
+      "direccion": "MCDO SANTA ROSA / VISTA ALEGRE",
+      "latitud": -8.136795929409452,
+      "longitud": -79.04468644921522,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-11-20 09:38:34"
     }
   ]
 }
