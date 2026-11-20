@@ -1,7 +1,7 @@
 {
   "version": "3.9.0",
-  "ultima_actualizacion": "2026-11-20 09:38:34",
-  "timestamp": 1795185514,
+  "ultima_actualizacion": "2026-11-20 10:16:21",
+  "timestamp": 1795187781,
   "usuarios": [
     {
       "id": 2,
@@ -1411,7 +1411,7 @@
     },
     {
       "id": 146,
-      "nombre": "Luis Jacobo",
+      "nombre": "JACOBO NEYRA LUIS ELQUIN",
       "telefono": "",
       "direccion": "ALTO TRUJILLO B4",
       "latitud": -8.066263403779612,
@@ -1499,7 +1499,7 @@
     },
     {
       "id": 154,
-      "nombre": "Rosmery (Victor Moreno)",
+      "nombre": "ROSMERY STEFANI AVILA GONZALES (Victor Moreno)",
       "telefono": "",
       "direccion": "EL PORVENIR (AV. SANCHEZ CARRION)",
       "latitud": -8.084070322461661,
@@ -1543,7 +1543,7 @@
     },
     {
       "id": 158,
-      "nombre": "Nadia Eredith Rodriguez",
+      "nombre": "Nadia Eredith RODRIGUEZ LUIS",
       "telefono": "",
       "direccion": "ALTO TRUJILLO 4B: AL COSTADO DE LA FERRETERIA SAN LUIS",
       "latitud": -8.053092,
@@ -3468,7 +3468,7 @@
     },
     {
       "id": 340,
-      "nombre": "Lucia Zevallos",
+      "nombre": "ZEVALLOS CUEVA LUCIA MARICRUZ",
       "telefono": "",
       "direccion": "URB LIBERTAD",
       "latitud": -8.091461831550559,
@@ -3479,9 +3479,9 @@
     },
     {
       "id": 341,
-      "nombre": "Irma Herrera",
+      "nombre": "IRMA JUANA HERRERA CRUZ",
       "telefono": "",
-      "direccion": "EL PORVENIR",
+      "direccion": "EL PORVENIR - VICTOR RAUL",
       "latitud": -8.07008102364204,
       "longitud": -78.9879906685028,
       "categoria": "Librería",
@@ -3776,7 +3776,7 @@
     },
     {
       "id": 368,
-      "nombre": "Silvia Sarachoga",
+      "nombre": "SILVIA EMPERATRIZ SARACHAGA CARPIO DE GOMEZ",
       "telefono": "",
       "direccion": "EL BOSQUE",
       "latitud": -8.108584,
@@ -5195,7 +5195,7 @@
     },
     {
       "id": 497,
-      "nombre": "Fiorela Casavalente",
+      "nombre": "FIORELA DENISE CASAVALENTE MESTANZA",
       "telefono": "",
       "direccion": "MANUEL AREVALO III ETAPA // FACHADA BITEL",
       "latitud": -8.069,
@@ -5558,7 +5558,7 @@
     },
     {
       "id": 531,
-      "nombre": "Willy Pizan",
+      "nombre": "Wily Jennry PIZAN REYES",
       "telefono": "",
       "direccion": "VICTOR RAUL - ESP BAJA",
       "latitud": -8.062314,
@@ -5764,6 +5764,83 @@
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-11-20 09:38:34"
+    },
+    {
+      "id": 550,
+      "nombre": "Aissa Alexandra RODRIGUEZ DIAZ",
+      "telefono": "",
+      "direccion": "SAN ANDRES 5TA ETAPA",
+      "latitud": -8.13691,
+      "longitud": -79.049145,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-11-20 09:50:59"
+    },
+    {
+      "id": 551,
+      "nombre": "Lady QUIROZ",
+      "telefono": "",
+      "direccion": "MCDO NAZARETH - ESPERANZA BAJA",
+      "latitud": -8.069620225167057,
+      "longitud": -79.05240030135253,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-11-20 09:52:29"
+    },
+    {
+      "id": 552,
+      "nombre": "Maria Elena DIAZ LEON",
+      "telefono": "",
+      "direccion": "VIRGEN DEL SOCORRO - ESPERANZA",
+      "latitud": -8.049275138829866,
+      "longitud": -79.07241130630196,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-11-20 09:57:39"
+    },
+    {
+      "id": 553,
+      "nombre": "JAQUELINE VERDE",
+      "telefono": "",
+      "direccion": "AV LOS LAURELES",
+      "latitud": -8.072991000000002,
+      "longitud": -79.02486772883505,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-11-20 10:01:44"
+    },
+    {
+      "id": 554,
+      "nombre": "CARMELA IRENE CUBA CRUZADO",
+      "telefono": "",
+      "direccion": "PORVENIR - VICTOR RAUL",
+      "latitud": -8.071220084605601,
+      "longitud": -78.9881691862965,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-11-20 10:11:21"
+    },
+    {
+      "id": 555,
+      "nombre": "JOSE LUIS ZAVALETA",
+      "telefono": "",
+      "direccion": "RAZURI",
+      "latitud": -8.099539108259467,
+      "longitud": -79.00861047895174,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-11-20 10:14:39"
+    },
+    {
+      "id": 556,
+      "nombre": "AGUSTINA AVILA SALAZAR",
+      "telefono": "",
+      "direccion": "RIO SECO - PORVENIR",
+      "latitud": -8.081832,
+      "longitud": -79.007596,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-11-20 10:16:21"
     }
   ]
 }
