@@ -1,7 +1,7 @@
 {
   "version": "3.9.0",
-  "ultima_actualizacion": "2026-11-20 10:22:06",
-  "timestamp": 1795188126,
+  "ultima_actualizacion": "2026-11-20 10:27:01",
+  "timestamp": 1795188421,
   "usuarios": [
     {
       "id": 2,
@@ -5863,6 +5863,17 @@
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-11-20 10:22:06"
+    },
+    {
+      "id": 559,
+      "nombre": "LESLY LISETH MINCHOLA",
+      "telefono": "",
+      "direccion": "SAN JOSE",
+      "latitud": -8.449633,
+      "longitud": -78.739875,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-11-20 10:27:01"
     }
   ]
 }
