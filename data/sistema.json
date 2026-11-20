@@ -1,7 +1,7 @@
 {
   "version": "3.9.0",
-  "ultima_actualizacion": "2026-11-20 10:16:21",
-  "timestamp": 1795187781,
+  "ultima_actualizacion": "2026-11-20 10:22:06",
+  "timestamp": 1795188126,
   "usuarios": [
     {
       "id": 2,
@@ -5841,6 +5841,28 @@
       "categoria": "Librería",
       "activo": 1,
       "fecha_creacion": "2026-11-20 10:16:21"
+    },
+    {
+      "id": 557,
+      "nombre": "EVER AGUILAR",
+      "telefono": "",
+      "direccion": "VALLE DE DIOS",
+      "latitud": -8.507819,
+      "longitud": -78.685619,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-11-20 10:20:44"
+    },
+    {
+      "id": 558,
+      "nombre": "MARIA MAGDALENA MENDEZ VILLANUEVA",
+      "telefono": "",
+      "direccion": "RIO SECO - PORVENIR",
+      "latitud": -8.083932,
+      "longitud": -79.009012,
+      "categoria": "Librería",
+      "activo": 1,
+      "fecha_creacion": "2026-11-20 10:22:06"
     }
   ]
 }
